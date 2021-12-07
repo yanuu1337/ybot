@@ -3,7 +3,7 @@ import {config} from 'dotenv';
 import Database from "./util/Database";
 config();
 const client = new ArosClient()
-new Database(client)
+new Database(client).authenticate()
 
 client.once('ready', () => {
     client.logger.info('BOT: Connected.')
