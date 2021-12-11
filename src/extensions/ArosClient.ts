@@ -1,4 +1,6 @@
 import { Client, ClientOptions, Intents } from "discord.js"
+import EventHandler from "../handlers/EventHandler";
+import UserHandler from "../handlers/UserHandler";
 import Database from "../util/Database";
 import Logger from "../util/Logger";
 
@@ -22,6 +24,9 @@ export default class ArosClient extends Client {
     public async login(token: string): Promise<string> {
         return super.login(token);
     }
+
+    public events = new EventHandler(this)
+    public dbUsers = new UserHandler(this);
     get logger() {
         return this._logger
     }
