@@ -13,7 +13,7 @@ export default class EventHandler extends Collection<string, Event> {
         this.init('../events').catch(err => client.logger.error(`Error: `, err))
     }
 
-    async init(dir: string) {
+    private async init(dir: string) {
         
         const filePath = join(__dirname, dir)
         const files = await readdir(filePath);
