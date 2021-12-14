@@ -24,7 +24,7 @@ export default class EventHandler extends Collection<string, Event> {
                 const {default: Event} = await import(join(dir, file))
                 const event = new Event(this.client, file.split('.')[0]);
                 this.set(file.split('.')[0], event)
-                this.client[event.once ? 'once' : 'on'](event.name, (...args: unknown[]) => event.execute(...args)) 
+                this.client[event.once ? 'once' : 'on'](event.name, (...args: unknown[]) => event.execute(this.client, ...args)) 
             }
         }
         this.client.logger.info(`Successfully loaded ${this.size} events!`)

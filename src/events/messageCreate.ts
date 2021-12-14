@@ -1,10 +1,11 @@
 import { Message, NewsChannel, Permissions, TextChannel, ThreadChannel } from "discord.js";
+import ArosClient from "../extensions/ArosClient";
 import Event from '../lib/structures/Event'
 import EmbedFactory from "../util/EmbedFactory";
 import Util from "../util/Util";
 export default class extends Event {
     readonly requiredPermissions = new Permissions(['VIEW_CHANNEL', 'SEND_MESSAGES', 'EMBED_LINKS']).freeze()
-    async execute(msg: Message) {
+    async execute(client: ArosClient, msg: Message) {
         if(msg.author.bot || msg.webhookId || msg.partial) return;
         
         if(msg.channel.type === 'DM') {
