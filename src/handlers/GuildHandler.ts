@@ -8,10 +8,11 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
         super();
         this.client = client;
         this.init()
+        
     }
 
     private init(): void {
-        setTimeout(() => {
+        setTimeout(async () => {
             this.client.db?.query(`CREATE TABLE IF NOT EXISTS \`guilds\` (\`id\` INT NOT NULL AUTO_INCREMENT,
             \`discord_id\` VARCHAR(25) NOT NULL, 
             \`created_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
@@ -20,8 +21,14 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
             \`language\` VARCHAR(10) NOT NULL DEFAULT 'en-US',
             \`autoroles\` JSON NULL DEFAULT NULL,
             PRIMARY KEY(\`id\`)) ENGINE= InnoDB;
-            `)
-        }, 1000)
+            `);
+            (await this.client.guilds.fetch()).forEach((key) => {
+                this.create({
+                    discord_id: key.id,
+                    language: 'en-US'
+                })
+            })
+        }, 1000);
         
     }
     async edit(id: Guild | string, query: object): Promise<void> {
@@ -29,6 +36,7 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
     }
 
     async create(data: GuildInterface) {
+        if((await this.fetch(data.discord_id))) return true;
         const didPass = this.client.db?.insert('guilds', data).catch(err => false)
         return didPass ?? true;
     }
