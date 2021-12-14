@@ -11,7 +11,7 @@ export default class EmbedFactory {
             .setTitle(`⛔ - ${title}`)
             .setDescription(error)
             .setColor('#992D22')
-            .setFooter("© 2021 - Aros 🎉")
+            .setFooter("© 2022 - Aros 🎉")
             .setTimestamp()
     }
 
@@ -20,7 +20,7 @@ export default class EmbedFactory {
             .setTitle(`⚠️ - ${title}`)
             .setDescription(warning)
             .setColor('#eed202')
-            .setFooter("© 2021 - Aros 🎉")
+            .setFooter("© 2022 - Aros 🎉")
             .setTimestamp()
 
     }
@@ -31,7 +31,7 @@ export default class EmbedFactory {
             .setDescription(description)
             .setTimestamp()
             .setColor('#cbdbfe')
-            .setFooter("© 2021 - Aros 🎉")
+            .setFooter("© 2022 - Aros 🎉")
     }
 
     static generateRandomColorEmbed(title: string, description: string): MessageEmbed {
@@ -39,7 +39,7 @@ export default class EmbedFactory {
             .setTitle(`💥 - ${title}`)
             .setDescription(description)
             .setTimestamp()
-            .setFooter("© 2021 - Aros 🎉")
+            .setFooter("© 2022 - Aros 🎉")
             .setColor('RANDOM')
     }
 
@@ -47,7 +47,7 @@ export default class EmbedFactory {
         return new MessageEmbed()
             .setTitle(`${isLoaded ? title : `Loading - ${title}`}`)
             .setDescription(description)
-            .setFooter("© 2021 - Aros 🎉")
+            .setFooter("© 2022 - Aros 🎉")
             .setTimestamp()
             .setColor(isLoaded ? '#03254C' : '#187bcd')
 
