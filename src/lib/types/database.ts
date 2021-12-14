@@ -4,11 +4,13 @@ export interface User {
     discord_id: string,
     created_at?: string,
     blacklisted?: boolean,
+    language?: string,
+
 } 
-export interface Guild  {
+export interface GuildInterface  {
     discord_id: string,
     created_at?: string,
-    language: string,
+    language?: string,
     joined_at?: string,
     blacklisted?: boolean,
     autoroles?: object[] | any[],
