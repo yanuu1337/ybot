@@ -1,6 +1,6 @@
 // import { Sequelize } from "sequelize";
 import ArosClient from "../extensions/ArosClient";
-import mysql, { RowDataPacket } from 'mysql2/promise'
+import mysql from 'mysql2/promise'
 import { SQLStatement } from "sql-template-strings";
 import Util from '../util/Util'
 
@@ -37,7 +37,8 @@ export default class Database {
      * @param {string | boolean | number} value The value that the key should be equal to 
      */
     async get(table: TableCollection, key: string, value: string | boolean | number) {
-        return (await this.query(`SELECT * FROM ${table} WHERE ${key}=${Util.isString(value) ? `'${value}'` : value} LIMIT 1;`))?.[0] ?? null
+        
+        return (await this.query(`SELECT * FROM ${table} WHERE ${key}=${Util.isString(value) ? `'${value}'` : value} LIMIT 1;`))?.[0] as mysql.RowDataPacket[] ?? null
     }
 
     /**
@@ -47,13 +48,13 @@ export default class Database {
      * @param {function} filter The function 
      */
     async find(table: TableCollection, predicate: (value: any) => unknown | null) {
-        const results = await this.query(`SELECT * FROM ${table};`) as RowDataPacket[] | RowDataPacket[][]
+        const results = await this.query(`SELECT * FROM ${table};`) as mysql.RowDataPacket[] | mysql.RowDataPacket[][]
         
         if(!results || !results?.length) return null;
         return results[0]?.find(predicate)
     }
     async filter(table: TableCollection, predicate: (value: any) => unknown | null) {
-        const results = await this.query(`SELECT * FROM ${table};`) as RowDataPacket[] | RowDataPacket[][]
+        const results = await this.query(`SELECT * FROM ${table};`) as mysql.RowDataPacket[] | mysql.RowDataPacket[][]
         if(!results || !results?.length) return null;
         return results[0]?.filter(predicate)
     }

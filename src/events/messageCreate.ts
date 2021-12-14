@@ -22,10 +22,11 @@ export default class extends Event {
         .trim()
         .split(/\s+/);
 
-        const command = this.client.commands.fetch(cmdName.toLowerCase());
+        const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
         try {
             await command?.execute(this.client, msg, cmdArgs)
         } catch (error) {
+            this.client.logger.error(`Command execution error`, error, () => {})
             msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Util.translate('en-US', 'common:ERROR')}`, `${Util.translate('en-US', 'misc:ERROR_OCURRED')}`)]})
             return;
         }

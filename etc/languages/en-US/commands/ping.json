@@ -1,0 +1,5 @@
+{
+    "PING": "**API**-**to**-**bot latency**: `{{api}}`ms \n**Websocket latency**: `{{ws}}`ms \n**Command execution**: `{{command}}`ms",
+    "GET_API_LAT_FAIL": "An error has occurred while making an API request!",
+    "LOADING": "Loading command execution time and API latency..."
+}

@@ -1,0 +1,5 @@
+{
+    "CURRENT_PREFIX": "Obecny prefix to: `{{prefix}}`",
+    "PING": "Obecny ping websocketu to: `{{ping}}`",
+    "ERROR_OCURRED": "Wystąpił błąd!"
+}
