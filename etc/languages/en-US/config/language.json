@@ -1,0 +1,5 @@
+{
+    "CHANGED": "Successfully changed the language to `english`! To revert this change, do `lang <language>`.",
+    "INVALID_LANGUAGE": "Language with a name of {{wrong}} doesn't exist!\nAll available languages: {{list}}"
+    
+}

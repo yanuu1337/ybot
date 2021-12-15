@@ -1,0 +1,5 @@
+{
+    "PING": "**Opóźnienie API**-**Bot**: `{{api}}` ms \n**Opóźnienie websocketu**: `{{ws}}` ms \n**Wykonanie komendy**: `{{command}}` ms",
+    "GET_API_LAT_FAIL": "Podczas mierzenia opóźnienia API-Bot wystąpił błąd!",
+    "LOADING": "Ładowanie czasu wykonania komendy i opóźnienia API..."
+}
