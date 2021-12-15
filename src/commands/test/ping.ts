@@ -20,14 +20,14 @@ export default class extends Command {
                 msg.edit({embeds: [EmbedFactory.generateErrorEmbed(`Ping`, `${Util.translate('en-US', `commands/ping:GET_API_LAT_FAIL`)}`)]})
                 return;
             }
-            console.log(res)
+            
             dateThen = Date.now()
             msg.edit({
-                content: Math.random() > 0.5 ? `Please note that sometimes these values may not be true!` : null,
+                content: Math.random() > 0.5 ? `Sometimes these values may not be equivalent to the actual result!` : null,
                 embeds: [EmbedFactory.generateLoadingEmbed(true, `Ping`, Util.translate('en-US', `commands/ping:PING`, {
                     ws: client.ws.ping, 
-                    api: dateThen - dateNow, 
-                    command: msg.createdTimestamp - message.createdTimestamp
+                    api: (dateThen - dateNow),
+                    command: (msg.createdTimestamp - message.createdTimestamp) 
                 }))]
         })
         })
