@@ -15,9 +15,15 @@ export default class extends Event {
         }
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
-        
+        if(!msg.guild) return;
         if(!channel?.permissionsFor(guildMe)?.has(this.requiredPermissions, true)) return;
-        
+        const commandGuild = this.client.handlers.guilds.fetch(msg.guild!)
+        if(!commandGuild) {
+            this.client.handlers.guilds.create({
+                discord_id: msg.guild!.id,
+                language: 'en-US',
+            })
+        }
         const [cmdName, ...cmdArgs] = msg.content
         .slice('='.length)
         .trim()
@@ -25,13 +31,13 @@ export default class extends Event {
 
         const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
         try {
-            await command?.execute(this.client, msg, cmdArgs)
+            const guild = await this.client.handlers.guilds.fetch(msg.guild)
+            await command?.execute(this.client, msg, cmdArgs, guild)
         } catch (error) {
             this.client.logger.error(`Command execution error`, error, () => {})
             msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Util.translate('en-US', 'common:ERROR')}`, `${Util.translate('en-US', 'misc:ERROR_OCURRED')}`)]})
             return;
         }
-        this.client.logger.log('info', `${msg.author.tag}: ${msg.content}`)
     }
 
     async handleMention(message: Message) {
