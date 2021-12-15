@@ -23,6 +23,10 @@ export default class UserHandler extends Collection<string, UserInterface> {
     }
     async edit(id: string, query: object): Promise<void> {
         this.client.db?.update('users', {discord_id: id}, query);
+        const newVal = await this.fetch(id, true)
+        
+        if(!newVal) return;
+        this.set(id, newVal);
     }
 
     async create(data: UserInterface) {
@@ -30,9 +34,9 @@ export default class UserHandler extends Collection<string, UserInterface> {
         return data;
     }
 
-    async fetch(query: User | GuildMember | string): Promise <UserInterface | null> {
+    async fetch(query: User | GuildMember | string, force = false) {
         const id = (query instanceof User || query instanceof GuildMember) ? query.id : query
-        if(this.has(id)) return this.get(id) ?? null;
+        if(this.has(id) && !force) return this.get(id) ?? null;
         const data = await this.client.db?.get('users', 'discord_id', id) as UserInterface[]
         this.set(id, data[0])
         return data[0]
