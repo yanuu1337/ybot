@@ -1,6 +1,4 @@
-import { MessageEmbed, TextChannel } from 'discord.js';
-import { ThreadChannel } from 'discord.js';
-import { Guild, GuildChannel } from 'discord.js';
+import { Guild, GuildChannel, ThreadChannel, MessageEmbed, TextChannel } from 'discord.js';
 import ArosClient from '../extensions/ArosClient';
 import Event from '../lib/structures/Event'
 export default class extends Event {
