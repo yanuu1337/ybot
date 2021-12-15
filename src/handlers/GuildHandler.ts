@@ -1,7 +1,7 @@
 
 import { Collection, Guild } from "discord.js";
 import ArosClient from "../extensions/ArosClient";
-import { Guild as GuildInterface } from "../lib/types/database";
+import { GuildInterface as GuildInterface } from "../lib/types/database";
 export default class GuildHandler extends Collection<string, GuildInterface> {
     client: ArosClient;
     constructor(client: ArosClient) {
@@ -37,7 +37,9 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
 
     async create(data: GuildInterface) {
         if((await this.fetch(data.discord_id))) return true;
+
         const didPass = this.client.db?.insert('guilds', data).catch(err => false)
+        if(didPass) this.set(data.discord_id, data)
         return didPass ?? true;
     }
 
