@@ -1,7 +1,7 @@
 
 import { client } from "../bot";
 
-export default class Util extends null {
+export default class Utility extends null {
     constructor() {
         
     }

@@ -4,7 +4,7 @@ import { availableLanguages } from '../../lib/constants';
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from '../../lib/types/database';
 import EmbedFactory from '../../util/EmbedFactory';
-import Util from '../../util/Util';
+import Utility from '../../util/Utility';
 
 export default class extends Command {
     category = 'config';
@@ -22,7 +22,7 @@ export default class extends Command {
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(
                     `Language`, 
-                    `${Util.translate(
+                    `${Utility.translate(
                         user.language, 'config/language:INVALID_LANGUAGE', 
                         {wrong: args[0].toLowerCase(), list: availableLanguages.map(el => `\`${el.name}\``).join(', ')}
                         )
@@ -35,6 +35,6 @@ export default class extends Command {
         }
 
         client.handlers.users.edit(user.discord_id, {language: selectedLanguage.name})
-        return message.reply({embeds: [EmbedFactory.generateInfoEmbed(`Language`, Util.translate(selectedLanguage.name, 'config/language:CHANGED'))]})
+        return message.reply({embeds: [EmbedFactory.generateInfoEmbed(`Language`, Utility.translate(selectedLanguage.name, 'config/language:CHANGED'))]})
     }
 }
