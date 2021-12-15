@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import ArosClient from "../../extensions/ArosClient";
+import { GuildInterface } from '../types/database';
 
 export default class Command {
     client: ArosClient;
@@ -16,7 +17,7 @@ export default class Command {
         this.category = path.replaceAll("/", '').replaceAll(".", '');
     }
     
-    async execute(client: ArosClient, message: Message, args: string[]): Promise<void> {
+    async execute(client: ArosClient, message: Message, args: string[], guild: GuildInterface | null): Promise<any> {
         
     }
 
