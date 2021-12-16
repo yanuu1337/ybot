@@ -9,7 +9,7 @@ export default class CommandHandler extends Collection<string, Command> {
         super();
         this.client = client;
         
-        this.init('../commands').catch(err => client.logger.error(`Error:`, err)).then(() => this.client.logger.info(`Successfully loaded ${this.size} commands!`))
+        this.init('../commands').catch(err => client?.logger?.error(`Error:`, err)).then(() => client?.logger?.info(`Successfully loaded ${this.size} commands!`))
     }
 
     private async init(dir: string) {
