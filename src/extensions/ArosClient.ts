@@ -4,6 +4,7 @@ import CommandHandler from "../handlers/CommandHandler";
 import EventHandler from "../handlers/EventHandler";
 import GuildHandler from "../handlers/GuildHandler";
 import UserHandler from "../handlers/UserHandler";
+import API from "../util/API";
 import Database from "../util/Database";
 import i18n from "../util/i18n";
 import Logger from "../util/Logger";
@@ -14,6 +15,7 @@ export default class ArosClient extends Client {
         events: new EventHandler(this),
         users: new UserHandler(this),
         commands: new CommandHandler(this),
+        api: new API(this),
         guilds: new GuildHandler(this)
     }
     private _logger = Logger;
@@ -33,6 +35,7 @@ export default class ArosClient extends Client {
         this.login(process.env.DISCORD_TOKEN!).catch((err) => console.log(err))
     }
     public async login(token: string): Promise<string> {
+        
         this.translate = await i18n();
         return super.login(token);
     }
