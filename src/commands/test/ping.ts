@@ -1,3 +1,4 @@
+import { SlashCommandBuilder } from '@discordjs/builders';
 import { Message } from 'discord.js';
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
@@ -6,6 +7,8 @@ import EmbedFactory from '../../util/EmbedFactory';
 import Utility from '../../util/Utility';
 export default class extends Command {
     category = 'test';
+    isSlashCommand= true;
+    data = new SlashCommandBuilder()
     async execute(client: ArosClient, message: Message, args: string[]) {
         let dateNow = Date.now()
         let dateThen;

@@ -1,25 +1,35 @@
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import ArosClient from "../../extensions/ArosClient";
 import { GuildInterface } from '../types/database';
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from '@discordjs/builders'
 export default class Command {
     client: ArosClient;
     name: string;
+    description?: string;
     category: string;
     aliases: string[] = [];
     isSlashCommand: boolean = false;
-    data?: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, "addSubommandGroup" | "addSubcommand">;
+    data?: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
     dm: boolean = false;
     
     constructor(client: ArosClient, name: string, path: string) {
         this.client = client;
         this.name = name;
+        if(!this.description) this.description = this.name
         //@ts-ignore
         this.category = path.replaceAll("/", '').replaceAll(".", '');
     }
     
     async execute(client: ArosClient, message: Message, args: string[], guild: GuildInterface | null): Promise<any> {
         
+    }
+
+    async executeSlash(client: ArosClient, interaction: CommandInteraction, guild: GuildInterface | null, isInDms: boolean = false): Promise<any> {
+
+    }
+
+    get commandData() {
+        return this.data?.setName(this.name).setDescription(this.description!)
     }
 
 
