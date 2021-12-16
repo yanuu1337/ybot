@@ -1,5 +1,6 @@
 {
     "CURRENT_PREFIX": "Current prefix is: `{{prefix}}`",
     "PING": "Current websocket ping: `{{ping}}`",
-    "ERROR_OCURRED": "An unknown error has occurred!"
+    "ERROR_OCURRED": "An unknown error has occurred!",
+    "COMMAND_NOT_DM": "This command can not be used in DMs!"
 }

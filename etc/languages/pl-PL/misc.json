@@ -1,5 +1,7 @@
 {
     "CURRENT_PREFIX": "Obecny prefix to: `{{prefix}}`",
     "PING": "Obecny ping websocketu to: `{{ping}}`",
-    "ERROR_OCURRED": "Wystąpił błąd!"
+    "ERROR_OCURRED": "Wystąpił błąd!",
+    "COMMAND_NOT_DM": "Ta komenda nie może być używana w DMs!"
+
 }
