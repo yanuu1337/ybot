@@ -2,7 +2,7 @@
 import ArosClient from "../extensions/ArosClient";
 import mysql from 'mysql2/promise'
 import { SQLStatement } from "sql-template-strings";
-import Util from '../util/Util'
+import Utility from './Utility'
 
 type TableCollection = 'users' | 'guilds' | 'test'
 export default class Database {
@@ -38,7 +38,7 @@ export default class Database {
      */
     async get(table: TableCollection, key: string, value: string | boolean | number) {
         
-        return (await this.query(`SELECT * FROM ${table} WHERE ${key}=${Util.isString(value) ? `'${value}'` : value} LIMIT 1;`))?.[0] as mysql.RowDataPacket[] ?? null
+        return (await this.query(`SELECT * FROM ${table} WHERE ${key}=${Utility.isString(value) ? `'${value}'` : value} LIMIT 1;`))?.[0] as mysql.RowDataPacket[] ?? null
     }
 
     /**
@@ -63,8 +63,8 @@ export default class Database {
         const whereValues = Object.values(where)
         const queryValues = Object.values(query) 
         
-        return this.query(`UPDATE ${table} SET ${Object.keys(query).map((val, index) => `${val}=${Util.isString(queryValues[index]) ? `'${queryValues[index]}'` : queryValues[index]}`).join(', ')} 
-        WHERE ${Object.keys(where).map((val, index) => `${val}=${Util.isString(whereValues[index]) ? `'${whereValues[index]}'` : whereValues[index]}`).join(`${or ? 'OR' : 'AND'}`)}`)
+        return this.query(`UPDATE ${table} SET ${Object.keys(query).map((val, index) => `${val}=${Utility.isString(queryValues[index]) ? `'${queryValues[index]}'` : queryValues[index]}`).join(', ')} 
+        WHERE ${Object.keys(where).map((val, index) => `${val}=${Utility.isString(whereValues[index]) ? `'${whereValues[index]}'` : whereValues[index]}`).join(`${or ? 'OR' : 'AND'}`)}`)
     }
 
     /**
@@ -89,7 +89,7 @@ export default class Database {
      */
     async insert(table: string, query: object) {
         
-        this.query(`INSERT INTO ${table} (${Object.keys(query).join(', ')}) VALUES (${Object.values(query).map((val) => Util.isString(val) ? `'${val}'` : val).join(', ')})`)
+        this.query(`INSERT INTO ${table} (${Object.keys(query).join(', ')}) VALUES (${Object.values(query).map((val) => Utility.isString(val) ? `'${val}'` : val).join(', ')})`)
     }
 
 

@@ -2,7 +2,7 @@ import { Message, NewsChannel, Permissions, TextChannel, ThreadChannel } from "d
 import ArosClient from "../extensions/ArosClient";
 import Event from '../lib/structures/Event'
 import EmbedFactory from "../util/EmbedFactory";
-import Util from "../util/Util";
+import Utility from "../util/Utility";
 export default class extends Event {
     readonly requiredPermissions = new Permissions(['VIEW_CHANNEL', 'SEND_MESSAGES', 'EMBED_LINKS']).freeze()
     async execute(client: ArosClient, msg: Message) {
@@ -35,7 +35,7 @@ export default class extends Event {
             await command?.execute(this.client, msg, cmdArgs, guild)
         } catch (error) {
             this.client.logger.error(`Command execution error`, error, () => {})
-            msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Util.translate('en-US', 'common:ERROR')}`, `${Util.translate('en-US', 'misc:ERROR_OCURRED')}`)]})
+            msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Utility.translate('en-US', 'common:ERROR')}`, `${Utility.translate('en-US', 'misc:ERROR_OCURRED')}`)]})
             return;
         }
     }
