@@ -1,4 +1,4 @@
-import { CommandInteraction, Message } from 'discord.js';
+import { CommandInteraction, Message, PermissionString } from 'discord.js';
 import ArosClient from "../../extensions/ArosClient";
 import { GuildInterface } from '../types/database';
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from '@discordjs/builders'
@@ -9,6 +9,8 @@ export default class Command {
     category: string;
     aliases: string[] = [];
     isSlashCommand: boolean = false;
+    permissions?: PermissionString[]
+    botPermissions?: PermissionString[] = ['SEND_MESSAGES', 'VIEW_CHANNEL']
     data?: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
     dm: boolean = false;
     

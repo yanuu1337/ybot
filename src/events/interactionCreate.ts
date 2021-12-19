@@ -1,3 +1,5 @@
+import { NewsChannel, TextChannel, ThreadChannel } from 'discord.js';
+import { GuildMember } from 'discord.js';
 import { Interaction, CommandInteraction } from 'discord.js';
 import ArosClient from '../extensions/ArosClient';
 import Event from '../lib/structures/Event'
@@ -10,7 +12,12 @@ export default class extends Event {
 
     async handleCommands(client: ArosClient, interaction: CommandInteraction) {
         const command = client.handlers.commands.filter(cmd => cmd.isSlashCommand).get(interaction.commandName)
+        if(!interaction.user.id) interaction.user.fetch(true)
+        const user = await this.client.handlers.users.fetch(interaction.user, true)
+
         if(interaction.inGuild()) {
+            const member = interaction.member as GuildMember
+            const channel = interaction.channel as TextChannel | ThreadChannel | NewsChannel
             const guild = await this.client.handlers.guilds.fetch(interaction.guild!, true)
             if(!guild) {
                 this.client.handlers.guilds.create({
@@ -19,7 +26,20 @@ export default class extends Event {
                 })
             }
             try {
-                command?.executeSlash(client, interaction, guild)
+                if(!command) throw new Error(`Slash command ${interaction.commandName} was not found!`)
+                if(command.permissions && (member.permissions?.has(command.permissions) || channel.permissionsFor(member)?.has(command.permissions))) {
+                    command?.executeSlash(client, interaction, guild)
+                } else {
+                    return interaction.reply({
+                        embeds: [
+                            EmbedFactory.generateErrorEmbed(
+                                `${Utility.translate(user?.language, 'common:ERROR')}`,
+                                `${Utility.translate(user?.language), 'common:USER_MISSING_PERMS', {roles: command.permissions?.join(', ')}}`
+                            )
+                        ],
+                        ephemeral: true
+                    })
+                }
     
             } catch (err) {
                 this.client.logger.error(`Command execution error`, err, () => {})
@@ -29,8 +49,6 @@ export default class extends Event {
             }
             return;
         }
-        if(!interaction.user.id) interaction.user.fetch(true)
-        const user = await this.client.handlers.users.fetch(interaction.user, true)
 
         try {
             if(!command?.dm) return interaction.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Utility.translate(user?.language, 'common:ERROR')}`, `${Utility.translate(user?.language, `misc:COMMAND_NOT_DM`)}`)]})
