@@ -40,7 +40,7 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
 
         const didPass = this.client.db?.insert('guilds', data).catch(err => false)
         if(didPass) this.set(data.discord_id, data)
-        return didPass ?? true;
+        return didPass ? true : false;
     }
 
     async fetch(query: Guild | string, force = false): Promise<GuildInterface | null> {
