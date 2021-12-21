@@ -1,0 +1,6 @@
+{
+    "ROLES_NOT_SETUP": "Na tym serwerze nie ma obecnie ustawionych autoroli!",
+    "SUCCESS": "Pomyślnie ustawiono <@&{{toRoleId}}> jako rolę, ktora zostanie dana `{{configured}}`.",
+    "TOGGLE_SUCCESS": "Pomyślnie przełączono autorole! \nSystem automatycznych ról jest teraz **{{status}}**.",
+    "ROLE_NOT_EXISTS": "Podaj prawidłową rolę, która istnieje na tym serwerze!"
+}

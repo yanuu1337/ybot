@@ -13,8 +13,12 @@ export interface GuildInterface  {
     language?: string,
     joined_at?: string,
     blacklisted?: boolean,
-    autoroles?: object[] | any[],
+    autoroles?: Autoroles | null | undefined,
 } 
-
+export interface Autoroles {
+    bots?: string | null;
+    members?: string | null;
+    active: boolean;
+}
 
 export type MySQLResponseType = RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | ResultSetHeader | FieldPacket[];

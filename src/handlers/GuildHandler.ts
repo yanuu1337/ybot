@@ -1,3 +1,4 @@
+import { Autoroles } from './../lib/types/database';
 
 import { Collection, Guild } from "discord.js";
 import ArosClient from "../extensions/ArosClient";
@@ -25,18 +26,27 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
             (await this.client.guilds.fetch()).forEach((key) => {
                 this.create({
                     discord_id: key.id,
-                    language: 'en-US'
+                    language: 'en-US',
                 })
             })
         }, 1000);
         
     }
-    async edit(id: Guild | string, query: object): Promise<void> {
+    async edit(id: Guild | string, query: GuildInterface | object) {
         this.client.db?.update('guilds', {discord_id: id instanceof Guild ? id.id : id}, query);
+        return await this.fetch(id, true);
+    }
+
+    async setAutoRoles(id: Guild | string, query: Autoroles) {
+        this.edit(id, {autoroles: JSON.stringify(query)});
+    }
+
+    async removeAutoRoles(id: Guild | string) {
+        this.edit(id, {autoroles: null});
     }
 
     async create(data: GuildInterface) {
-        if((await this.fetch(data.discord_id))) return true;
+        if((await this.fetch(data.discord_id, true))) return true;
 
         const didPass = this.client.db?.insert('guilds', data).catch(err => false)
         if(didPass) this.set(data.discord_id, data)
@@ -47,8 +57,8 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
         const id = query instanceof Guild ? query.id : query
         if(this.has(id) && !force) return this.get(id) ?? null
         const data = await this.client.db?.get('guilds', 'discord_id', id) as GuildInterface[]
-        this.set(id, data[0])
-        return data[0];
+        this.set(id, data?.[0])
+        return data?.[0];
     }
 
     async fetchAll() {
