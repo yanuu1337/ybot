@@ -34,7 +34,7 @@ export default class extends Event {
                         embeds: [
                             EmbedFactory.generateErrorEmbed(
                                 `${Utility.translate(user?.language, 'common:ERROR')}`,
-                                `${Utility.translate(user?.language), 'common:USER_MISSING_PERMS', {roles: command.permissions?.join(', ')}}`
+                                `${Utility.translate(user?.language, 'common:USER_MISSING_PERMS', {roles: command.permissions?.join(', ')})}`
                             )
                         ],
                         ephemeral: true
