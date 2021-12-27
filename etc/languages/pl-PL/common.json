@@ -1,5 +1,11 @@
 {
     "ERROR": "Błąd",
     "MISSING_PERMS": "Bot nie posiada uprawnień, które są wymagane do użycia tej komendy: **{{roles}}**!",
-    "USER_MISSING_PERMS": "Nie posiadasz uprawnień! Potrzebujesz: **{{roles}}**!"
+    "USER_MISSING_PERMS": "Nie posiadasz uprawnień! Potrzebujesz: **{{roles}}**!",
+    "SUCCESS": "Sukces!",
+    "RESPONSE": "Odpowiedź",
+    "INFO": "Info",
+    "QUESTION": "Pytanie",
+    "WARNING": "Ostrzeżenie",
+    "HELP": "Pomoc"
 }

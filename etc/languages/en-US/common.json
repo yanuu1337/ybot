@@ -1,5 +1,11 @@
 {
     "ERROR": "Error",
     "MISSING_PERMS": "Bot doesn't have permissions, that are required to execute this command: **{{roles}}**!",
-    "USER_MISSING_PERMS": "You don't have enough permissions to do this! You need: {{roles}}."
+    "USER_MISSING_PERMS": "You don't have enough permissions to do this! You need: {{roles}}.",
+    "SUCCESS": "Success",
+    "RESPONSE": "Response",
+    "INFO": "Info",
+    "HELP": "Help",
+    "QUESTION": "Question",
+    "WARNING": "Warning"
 }
