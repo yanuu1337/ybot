@@ -1,0 +1,7 @@
+{
+    "INVALID_TIME": "Invalid time format! Examples: `30d`, `1h`, `2m`, `3s`",
+    "INVALID_MEMBER": "Please input a valid member/id!",
+    "TIMEOUT_ERROR": "There has been an unknown error while trying to set the timeout!",
+    "TIMEOUT_SUCCESS": "Successfully timeouted **{{member}}** for `{{time}}`! \nReason: `{{reason}}`",
+    "NOT_MODERATABLE": "You can't timeout this member!"
+}
