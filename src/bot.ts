@@ -10,7 +10,6 @@ client.once('ready', async () => {
         client.logger.error(`DB: Not connected!`)
     } else client.logger.info(`DB: Connected.`)
     client.logger.info('BOT: Connected.')
-    //@ts-ignore
     client.handlers.guilds.create({
         discord_id: '856924300215713833'
     })
