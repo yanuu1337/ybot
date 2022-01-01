@@ -14,11 +14,12 @@ export interface GuildInterface  {
     joined_at?: string,
     blacklisted?: boolean,
     autoroles?: Autoroles | null | undefined,
+    mod_log?: string | null | undefined
 } 
 export interface Autoroles {
     bots?: string | null;
     members?: string | null;
-    active: boolean;
+    active?: boolean;
 }
 
 export type MySQLResponseType = RowDataPacket[] | RowDataPacket[][] | OkPacket | OkPacket[] | ResultSetHeader | FieldPacket[];
