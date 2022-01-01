@@ -1,0 +1,7 @@
+{
+    "BAN_SUCCESS": "Pomyślnie zbanowano {{member}} z serwera **{{guild}}** z powodu `{{reason}}`.",
+    "NO_REASON": "Nie podano powodu.",
+    "MEMBER_NOT_BANNABLE": "Nie można zbanować tego użytkownika.",
+    "INVALID_MEMBER": "Proszę wprowadzić poprawnego użytkownika/jego id który jest na tym serwerze",
+    "BAN_FAILED": "Nie udało się zbanować użytkownika {{member}} z powodu `{{reason}}`."
+}

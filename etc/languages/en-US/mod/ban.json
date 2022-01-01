@@ -1,0 +1,7 @@
+{
+    "BAN_SUCCESS": "Successfully banned {{member}} from **{{guild}}** for `{{reason}}`.",
+    "NO_REASON": "No reason was provided.",
+    "MEMBER_NOT_BANNABLE": "I can't ban that member.",
+    "INVALID_MEMBER": "Please provide a valid member that is in this guild!.",
+    "BAN_FAILED": "Failed to ban {{member}} from `{{guild}}` for `{{reason}}`."
+}
