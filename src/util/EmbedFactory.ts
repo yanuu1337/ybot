@@ -53,16 +53,15 @@ export default class EmbedFactory {
 
     }
 
-    //generateModerationEmbed
     static generateModerationEmbed(author: any, member: any, type: string, reason: string): MessageEmbed {
         return new MessageEmbed()
             .setTitle(`📝 - ${type}`)
-            .setDescription(`${author} ${type}d ${member} for ${reason}`)
+            .setDescription(`${author} ${type}'d ${member} for \`${reason}\``)
             .setFooter("© 2022 - Aros 🎉")
             .setTimestamp()
             .setColor('#03254C')
     }
-    
+
 
 
 
