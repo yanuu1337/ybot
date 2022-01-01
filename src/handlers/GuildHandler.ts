@@ -21,12 +21,14 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
             \`blacklisted\` BOOLEAN NOT NULL DEFAULT FALSE, 
             \`language\` VARCHAR(10) NOT NULL DEFAULT 'en-US',
             \`autoroles\` JSON NULL DEFAULT NULL,
+            \`mod_log\` VARCHAR(25) NULL DEFAULT NULL,
             PRIMARY KEY(\`id\`)) ENGINE= InnoDB;
             `);
             (await this.client.guilds.fetch()).forEach((key) => {
-                this.create({
+                if(key instanceof Guild) this.create({
                     discord_id: key.id,
                     language: 'en-US',
+                    mod_log: key.channels.cache.find(c => (c.name.toLowerCase().includes('mod') && c.name.toLowerCase().includes('log')) || c.name.toLowerCase().includes('offences'))?.id ?? null
                 })
             })
         }, 1000);
