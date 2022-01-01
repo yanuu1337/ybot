@@ -1,0 +1,16 @@
+{
+    "INFO": "Informacje o obecnej konfiguracji bota dla tego serwera: ",
+    "LANGUAGE": "Język",
+    "LANGUAGE_DESC": "Język, w którym będą wyświetlane wiadomości.",
+    "LANGUAGE_CHANGED": "Język został zmieniony na **{{lang}}**",
+    "AUTOROLE": "Autorola",
+    "AUTOROLE_DESC": "Rola, która zostanie nadana użytkownikowi lub botowi, gdy pojawi się w serwerze.",
+    "AUTOROLE_SET": "Autorola została ustawiona na **{{role}}**",
+    "AUTOROLE_NONE": "Brak autoroli",
+    "AUTOROLE_NONE_DESC": "Jeśli użytkownik lub bot pojawi się w serwerze, nie dostanie automatycznej roli.",
+    "MODLOG": "Modlog",
+    "MODLOG_DESC": "Kanał, w którym będą wyświetlane informacje dotyczące moderacji serwera.",
+    "MODLOG_SET": "Modlog został ustawiony na **{{channel}}**",
+    "MODLOG_NONE": "Brak modloga",
+    "MODLOG_NONE_DESC": "Jeśli nie ma kanału, w którym będą wyświetlane informacje dotyczące moderacji serwera, nie będzie on wyświetlany."
+}

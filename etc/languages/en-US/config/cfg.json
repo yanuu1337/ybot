@@ -1,0 +1,16 @@
+{
+    "INFO": "Here's information about the current config for this guild: ",
+    "LANGUAGE": "Language",
+    "LANGUAGE_DESC": "The language used for this guild",
+    "LANGUAGE_CHANGED": "Language set to {{lang}}",
+    "AUTOROLE": "Auto Role",
+    "AUTOROLE_DESC": "The role that will be assigned to users or bots when they join the server",
+    "AUTOROLE_SET": "Auto role set to {{role}}",
+    "AUTOROLE_NONE": "No auto role",
+    "AUTOROLE_NONE_DESC": "No auto role will be assigned to users or bots when they join the server",
+    "MODLOG": "Mod Log",
+    "MODLOG_DESC": "The channel where mod actions will be logged",
+    "MODLOG_SET": "Mod log set to {{channel}}",
+    "MODLOG_NONE": "No mod log",
+    "MODLOG_NONE_DESC": "No mod log will be created for this server"
+}
