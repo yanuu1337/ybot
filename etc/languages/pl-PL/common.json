@@ -7,5 +7,10 @@
     "INFO": "Info",
     "QUESTION": "Pytanie",
     "WARNING": "Ostrzeżenie",
-    "HELP": "Pomoc"
+    "HELP": "Pomoc",
+    "YES": "Tak",
+    "NO": "Nie",
+    "TRUE": "Prawda",
+    "FALSE": "Fałsz",
+    "NONE": "Brak"
 }
