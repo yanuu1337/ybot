@@ -1,5 +1,4 @@
 import { TextChannel } from 'discord.js';
-//command
 import { Message, PermissionString } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
@@ -20,6 +19,12 @@ export default class extends Command {
                 ]}
             )
         }
+        if(!member.communicationDisabledUntilTimestamp || member?.communicationDisabledUntilTimestamp > Date?.now()) {
+            return message.reply({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:ALREADY_TIMEOUTED")}`)
+                ]}
+            )
+        }
         if(!args[1] || !ms(args[1])) {
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:INVALID_TIME")}`)
@@ -36,7 +41,7 @@ export default class extends Command {
             ]})
         }
         member.timeout(timeInMs, reason).then(() => {
-            message.channel.send({embeds: [timeoutEmbed]})
+            message.reply({embeds: [timeoutEmbed]})
         }).catch(err => {
             client.logger.error(`Error ocurred while timeouting: ${err}`, () => {}, )
             message.reply({embeds: [
@@ -44,8 +49,8 @@ export default class extends Command {
             ]})
         })
 
-        //send to modlog
-        const modLog = message.guild?.channels.cache.find(c => c.name === "mod-logs") as TextChannel;
+        
+        const modLog = guild?.mod_log ? client.channels.cache.get(guild?.mod_log) as TextChannel : null;
         if(!modLog) return;
         modLog.send({embeds: [modLogEmbed]});
     

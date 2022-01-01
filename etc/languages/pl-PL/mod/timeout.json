@@ -1,0 +1,8 @@
+{
+    "INVALID_TIME": "Nieprawidłowy format czasu! Przykłady: `30d`, `2w`, `2m`, `2y`, `15m`",
+    "INVALID_MEMBER": "Nie znaleziono użytkownika o podanej nazwie.",
+    "TIMEOUT_ERROR": "Wystąpił nieznany błąd. Spróbuj ponownie później.",
+    "TIMEOUT_SUCCESS": "Pomyślnie wyciszono użytkownika **{{member}}** na `{{time}}`! \nPowód: `{{reason}}`",
+    "NOT_MODERATABLE": "Nie można wyciszyć tego użytkownika!",
+    "ALREADY_TIMEOUT": "Użytkownik **{{member}}** jest już wyciszony! \nUżyj komendy `untimeout` aby odciszyć użytkownika."
+}
