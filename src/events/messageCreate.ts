@@ -13,7 +13,6 @@ export default class extends Event {
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
         if(!msg.guild && msg.channel.type !== 'DM') return;
         const commandGuild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!) : null
-        console.log(commandGuild)
         
         if(!commandGuild && msg.guild) {
             this.client.handlers.guilds.create({
