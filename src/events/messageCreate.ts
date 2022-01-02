@@ -12,7 +12,7 @@ export default class extends Event {
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
         if(!msg.guild && msg.channel.type !== 'DM') return;
-        const commandGuild = this.client.handlers.guilds.fetch(msg.guild!)
+        const commandGuild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!, true) : null
         
 
         if(!commandGuild) {
@@ -26,7 +26,6 @@ export default class extends Event {
         .trim()
         .split(/\s+/);
 
-        const guild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!) : null
         try {
 
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
@@ -38,7 +37,7 @@ export default class extends Event {
             if(msg.channel.type === 'DM') {
                 
                 if(!command.dm) return msg.reply({embeds: [
-                    EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(guild?.language, `common:DM_ONLY`)}`)
+                    EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(commandGuild?.language, `common:DM_ONLY`)}`)
                 ]})
                 return command.execute(client, msg, cmdArgs, null);
             } 
@@ -50,31 +49,31 @@ export default class extends Event {
                 return msg.reply({embeds: 
                     [
                         EmbedFactory.generateErrorEmbed(
-                            `${Utility.translate(guild?.language, 'common:ERROR')}`, 
-                            `${Utility.translate(guild?.language, 'common:MISSING_PERMS', {roles: command?.botPermissions.join(', ')})}`
+                            `${Utility.translate(commandGuild?.language, 'common:ERROR')}`, 
+                            `${Utility.translate(commandGuild?.language, 'common:MISSING_PERMS', {roles: command?.botPermissions.join(', ')})}`
                         )
                     ]
                 })
             }
             if(command?.permissions) {
                 if((channel.permissionsFor(msg.member!)?.has(command.permissions, true) || msg.member?.permissions?.has(command.permissions, true))) {
-                    return await command?.execute(this.client, msg, cmdArgs, guild)
+                    return await command?.execute(this.client, msg, cmdArgs, commandGuild)
                 } else {
                     return msg.reply({
                         embeds: [
                             EmbedFactory.generateErrorEmbed(
-                                `${Utility.translate(guild?.language, 'common:ERROR')}`,
-                                `${Utility.translate(guild?.language, 'common:USER_MISSING_PERMS', {roles: command?.permissions.join(', ')})}`
+                                `${Utility.translate(commandGuild?.language, 'common:ERROR')}`,
+                                `${Utility.translate(commandGuild?.language, 'common:USER_MISSING_PERMS', {roles: command?.permissions.join(', ')})}`
                             )
                         ]
                     })
                     
                 }
             }
-            await command?.execute(this.client, msg, cmdArgs, guild)
+            await command?.execute(this.client, msg, cmdArgs, commandGuild)
         } catch (error) {
             this.client.logger.error(`Command execution error`, error, () => {})
-            msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, 'common:ERROR')}`, `${Utility.translate(guild?.language, 'misc:ERROR_OCURRED')}`)]})
+            msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Utility.translate(commandGuild?.language, 'common:ERROR')}`, `${Utility.translate(commandGuild?.language, 'misc:ERROR_OCURRED')}`)]})
             return;
         }
     }
