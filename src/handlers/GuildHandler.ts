@@ -43,9 +43,7 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
     async edit(id: Guild | string, query: GuildInterface | object) {
         const realId = id instanceof Guild ? id.id : id
         await this.client.db?.update('guilds', {discord_id: realId}, query);
-        const val = {...this.get(realId), ...query} as GuildInterface
-        this.delete(realId);
-        this.set(realId, val);
+        this.set(realId, {...this.get(realId), ...query} as GuildInterface);
         return await this.fetch(id, true);
     }
 
