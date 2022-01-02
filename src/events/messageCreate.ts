@@ -12,10 +12,10 @@ export default class extends Event {
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
         if(!msg.guild && msg.channel.type !== 'DM') return;
-        const commandGuild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!, true) : null
+        const commandGuild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!) : null
+        console.log(commandGuild)
         
-
-        if(!commandGuild) {
+        if(!commandGuild && msg.guild) {
             this.client.handlers.guilds.create({
                 discord_id: msg.guild!.id,
                 language: 'en-US',
@@ -33,9 +33,8 @@ export default class extends Event {
             if(command.devOnly && msg.author.id !== '304263386588250112') {
                 return msg.reply(`This command is only available for developers.`)
             }
-            console.log(msg.channel.type)
-            if(msg.channel.type === 'DM') {
-                
+
+            if(msg.channel.type === 'DM') {   
                 if(!command.dm) return msg.reply({embeds: [
                     EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(commandGuild?.language, `common:DM_ONLY`)}`)
                 ]})
@@ -55,6 +54,8 @@ export default class extends Event {
                     ]
                 })
             }
+            
+            
             if(command?.permissions) {
                 if((channel.permissionsFor(msg.member!)?.has(command.permissions, true) || msg.member?.permissions?.has(command.permissions, true))) {
                     return await command?.execute(this.client, msg, cmdArgs, commandGuild)
@@ -70,7 +71,9 @@ export default class extends Event {
                     
                 }
             }
+            
             await command?.execute(this.client, msg, cmdArgs, commandGuild)
+        
         } catch (error) {
             this.client.logger.error(`Command execution error`, error, () => {})
             msg.reply({embeds: [EmbedFactory.generateErrorEmbed(`${Utility.translate(commandGuild?.language, 'common:ERROR')}`, `${Utility.translate(commandGuild?.language, 'misc:ERROR_OCURRED')}`)]})
