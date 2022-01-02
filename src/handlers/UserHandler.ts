@@ -21,16 +21,17 @@ export default class UserHandler extends Collection<string, UserInterface> {
         }, 1000)
         
     }
-    async edit(id: string, query: object): Promise<void> {
-        this.client.db?.update('users', {discord_id: id}, query);
-        const newVal = await this.fetch(id, true)
+    async edit(id: string, query: object) {
+        if(!this.get(id)) return undefined;
+        await this.client.db?.update('users', {discord_id: id}, query);
+        this.set(id, {...this.get(id), ...query} as UserInterface)
+        return await this.fetch(id, true);
         
-        if(!newVal) return;
-        this.set(id, newVal);
     }
 
     async create(data: UserInterface) {
         this.client.db?.insert(`users`, data)
+        this.set(data.discord_id, data);
         return data;
     }
 
