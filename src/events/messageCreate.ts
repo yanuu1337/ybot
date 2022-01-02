@@ -27,18 +27,17 @@ export default class extends Event {
         .trim()
         .split(/\s+/);
 
-        const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
         const guild = await this.client.handlers.guilds.fetch(msg.guild)
         try {
-            //check if the command can be used in dms, if not, send an error message
-            if(!command?.dm && msg.channel.type === 'DM') {
-                return msg.reply({embeds: [
+            const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
+            if(!command) return;
+            if(msg.channel.type === 'DM') {
+                
+                if(!command.dm) return msg.reply({embeds: [
                     EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(guild?.language, `common:DM_ONLY`)}`)
                 ]})
-            } else if (msg.channel.type === 'DM') {
-                await command?.execute(this.client, msg, cmdArgs, null)
-                return;
-            }
+                return command.execute(client, msg, cmdArgs, null);
+            } 
             if (command?.botPermissions && !channel.permissionsFor(guildMe)?.has(command?.botPermissions, true)) {
                 return msg.reply({embeds: 
                     [
