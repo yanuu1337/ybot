@@ -6,6 +6,7 @@ import EmbedFactory from "../../util/EmbedFactory";
 import Utility from "../../util/Utility";
 
 export default class extends Command {
+    dm = true;
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         
         if(!args[0]) return message.reply({embeds: [

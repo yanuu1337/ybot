@@ -9,6 +9,7 @@ import { GuildInterface } from '../../lib/types/database';
 export default class extends Command {
     category = 'test';
     isSlashCommand= true;
+    dm = true;
     data = new SlashCommandBuilder()
     description = 'Pong!'
     async execute(client: ArosClient, message: Message, args: string[]) {
