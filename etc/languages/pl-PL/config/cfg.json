@@ -12,5 +12,7 @@
     "MODLOG_DESC": "Kanał, w którym będą wyświetlane informacje dotyczące moderacji serwera.",
     "MODLOG_SET": "Modlog został ustawiony na **{{channel}}**",
     "MODLOG_NONE": "Brak modloga",
-    "MODLOG_NONE_DESC": "Jeśli nie ma kanału, w którym będą wyświetlane informacje dotyczące moderacji serwera, nie będzie on wyświetlany."
+    "MODLOG_NONE_DESC": "Jeśli nie ma kanału, w którym będą wyświetlane informacje dotyczące moderacji serwera, nie będzie on wyświetlany.",
+    "CURRENT_VALUE": "Obecna wartość dla ustawienia o nazwie `{{key}}` to: `{{value}}`"
+
 }
