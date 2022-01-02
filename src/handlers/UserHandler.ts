@@ -16,6 +16,7 @@ export default class UserHandler extends Collection<string, UserInterface> {
             \`discord_id\` VARCHAR(25) NOT NULL, 
             \`created_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
             \`blacklisted\` BOOLEAN NOT NULL DEFAULT FALSE, 
+            \`badges\` JSON NULL DEFAULT NULL,
             \`language\` VARCHAR(10) NOT NULL DEFAULT 'en-US', PRIMARY KEY(\`id\`)) ENGINE= InnoDB;
             `)
         }, 1000)
