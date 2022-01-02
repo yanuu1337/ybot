@@ -8,16 +8,14 @@ export default class extends Event {
     async execute(client: ArosClient, msg: Message) {
         if(msg.author.bot || msg.webhookId || msg.partial) return;
         
-        if(msg.channel.type === 'DM') {
-            //!Handle DMs
-            
-            return;
-        }
+        
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
         if(!msg.guild) return;
         if(!channel?.permissionsFor(guildMe)?.has(this.requiredPermissions, true)) return;
         const commandGuild = this.client.handlers.guilds.fetch(msg.guild!)
+        
+
         if(!commandGuild) {
             this.client.handlers.guilds.create({
                 discord_id: msg.guild!.id,
@@ -32,6 +30,15 @@ export default class extends Event {
         const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
         const guild = await this.client.handlers.guilds.fetch(msg.guild)
         try {
+            //check if the command can be used in dms, if not, send an error message
+            if(!command?.dm && msg.channel.type === 'DM') {
+                return msg.reply({embeds: [
+                    EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(guild?.language, `common:DM_ONLY`)}`)
+                ]})
+            } else if (msg.channel.type === 'DM') {
+                await command?.execute(this.client, msg, cmdArgs, null)
+                return;
+            }
             if (command?.botPermissions && !channel.permissionsFor(guildMe)?.has(command?.botPermissions, true)) {
                 return msg.reply({embeds: 
                     [
