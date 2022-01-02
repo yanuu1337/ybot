@@ -8,6 +8,7 @@ export default class Command {
     description?: string;
     category: string;
     aliases: string[] = [];
+    devOnly: boolean = false;
     isSlashCommand: boolean = false;
     permissions?: PermissionString[] = []
     botPermissions?: PermissionString[] = ['SEND_MESSAGES', 'VIEW_CHANNEL']
