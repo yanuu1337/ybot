@@ -11,8 +11,7 @@ export default class extends Event {
         
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
-        if(!msg.guild) return;
-        if(!channel?.permissionsFor(guildMe)?.has(this.requiredPermissions, true)) return;
+        if(!msg.guild && msg.channel.type !== 'DM') return;
         const commandGuild = this.client.handlers.guilds.fetch(msg.guild!)
         
 
@@ -27,10 +26,15 @@ export default class extends Event {
         .trim()
         .split(/\s+/);
 
-        const guild = await this.client.handlers.guilds.fetch(msg.guild)
+        const guild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!) : null
         try {
+
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
             if(!command) return;
+            if(command.devOnly && msg.author.id !== '304263386588250112') {
+                return msg.reply(`This command is only available for developers.`)
+            }
+            console.log(msg.channel.type)
             if(msg.channel.type === 'DM') {
                 
                 if(!command.dm) return msg.reply({embeds: [
@@ -38,7 +42,11 @@ export default class extends Event {
                 ]})
                 return command.execute(client, msg, cmdArgs, null);
             } 
-            if (command?.botPermissions && !channel.permissionsFor(guildMe)?.has(command?.botPermissions, true)) {
+
+            if(!channel?.permissionsFor?.(guildMe)?.has?.(this.requiredPermissions, true)) return;
+
+
+            if (command?.botPermissions && !channel?.permissionsFor(guildMe)?.has(command?.botPermissions, true)) {
                 return msg.reply({embeds: 
                     [
                         EmbedFactory.generateErrorEmbed(
