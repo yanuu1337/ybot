@@ -47,7 +47,7 @@ export default class extends Command {
         }
 
         client.handlers.users.edit(user.discord_id, {language: selectedLanguage.name})
-        return message.reply({embeds: [EmbedFactory.generateInfoEmbed(`Language`, Utility.translate(selectedLanguage.name, 'config/language:CHANGED'))]})
+        return message.reply({embeds: [EmbedFactory.generateInfoEmbed(`Language`, Utility.translate(selectedLanguage.name, 'config/language:CHANGED', {user: 'user'}))]})
     }
     async executeSlash(client: ArosClient, interaction: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
         const user = await client.handlers.users.fetchOrCreate(interaction.user);
@@ -57,7 +57,7 @@ export default class extends Command {
             return interaction.reply({embeds: [EmbedFactory.generateWarningEmbed(`Language`, `The \`${selectedLanguage.fullName}\` language isn't fully translated yet. If you wish to help translating it, you can reach out to us via our Discord.`)]})
         }
         client.handlers.users.edit(user.discord_id, {language: selectedLanguage.name})
-        return interaction.reply({embeds: [EmbedFactory.generateInfoEmbed(`Language`, Utility.translate(selectedLanguage.name, 'config/language:CHANGED'))]})
+        return interaction.reply({embeds: [EmbedFactory.generateInfoEmbed(`Language`, Utility.translate(selectedLanguage.name, 'config/language:CHANGED', {user: 'user'}))], ephemeral: true})
 
 
     }

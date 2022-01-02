@@ -1,4 +1,4 @@
 {
-    "CHANGED": "Pomyślnie zmieniono język na `polski`! To revert this change, do `lang <language>`. \nThe default language is `en-US`.",
+    "CHANGED": "Pomyślnie zmieniono język na `polski`! To revert this change, do `{{user}}lang <language>`. \nThe default language is `en-US`.",
     "INVALID_LANGUAGE": "Język o nazwie {{wrong}} nie istnieje!\nWszystkie dostępne języki: {{list}}"
 }

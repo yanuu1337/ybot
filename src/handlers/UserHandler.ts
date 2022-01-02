@@ -48,7 +48,7 @@ export default class UserHandler extends Collection<string, UserInterface> {
         if(this.has(id) && !force) return this.get(id) ?? null;
         const data = await this.client.db?.get('users', 'discord_id', id) as UserInterface[]
         this.set(id, data[0])
-        return data[0]
+        return data?.[0]
     }
 
     async fetchAll() {

@@ -9,6 +9,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 export default class extends Command {
     permissions = ['MANAGE_GUILD'] as PermissionString[];
     dm = false;
+    aliases = ['lang', 'language'];
     isSlashCommand = true;
     data = new SlashCommandBuilder().addStringOption(str => 
         str
