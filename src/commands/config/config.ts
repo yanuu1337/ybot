@@ -73,13 +73,13 @@ export default class extends Command {
                 return message.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_CHANGED", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
             }
             
-            const channel = message.guild?.channels.cache.find(c => c.id === args[1]);
+            const channel = message.mentions.channels.first() || message.guild?.channels.cache.find(c => c.id === args[1] || c.toString() === args[1]);
             
             if(!channel) {
                 return message.reply(Utility.translate(guild?.language, "config/cfg:INVALID_CHANNEL"));
             }
             
-            await client.handlers.guilds.edit(message.guild!, {mod_log: args[1]});
+            await client.handlers.guilds.edit(message.guild!, {mod_log: channel.id});
             return message.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_CHANGED", {channel: channel.toString()})}`)]});
         
         } else {
