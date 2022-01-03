@@ -8,8 +8,9 @@ export interface User {
     badges?: BadgesObject[] | null;
 } 
 export interface GuildInterface  {
+    prefix?: string;
     discord_id: string,
-    created_at?: string,
+    created_at?: string | number | Date,
     language?: string,
     joined_at?: string,
     blacklisted?: boolean,
