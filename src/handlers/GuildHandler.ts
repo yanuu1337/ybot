@@ -16,6 +16,7 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
         setTimeout(async () => {
             this.client.db?.query(`CREATE TABLE IF NOT EXISTS \`guilds\` (\`id\` INT NOT NULL AUTO_INCREMENT,
             \`discord_id\` VARCHAR(25) NOT NULL, 
+            \`prefix\` VARCHAR(10) DEFAULT '=',
             \`created_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
             \`joined_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             \`blacklisted\` BOOLEAN NOT NULL DEFAULT FALSE, 

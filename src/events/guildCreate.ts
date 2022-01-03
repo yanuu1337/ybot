@@ -1,4 +1,5 @@
 import { Guild, GuildChannel, ThreadChannel, MessageEmbed, TextChannel } from 'discord.js';
+import moment from 'moment';
 import ArosClient from '../extensions/ArosClient';
 import Event from '../lib/structures/Event'
 export default class extends Event {
@@ -7,7 +8,7 @@ export default class extends Event {
         client.handlers.guilds.create({
             discord_id: guild.id,
             language: 'en-US',
-            created_at: guild.createdTimestamp,
+            created_at: moment(guild.createdAt).format("YYYY-MM-DD HH:mm:ss.000"),
         })
         const channelFilter = (channel: GuildChannel | ThreadChannel) => {
              
