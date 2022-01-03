@@ -3,6 +3,7 @@ import ArosClient from "../extensions/ArosClient";
 import Event from '../lib/structures/Event'
 import EmbedFactory from "../util/EmbedFactory";
 import Utility from "../util/Utility";
+import moment from 'moment';
 export default class extends Event {
     readonly requiredPermissions = new Permissions(['VIEW_CHANNEL', 'SEND_MESSAGES']).freeze()
     async execute(client: ArosClient, msg: Message) {
@@ -18,6 +19,7 @@ export default class extends Event {
             this.client.handlers.guilds.create({
                 discord_id: msg.guild!.id,
                 language: 'en-US',
+                created_at: moment(msg.guild.createdAt).format("YYYY-MM-DD HH:mm:ss.000"),
             })
         }
         const [cmdName, ...cmdArgs] = msg.content

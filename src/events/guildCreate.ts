@@ -7,6 +7,7 @@ export default class extends Event {
         client.handlers.guilds.create({
             discord_id: guild.id,
             language: 'en-US',
+            created_at: guild.createdTimestamp,
         })
         const channelFilter = (channel: GuildChannel | ThreadChannel) => {
              

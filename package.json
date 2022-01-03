@@ -34,6 +34,7 @@
     "dotenv": "^10.0.0",
     "i18next": "^21.6.0",
     "i18next-node-fs-backend": "^2.1.3",
+    "moment": "^2.29.1",
     "ms": "^2.1.3",
     "mysql2": "^2.3.3",
     "sql-template-strings": "^2.2.2",
