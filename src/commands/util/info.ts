@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CacheType, Collection, CommandInteraction, GuildBan, GuildMember, Message, MessageEmbed } from "discord.js";
+import { CacheType, Collection, CommandInteraction, Guild, GuildBan, GuildMember, Message, MessageEmbed } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
@@ -19,39 +19,54 @@ export default class extends Command {
                 EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(`en-US`, `util/info:NO_GUILD_ERROR`)}`)
             ]});
         }
-        
+        if(args[0]) {
+            const guild = client.guilds.cache.get(args[0]);
+
+            if(!guild) {
+                return message.reply({embeds: [
+                    EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(`en-US`, `util/info:NO_GUILD_ERROR`)}`)
+                ]});
+                  
+            }
+            const guildInterface = await client.handlers.guilds.fetch(guild)
+            
+            const guildMemberCache = guild.members.cache.filter(member => !member.user.bot);
+            const banCache = guild.bans.cache.size ? await guild.bans.fetch() : guild.bans.cache;
+            return message.reply({embeds: [this.getInfoDataEmbed(guild, guildInterface, guildMemberCache, banCache)]});
+        }
+
         const guildMemberCache = message.guild?.members.cache.filter(member => !member.user.bot);
         const banCache = !message.guild?.bans.cache.size ? await message.guild?.bans.fetch() : message.guild.bans.cache;
         
             
-        return message.reply({embeds: [this.getInfoDataEmbed(message, guild, guildMemberCache, banCache)]});
+        return message.reply({embeds: [this.getInfoDataEmbed(message.guild, guild, guildMemberCache, banCache)]});
     }
 
     async executeSlash(client: ArosClient, cmd: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
-        if(!cmd.inGuild()) {
+        if(!cmd.inGuild() || !cmd.guild) {
             return cmd.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(`en-US`, `util/info:NO_GUILD_ERROR`)}`)
             ], ephemeral: true});
         }
         const guildMemberCache = cmd.guild?.members.cache.filter(member => !member.user.bot);
         const banCache = !cmd.guild?.bans.cache.size ? await cmd.guild?.bans.fetch() : cmd.guild.bans.cache;
-        return cmd.reply({embeds: [this.getInfoDataEmbed(cmd, guild, guildMemberCache, banCache)]});
+        return cmd.reply({embeds: [this.getInfoDataEmbed(cmd?.guild, guild, guildMemberCache, banCache)]});
 
     }
 
-    getInfoDataEmbed(message: CommandInteraction | Message<boolean>, guild: GuildInterface | null, guildMemberCache?: Collection<string, GuildMember>, banCache?: Collection<string, GuildBan>) {
+    getInfoDataEmbed(msgGuild: Guild | null, guild: GuildInterface | null, guildMemberCache?: Collection<string, GuildMember>, banCache?: Collection<string, GuildBan>) {
         const embed = new MessageEmbed()
-            .setTitle(`${Utility.translate(guild?.language, `util/info:INFO`, { guild: message.guild?.name ?? 'Unknown' })}`)
-            .setFooter(`${message.guild?.name} | © ${new Date().getFullYear()} - Aros 🎉`)
+            .setTitle(`${Utility.translate(guild?.language, `util/info:INFO`, { guild: msgGuild?.name ?? 'Unknown' })}`)
+            .setFooter(`${msgGuild?.name} | © ${new Date().getFullYear()} - Aros 🎉`)
             .addField(`${Utility.translate(guild?.language, `util/info:DISCORD_DATA`)}`, `
-                \`•\`🆔: \`${message.guild?.name}\`
-                \`•\`<:datetimegray:927512745337819176> <t:${Math.round((message?.guild?.createdAt?.getTime?.() ?? Date.now()) / 1000)}:R>
-                \`•\`<:crowngray:927512745866326037> <@${message.guild?.ownerId}>
+                \`•\`🆔: \`${msgGuild?.name}\`
+                \`•\`<:datetimegray:927512745337819176> <t:${Math.round((msgGuild?.createdAt?.getTime?.() ?? Date.now()) / 1000)}:R>
+                \`•\`<:crowngray:927512745866326037> <@${msgGuild?.ownerId}>
                 \`•\`<:regiongray:927512745253933136>: \`deprecated\`
-                \`•\` System: ${message.guild?.systemChannel?.toString() ?? 'None'}
-                \`•\` Verif. level: \`${message.guild?.verificationLevel.toLowerCase()}\`
-                \`•\` Explicit content: \`${message.guild?.explicitContentFilter}\`
-                \`•\` Default notifications: \`${message.guild?.defaultMessageNotifications}\`
+                \`•\` System: ${msgGuild?.systemChannel?.toString() ?? 'None'}
+                \`•\` Verif. level: \`${msgGuild?.verificationLevel.toLowerCase()}\`
+                \`•\` Explicit content: \`${msgGuild?.explicitContentFilter}\`
+                \`•\` Default notifications: \`${msgGuild?.defaultMessageNotifications}\`
             `, true)
             .addField(`${Utility.translate(guild?.language, `util/info:CONFIG`)}`, `
                 \`•\`Prefix: \`${guild?.prefix ?? 'default (=)'}\`
@@ -67,18 +82,18 @@ export default class extends Command {
                 \`•\`<:dnd:927514970009272320> \`${guildMemberCache?.filter(m => m.presence?.status === 'dnd').size}\`
                 \`•\`<:offline:927514969896005633> \`${guildMemberCache?.filter(m => !m.presence?.status || m.presence?.status === 'offline').size}\`
             `, true)
-            .addField(`${Utility.translate(guild?.language, `util/info:CHANNEL_COUNT`, {channel_count: message.guild?.channels.cache.size})}`, `
-                \`•\`📝 \`${message.guild?.channels.cache.filter(c => c.type === 'GUILD_TEXT').size}\`
-                \`•\`🔈 \`${message.guild?.channels.cache.filter(c => c.type === 'GUILD_VOICE').size}\`
-                \`•\`📁 \`${message.guild?.channels.cache.filter(c => c.type === 'GUILD_CATEGORY').size}\`
-                \`•\`📣 \`${message.guild?.channels.cache.filter(c => c.type === 'GUILD_NEWS').size}\`
-                \`•\`🧵 \`${message.guild?.channels.cache.filter(c => c.type === 'GUILD_PRIVATE_THREAD' || c.type === "GUILD_PUBLIC_THREAD").size}\`
+            .addField(`${Utility.translate(guild?.language, `util/info:CHANNEL_COUNT`, {channel_count: msgGuild?.channels.cache.size})}`, `
+                \`•\`📝 \`${msgGuild?.channels.cache.filter(c => c.type === 'GUILD_TEXT').size}\`
+                \`•\`🔈 \`${msgGuild?.channels.cache.filter(c => c.type === 'GUILD_VOICE').size}\`
+                \`•\`📁 \`${msgGuild?.channels.cache.filter(c => c.type === 'GUILD_CATEGORY').size}\`
+                \`•\`📣 \`${msgGuild?.channels.cache.filter(c => c.type === 'GUILD_NEWS').size}\`
+                \`•\`🧵 \`${msgGuild?.channels.cache.filter(c => c.type === 'GUILD_PRIVATE_THREAD' || c.type === "GUILD_PUBLIC_THREAD").size}\`
 
 
             `, true)
             .addField(`${Utility.translate(guild?.language, 
-                `util/info:EMOJI_COUNT`, {emoji_count: message.guild?.emojis.cache.size})}`,
-                `${message.guild?.emojis.cache.size ? [...message.guild?.emojis?.cache?.values()].slice(0, 20).sort( () => .5 - Math.random() ).join('') : 'None'}`
+                `util/info:EMOJI_COUNT`, {emoji_count: msgGuild?.emojis.cache.size})}`,
+                `${msgGuild?.emojis.cache.size ? [...msgGuild?.emojis?.cache?.values()].slice(0, 20).sort( () => .5 - Math.random() ).join('') : 'None'}`
             )
             .addField(`${Utility.translate(guild?.language, 
                 `util/info:BANS_COUNT`, {count: banCache?.size ?? 0})}`,
