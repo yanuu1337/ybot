@@ -14,5 +14,6 @@
     "MODLOG_NONE": "No mod log",
     "MODLOG_NONE_DESC": "No mod log will be created for this server",
     "CURRENT_VALUE": "The current value for the `{{key}}` setting is: `{{value}}`",
-    "PREFIX_CHANGED": "Prefix changed to `{{prefix}}`"
+    "PREFIX_CHANGED": "Prefix changed to `{{prefix}}`",
+    "INVALID_ARG": "Invalid settings key `{{key}}`. Currently existing keys: {{keys}}"
 }
