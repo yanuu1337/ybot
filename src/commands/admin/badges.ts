@@ -6,10 +6,10 @@ import { BadgeEmojis, GuildInterface } from "../../lib/types/database";
 
 export default class extends Command {
     category = 'admin';
-    name = 'badge';
-    aliases = ['badges', 'devbg', 'bgs', 'bdg'];
+    aliases = ['badges', 'devbg', 'bgs', 'bdg', 'badge'];
     dm = true;
     description = 'Grant a user a badge.';
+    devOnly = true;
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         
         if(!args[0] || !Object.keys(BadgeEmojis).includes(args[0].toUpperCase())) {
