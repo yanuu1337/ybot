@@ -1,4 +1,5 @@
-import { Message } from "discord.js";
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { CacheType, CommandInteraction, Message, PermissionString, TextChannel } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
@@ -6,31 +7,42 @@ import EmbedFactory from "../../util/EmbedFactory";
 import Utility from "../../util/Utility";
 
 export default class extends Command {
+    permissions = ['MANAGE_GUILD'] as PermissionString[];
+    isSlashCommand = true;
+    dm = false;
+    data = new SlashCommandBuilder()
+        .addSubcommand(sub => sub.setName("view").setDescription("View the current configuration."))
+        .addSubcommand(sub => sub.setName("modlog").setDescription("Set/view the modlog configuration.")
+            .addChannelOption(opt => opt.setName("channel").setRequired(false).setDescription("The channel to set the modlog as."))
+        )
+        .addSubcommand(sub => sub.setName("prefix").setDescription("Set/view the prefix configuration")
+            .addStringOption(opt => opt.setName("prefix").setRequired(false).setDescription("The prefix to set the bot to."))
+        )
+
     async execute(client: ArosClient, msg: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         //TODO Prefixes, other stuff
         if(!args[0]) {
-            const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:INFO")}`);
-            embed.fields = [
-                {
-                    name: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE")}`,
-                    value: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE_DESC")} - \`${guild?.language}\``,
-                    inline: false
-                },
-                {
-                    name: `${Utility.translate(guild?.language, "config/cfg:AUTOROLE")}`,
-                    value: `${Utility.translate(guild?.language, "config/cfg:AUTOROLE_DESC")} - \`${guild?.autoroles?.active ? Utility.translate(guild?.language, "common:YES") : Utility.translate(guild?.language, "common:NO")}\``,
-                    inline: false
-                },
-                {
-                    name: `${Utility.translate(guild?.language, "config/cfg:MODLOG")}`,
-                    value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - \`${guild?.mod_log}\`` ?? Utility.translate(guild?.language, "common:NONE"),
-                    inline: false
-                }
-                
-            ]
+            const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:INFO")}`)
+                .addFields([
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE_DESC")} - \`${guild?.language}\``,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:AUTOROLE")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:AUTOROLE_DESC")} - \`${guild?.autoroles?.active ? Utility.translate(guild?.language, "common:YES") : Utility.translate(guild?.language, "common:NO")}\` \nThis is not configurable through this command. use the \`autoroles\` command.`,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:MODLOG")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - \`${guild?.mod_log}\`` ?? Utility.translate(guild?.language, "common:NONE"),
+                        inline: false
+                    }  
+            ]);
             return msg.reply({embeds: [embed]})
         }
-        const configKeys = ["language", "autorole", "modlog", "prefix"]
+        const configKeys = ["language", "modlog", "prefix"]
         //check if args[0] is a valid config value
         if(!configKeys.includes(args[0])) {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG", {key: args[0], keys: configKeys.map((val) => `\`${val}\``).join(', ')}));
@@ -59,19 +71,11 @@ export default class extends Command {
             await client.handlers.guilds.edit(msg.guild!, {language: args[1]});
             return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:LANGUAGE_CHANGED", {lang: args[1]})}`)]});
         
-        } else if(args[0] === "autorole") {
-            
-            if(!["true", "false"].includes(args[1])) {
-                return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG"));
-            }
-            await client.handlers.guilds.edit(msg.guild!, {autoroles: {active: args[1] === "true"}});
-            return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:AUTOROLE_CHANGED", {active: args[1] === "true" ? Utility.translate(guild?.language, "common:YES") : Utility.translate(guild?.language, "common:NO")})}`)]});
-        
         } else if(args[0] === "modlog") {
             
             if(!args[1] || args[1] === "none" || args[1] === "null") {
                 await client.handlers.guilds.edit(msg.guild!, {mod_log: null});
-                return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_CHANGED", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
+                return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_SET", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
             }
             
             const channel = msg.mentions.channels.first() || msg.guild?.channels.cache.find(c => c.id === args[1] || c.toString() === args[1]);
@@ -81,10 +85,10 @@ export default class extends Command {
             }
             
             await client.handlers.guilds.edit(msg.guild!, {mod_log: channel.id});
-            return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_CHANGED", {channel: channel.toString()})}`)]});
+            return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_SET", {channel: channel.toString()})}`)]});
         
         } else if (args[0] === "prefix") {
-            if(!msg.member?.permissions?.has('MANAGE_GUILD', true)) return msg.reply(`You don't have the \`MANAGE_GUILD\` to change the prefix.`)
+            
             await this.client.handlers.guilds.edit(msg.guild!, {prefix: args[1]})
             return msg.reply({embeds: [
                 EmbedFactory.generateInfoEmbed(
@@ -102,5 +106,78 @@ export default class extends Command {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG"));
         }
 
+    }
+    async executeSlash(client: ArosClient, cmd: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
+        const sub = cmd.options.getSubcommand() as "view" | "modlog" | "prefix"
+        if(sub === "view") {
+            const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:INFO")}`)
+                .addFields([
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE_DESC")} - \`${guild?.language}\``,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:AUTOROLE")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:AUTOROLE_DESC")} - \`${guild?.autoroles?.active ? Utility.translate(guild?.language, "common:YES") : Utility.translate(guild?.language, "common:NO")}\``,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:MODLOG")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - \`${guild?.mod_log}\`` ?? Utility.translate(guild?.language, "common:NONE"),
+                        inline: false
+                    }  
+            ]);
+
+            return cmd.reply({embeds: [embed], ephemeral: true})
+        } else if (sub === "modlog") {
+            const channel = cmd.options.getChannel("channel") as TextChannel | null;
+            if(!channel) {
+                await client.handlers.guilds.edit(cmd.guild!, {mod_log: null});
+                return cmd.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_SET", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
+            }
+            
+            
+            
+            if(!channel.isText()) {
+                return cmd.reply(Utility.translate(guild?.language, "config/cfg:INVALID_CHANNEL"));
+            }
+            
+            await client.handlers.guilds.edit(cmd.guild!, {mod_log: channel.id});
+            return cmd.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_SET", {channel: channel.toString()})}`)]});
+        
+        } else if (sub === "prefix") {
+            
+            const prefix = cmd.options.getString("prefix") as string | null;
+            if(!prefix) {
+                return cmd.reply({embeds: [
+                    EmbedFactory.generateInfoEmbed(
+                        `${Utility.translate(
+                            guild?.language,
+                            "common:SUCCESS"
+                        )}`,
+                        `${Utility.translate(
+                            guild?.language,
+                            "config/cfg:CURRENT_VALUE",
+                            {key: 'prefix', value: guild?.prefix}
+                        )}`)
+                ]})
+            }
+            await this.client.handlers.guilds.edit(cmd.guild!, {prefix})
+            return cmd.reply({embeds: [
+                EmbedFactory.generateInfoEmbed(
+                    `${Utility.translate(
+                        guild?.language,
+                        "common:SUCCESS"
+                    )}`,
+                    `${Utility.translate(
+                        guild?.language,
+                        "config/cfg:PREFIX_CHANGED",
+                        {prefix}
+                    )}`)
+                ]})
+        }
+        
+        
     }
 }
