@@ -30,9 +30,10 @@ export default class extends Command {
             ]
             return msg.reply({embeds: [embed]})
         }
+        const configKeys = ["language", "autorole", "modlog", "prefix"]
         //check if args[0] is a valid config value
-        if(!["language", "autorole", "modlog", "prefix"].includes(args[0])) {
-            return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG"));
+        if(!configKeys.includes(args[0])) {
+            return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG", {key: args[0], keys: configKeys.map((val) => `\`${val}\``).join(', ')}));
         }
         const argument = args[0].replace('modlog', 'mod_log') as keyof GuildInterface;
 
