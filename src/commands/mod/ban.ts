@@ -21,7 +21,11 @@ export default class extends Command {
         let reason = "None";
         if(!args[1]) reason = Utility.translate(guild?.language, "mod/ban:NO_REASON");
         else reason = args.slice(1).join(" ");
-
+        if(member.id === message.member?.id) {
+            return message.reply({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/ban:CANNOT_BAN_SELF")}`)
+            ]})
+        }
         if(!member.bannable) {
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/ban:MEMBER_NOT_BANNABLE")}`)

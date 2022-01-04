@@ -3,5 +3,6 @@
     "NO_REASON": "Nie podano powodu.",
     "MEMBER_NOT_BANNABLE": "Nie można zbanować tego użytkownika.",
     "INVALID_MEMBER": "Proszę wprowadzić poprawnego użytkownika/jego id który jest na tym serwerze",
-    "BAN_FAILED": "Nie udało się zbanować użytkownika {{member}} z powodu `{{reason}}`."
+    "BAN_FAILED": "Nie udało się zbanować użytkownika {{member}} z powodu `{{reason}}`.",
+    "CANNOT_BAN_SELF": "Nie możesz zbanować siebie."
 }
