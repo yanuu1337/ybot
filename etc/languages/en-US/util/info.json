@@ -12,5 +12,6 @@
     "CHANNEL_COUNT": "Channels: [{{channel_count}}]",
     "EMOJI_COUNT": "Emojis: [{{emoji_count}}]",
     "ROLES_COUNT": "Roles [{{count}}]",
-    "BANS_COUNT": "Bans: [{{count}}]"
+    "BANS_COUNT": "Bans: [{{count}}]",
+    "NO_GUILD_ERROR": "This guild doesn't seem to be in the cache. Are you using this command with the right ID or in a guild?"
 }

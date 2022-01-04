@@ -12,5 +12,6 @@
     "CHANNEL_COUNT": "Kanały: [{{channel_count}}]",
     "EMOJI_COUNT": "Emoji: [{{emoji_count}}]",
     "ROLES_COUNT": "Role [{{count}}]",
-    "BANS_COUNT": "Bany: [{{count}}]"
+    "BANS_COUNT": "Bany: [{{count}}]",
+    "NO_GUILD_ERROR": "Nie wygląda na to, że ta gildia jest w pamięci. Czy używasz tej komendy z dobrymi parametrami lub w gildii?"
 }
