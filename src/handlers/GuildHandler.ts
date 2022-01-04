@@ -35,10 +35,11 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
         }, 1000);
         
     }
-    async fetchOrCreate(query: Guild): Promise<GuildInterface | null> {
-        const data = await this.fetch(query.id)
+    async fetchOrCreate(query: Guild | string): Promise<GuildInterface | null> {
+        const data = await this.fetch(query instanceof Guild ? query.id : query)
         if(data) return data
-        return this.create({discord_id: query.id})
+        const val = await this.create({discord_id: query instanceof Guild ? query.id : query})
+        return val;
     }
 
     async edit(id: Guild | string, query: GuildInterface | object) {
@@ -59,9 +60,12 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
     async create(data: GuildInterface) {
         if((await this.fetch(data.discord_id, true))) return null;
 
-        const didPass = this.client.db?.insert('guilds', data).catch(err => false)
+        const didPass = await this.client.db?.insert('guilds', data).catch(err => {
+            this.client.logger.error(`Error creating guild ${data.discord_id}`, err)
+            return false;
+        })
         if(didPass) this.set(data.discord_id, data)
-        return data ?? null;
+        return didPass ? data ?? null : null;
     }
 
     async fetch(query: Guild | string, force = false): Promise<GuildInterface | null> {
