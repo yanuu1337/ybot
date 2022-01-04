@@ -1,0 +1,6 @@
+{
+    "MEMBER_NOT_KICKABLE": "Nie można wyrzucić tego użytkownika.",
+    "KICK_SUCCESS": "Pomyślnie wyrzucono {{member}} z serwera **{{guild}}** z powodu `{{reason}}`.",
+    "KICK_FAILED": "Nie udało się wyrzucić użytkownika.",
+    "CANNOT_KICK_SELF": "Nie możesz wyrzucić samego siebie."
+}

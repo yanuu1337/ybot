@@ -1,0 +1,6 @@
+{
+    "MEMBER_NOT_KICKABLE": "I can't kick that member.",
+    "KICK_SUCCESS": "Successfully kicked {{member}} from **{{guild}}** for `{{reason}}`.",
+    "KICK_FAILED": "Failed to kick this member.",
+    "CANNOT_KICK_SELF": "You can't kick yourself."
+}
