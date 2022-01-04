@@ -1,0 +1,16 @@
+{
+    "INFO": "Information about {{guild}}",
+    "DISCORD_ID": "Discord ID: ",
+    "DISCORD_DATA": "Discord Data: ",
+    "CONFIG": "Bot config",
+    "CREATED_AT": "Creation date: ",
+    "SERVER_SETTINGS": "Server settings",
+    "REGION": "Region: ",
+    "VERIFICATION_LEVEL": "Verification level: ",
+    "OWNER_ID": "Owner: ",
+    "MEMBER_COUNT": "Members: [{{member_count}}]",
+    "CHANNEL_COUNT": "Channels: [{{channel_count}}]",
+    "EMOJI_COUNT": "Emojis: [{{emoji_count}}]",
+    "ROLES_COUNT": "Roles [{{count}}]",
+    "BANS_COUNT": "Bans: [{{count}}]"
+}
