@@ -52,6 +52,7 @@ export default class extends Command {
         const modLogChannel = guild?.mod_log ? message.guild?.channels.cache.get(guild?.mod_log) : null; 
         if(!modLogChannel?.isText()) return;
         await modLogChannel?.send({embeds: [modLogEmbed]}).catch(err => {
+            client.logger.error(`Failed to send mod log message to ${modLogChannel?.name}`, err);
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/common:MOD_LOG_FAILED")}`)
                 ]}
@@ -94,6 +95,7 @@ export default class extends Command {
         const modLogChannel = guild?.mod_log ? cmd.guild?.channels.cache.get(guild?.mod_log) : null; 
         if(!modLogChannel?.isText()) return;
         await modLogChannel?.send({embeds: [modLogEmbed]}).catch(err => {
+            client.logger.error(`Failed to send mod log message to ${modLogChannel?.name}`, err);
             return cmd.followUp({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/common:MOD_LOG_FAILED")}`)
                 ], ephemeral: true}
