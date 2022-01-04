@@ -1,4 +1,5 @@
-import { Message, PermissionString } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { CacheType, CommandInteraction, GuildMember, Message, PermissionString } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
@@ -8,6 +9,9 @@ import Utility from "../../util/Utility";
 export default class extends Command {
     permissions = ["BAN_MEMBERS"] as PermissionString[];
     botPermissions = ["BAN_MEMBERS"] as PermissionString[];
+    description = 'Bans a member from the server';
+    data = new SlashCommandBuilder().addStringOption(opt => opt.setName("member").setRequired(true).setDescription("The member to ban")).addStringOption(opt => opt.setName("reason").setRequired(false).setDescription("The reason for the ban"))
+
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         //ban a member, register the ban in guild cache
         const member = message.mentions.members?.first() || message.guild?.members.cache.get(args[0]) || await message.guild?.members.fetch(args[0]).catch(err => null);
@@ -53,5 +57,53 @@ export default class extends Command {
                 ]}
             )
         });
+    }
+
+    async executeSlash(client: ArosClient, cmd: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
+        
+        const member = cmd.options.getMember('member', true) as GuildMember;
+        const reason = cmd.options.getString('reason') || 'None';
+
+        if(!member) {
+            return cmd.reply({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/ban:INVALID_MEMBER")}`)
+            ]})
+        }
+        if(member.id === cmd.user?.id) {
+            return cmd.reply({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/ban:CANNOT_BAN_SELF")}`)
+            ], ephemeral: true})
+        }
+
+        if(!member.bannable) {
+            return cmd.reply({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/ban:MEMBER_NOT_BANNABLE")}`)
+                ], ephemeral: true}
+            )
+        }
+        const modLogEmbed = EmbedFactory.generateModerationEmbed(cmd.user, member, "ban", reason);
+        const banEmbed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "mod/ban:BAN_SUCCESS", {member: member.user.tag, reason: reason, guild: cmd?.guild?.name})}`);
+        await member.ban({reason: reason}).catch(err => {
+            client.logger.error(err);
+            return cmd.reply({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/ban:BAN_FAILED")}`)
+                ]}
+            )
+        });
+
+        cmd.reply({embeds: [banEmbed]});
+
+
+        const modLogChannel = guild?.mod_log ? cmd.guild?.channels.cache.get(guild?.mod_log) : null; 
+        if(!modLogChannel?.isText()) return;
+        await modLogChannel?.send({embeds: [modLogEmbed]}).catch(err => {
+            return cmd.followUp({embeds: [
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/common:MOD_LOG_FAILED")}`)
+                ], ephemeral: true}
+            )
+        });
+
+
+        
     }
 }
