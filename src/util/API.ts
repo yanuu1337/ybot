@@ -23,6 +23,6 @@ export default class API {
        
     this.rest.put(Routes.applicationGuildCommands(this.client.application?.id!, '856924300215713833'), {body: body ?? this.client.handlers.commands.filter(cmd => cmd.isSlashCommand == true).map(cmd => cmd.commandData?.toJSON())})
     return null;
-}
-   
+}    
+
 }
