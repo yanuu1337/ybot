@@ -22,12 +22,13 @@ export interface Autoroles {
     members?: string | null;
     active?: boolean;
 }
-export type Badges = 'STAFF' | 'FRIEND' | 'PREMIUM' | 'TRUSTED_USER'
+export type Badges = 'STAFF' | 'FRIEND' | 'PREMIUM' | 'TRUSTED_USER' | 'CAT'
 export const BadgeEmojis = {
     STAFF:`<:staff:927258825659121715>`,
     PREMIUM: `<:premium:927259468004196413>`,
     TRUSTED_USER: `<:trusted:927290620370882581>`,
     FRIEND: `<:friendship:927291555591635005>`,
+    CAT: `<a:catbop:927835314251268106>`
 } 
 export type BadgesObject = {
     name: Badges,
