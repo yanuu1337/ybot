@@ -46,7 +46,7 @@ export default class UserHandler extends Collection<string, UserInterface> {
     async fetch(query: User | GuildMember | string, force = false) {
         const id = (query instanceof User || query instanceof GuildMember) ? query.id : query
         if(this.has(id) && !force) return this.get(id) ?? null;
-        const data = await this.client.db?.get('users', 'discord_id', id) as UserInterface[]
+        const data = await this.client.db?.get('users', {discord_id: id}) as UserInterface[]
         this.set(id, data[0])
         return data?.[0]
     }

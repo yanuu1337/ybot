@@ -4,7 +4,7 @@ import mysql from 'mysql2/promise'
 import { SQLStatement } from "sql-template-strings";
 import Utility from './Utility'
 
-type TableCollection = 'users' | 'guilds' | 'test'
+type TableCollection = 'users' | 'guilds' | 'test' | 'tags'
 export default class Database {
     client: ArosClient;
     pool: mysql.Pool | null;
@@ -33,13 +33,15 @@ export default class Database {
     /**
      * Finds a single element from the database using the parameters. If no element is found, null is returned.
      * @param {TableCollection} table The table to get a value from
-     * @param {string} key The key to scan
-     * @param {string | boolean | number} value The value that the key should be equal to 
+     * @param {object} values The values to search for
+     * @param {boolean} useOr Whether to use OR or AND  
      */
-    async get(table: TableCollection, key: string, value: string | boolean | number) {
-        
-        return (await this.query(`SELECT * FROM ${table} WHERE ${key}=${Utility.isString(value) ? `'${value}'` : value} LIMIT 1;`))?.[0] as mysql.RowDataPacket[] ?? null
+    async get(table: TableCollection, values: object, useOr: boolean = false) {
+        const keys = Object.keys(values)
+        const valuesArr = Object.values(values)
+        return (await this.query(`SELECT * FROM ${table} WHERE ${keys.map((val, index) => `${val}=${Utility.isString(valuesArr[index]) ? `'${valuesArr[index]}'` : valuesArr[index]}`).join(` ${useOr ? 'OR' : 'AND'} `)} LIMIT 1;`))?.[0] as mysql.RowDataPacket[] ?? null
     }
+
 
     /**
      * Is identical to {@link Array.find()}. 

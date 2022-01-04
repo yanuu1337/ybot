@@ -71,7 +71,7 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
     async fetch(query: Guild | string, force = false): Promise<GuildInterface | null> {
         const id = query instanceof Guild ? query.id : query
         if(this.has(id) && !force) return this.get(id) ?? null
-        const data = await this.client.db?.get('guilds', 'discord_id', id) as GuildInterface[]
+        const data = await this.client.db?.get('guilds', {discord_id: id}) as GuildInterface[]
         this.set(id, data?.[0])
         return data?.[0];
     }
