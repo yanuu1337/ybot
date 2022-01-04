@@ -1,4 +1,5 @@
-import { Message, NewsChannel, Permissions, TextChannel, ThreadChannel } from "discord.js";
+import { GuildInterface } from './../lib/types/database';
+import { Message, MessageEmbed, NewsChannel, Permissions, TextChannel, ThreadChannel } from "discord.js";
 import ArosClient from "../extensions/ArosClient";
 import Event from '../lib/structures/Event'
 import EmbedFactory from "../util/EmbedFactory";
@@ -23,13 +24,15 @@ export default class extends Event {
             })
         }
         const [cmdName, ...cmdArgs] = msg.content
-        .slice('='.length)
+        .slice((commandGuild?.prefix ?? '=').length)
         .trim()
         .split(/\s+/);
 
         try {
-
+            await this.handleMention(msg, commandGuild, cmdArgs)
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
+            if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return;
+
             if(!command) return;
             if(command.devOnly && msg.author.id !== '304263386588250112') {
                 return msg.reply(`This command is only available for developers.`)
@@ -82,9 +85,24 @@ export default class extends Event {
         }
     }
 
-    async handleMention(message: Message) {
-        if(message.mentions.users.find(user => user.id === this.client.user?.id)) {
-            //! Handle mention text (print prefix, settings, main commands, etc.)
+    async handleMention(msg: Message, guild: GuildInterface | null, args: string[] = []) {
+        if(msg.mentions.users.find(user => user.id === this.client.user?.id)) {
+            if(args[0] === 'prefix') {
+                if(!args[1]) return msg.reply(`The current prefix is \`${guild?.prefix ?? '='}\``)
+                if(!msg.member?.permissions?.has('MANAGE_GUILD', true)) return msg.reply(`You don't have the \`MANAGE_GUILD\` to change the prefix.`)
+                await this.client.handlers.guilds.edit(msg.guild!, {prefix: args[1]})
+                return msg.reply(`The prefix has been changed to \`${args[1]}\`.`)
+            }
+            const embed = new MessageEmbed()
+                .setTitle(`Hi there!`)
+                .setFooter("© 2022 - Aros 🎉")
+                .setColor(`RANDOM`)
+                .setDescription(`You mentioned me! <:yBBruh:801006604728270848>`)
+                .addField(`About me:`, `I'm your friend, Aros! Not only do I include moderation and meme commands (including slash commands), I also have fully-fledged leveling and currency systems!`)
+                .addField(`My prefix here is: \`${guild?.prefix ?? '='}\``, `Use the \`${guild?.prefix ?? '='}help\` command to see all my commands! You could also use the /help slash command for the same thing.`)
+                .addField(`Customization: `, `You can customize my settings in multiple ways, such as my [website](https://aros.folds.cc) or the \`config\` command!`)
+            
+            return msg.reply({embeds: [embed]})
         }
     }
 
