@@ -17,6 +17,15 @@ export interface GuildInterface  {
     autoroles?: Autoroles | null | undefined,
     mod_log?: string | null | undefined
 } 
+
+export interface Tag {
+    id?: string,
+    discord_id?: string,
+    tag?: string,
+    author?: string | {id: string, tag: string},
+    created_at?: string | number | Date,
+    content?: string,
+}
 export interface Autoroles {
     bots?: string | null;
     members?: string | null;

@@ -3,6 +3,7 @@ import { TFunction } from "i18next";
 import CommandHandler from "../handlers/CommandHandler";
 import EventHandler from "../handlers/EventHandler";
 import GuildHandler from "../handlers/GuildHandler";
+import TagHandler from "../handlers/TagHandler";
 import UserHandler from "../handlers/UserHandler";
 import API from "../util/API";
 import Database from "../util/Database";
@@ -16,7 +17,8 @@ export default class ArosClient extends Client {
         users: new UserHandler(this),
         commands: new CommandHandler(this),
         api: new API(this),
-        guilds: new GuildHandler(this)
+        guilds: new GuildHandler(this),
+        tags: new TagHandler(this),
     }
     private _logger = Logger;
     public translate: Map<string, TFunction> = new Map();

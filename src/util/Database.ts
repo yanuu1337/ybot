@@ -66,7 +66,7 @@ export default class Database {
         const queryValues = Object.values(query) 
         
         return this.query(`UPDATE ${table} SET ${Object.keys(query).map((val, index) => `${val}=${Utility.isString(queryValues[index]) ? `'${queryValues[index]}'` : queryValues[index]}`).join(', ')} 
-        WHERE ${Object.keys(where).map((val, index) => `${val}=${Utility.isString(whereValues[index]) ? `'${whereValues[index]}'` : whereValues[index]}`).join(`${or ? 'OR' : 'AND'}`)}`)
+        WHERE ${Object.keys(where).map((val, index) => `${val}=${Utility.isString(whereValues[index]) ? `'${whereValues[index]}'` : whereValues[index]}`).join(`${or ? 'OR ' : 'AND '}`)}`)
     }
 
     /**
@@ -82,6 +82,18 @@ export default class Database {
             return undefined; 
         })
         return results
+    }
+
+    /**
+     * Delete a row from the table
+     * @param table Table to insert values in
+     * @param where The values to search for in the table to delete the row
+     * @param or Whether to use or/and
+     * @returns 
+     */
+    async delete(table: TableCollection, where: object, or: boolean = false) {
+        const whereValues = Object.values(where)
+        return this.query(`DELETE FROM ${table} WHERE ${Object.keys(where).map((val, index) => `${val}=${Utility.isString(whereValues[index]) ? `'${whereValues[index]}'` : whereValues[index]}`).join(`${or ? 'OR ' : 'AND '}`)}`)
     }
 
     /**
