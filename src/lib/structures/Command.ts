@@ -19,8 +19,7 @@ export default class Command {
         this.client = client;
         this.name = name;
         if(!this.description) this.description = this.name
-        //@ts-ignore
-        this.category = path.replaceAll("/", '').replaceAll(".", '');
+        this.category = path;
     }
     
     async execute(client: ArosClient, message: Message, args: string[], guild: GuildInterface | null): Promise<any> {

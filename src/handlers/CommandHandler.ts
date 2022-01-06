@@ -20,7 +20,7 @@ export default class CommandHandler extends Collection<string, Command> {
             if(file?.endsWith('.js') && !file?.endsWith('.dev.js')) {
                 const {default: Command} = await import(join(dir, file))
                 
-                const command = new Command(this.client, file.replace('.js', ''), join(dir, file));
+                const command = new Command(this.client, file.replace('.js', ''), dir.replace('..\\commands\\', ''));
                 this.set(file.replace('.js', ''), command);
             }
         }
