@@ -7,6 +7,7 @@ export default class Command {
     name: string;
     description?: string;
     category: string;
+    usage?: string = 'None';
     aliases: string[] = [];
     devOnly: boolean = false;
     isSlashCommand: boolean = false;
