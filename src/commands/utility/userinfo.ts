@@ -10,7 +10,6 @@ export default class extends Command {
     description = 'Get information about a user.';
     usage = 'userinfo [user]';
     aliases = ['user', 'ui'];
-    category = 'util';
     isSlashCommand = true;
     data = new SlashCommandBuilder()
         .addSubcommand(

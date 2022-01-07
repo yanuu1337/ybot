@@ -9,7 +9,6 @@ import Utility from "../../util/Utility";
 export default class extends Command {
     permissions = ["MODERATE_MEMBERS"] as PermissionString[];
     botPermissions = ["MODERATE_MEMBERS"] as PermissionString[];
-
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         //timeout a member
         const member = message.mentions.members?.first() || message.guild?.members.cache.get(args[0]) || await message.guild?.members.fetch(args[0]).catch(err => null);

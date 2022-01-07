@@ -7,9 +7,9 @@ import EmbedFactory from '../../util/EmbedFactory';
 import Utility from '../../util/Utility';
 import { GuildInterface } from '../../lib/types/database';
 export default class extends Command {
-    category = 'test';
     isSlashCommand= true;
     dm = true;
+    usage = 'ping'
     data = new SlashCommandBuilder()
     description = 'Pong!'
     async execute(client: ArosClient, message: Message, args: string[]) {
