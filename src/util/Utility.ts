@@ -18,4 +18,13 @@ export default class Utility extends null {
         if(!key) throw new Error(`No key specified.`)
         return lang(key, args);
     }
+
+    static getChunk(...args: any[]) {
+        const [arr, len] = args;
+        const rest = [];
+        for(let i = 0; i < arr.length; i += len) {
+            rest.push(arr.slice(i, i + len))
+        }
+        return rest;
+    }
 }
