@@ -26,7 +26,15 @@ export default class ArosClient extends Client {
     constructor() {
         super({
             partials: ['MESSAGE', 'CHANNEL'],
-            intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES],
+            intents: [
+                Intents.FLAGS.GUILDS, 
+                Intents.FLAGS.GUILD_MEMBERS, 
+                Intents.FLAGS.GUILD_BANS, 
+                Intents.FLAGS.GUILD_PRESENCES, 
+                Intents.FLAGS.GUILD_MESSAGES, 
+                Intents.FLAGS.DIRECT_MESSAGES, 
+                Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+            ],
             presence: {
                 activities: [{
                         name: `/help | ${process.env.PREFIX}help - aros.folds.cc`,
