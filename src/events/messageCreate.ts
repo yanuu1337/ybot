@@ -37,6 +37,7 @@ export default class extends Event {
             if(command.devOnly && msg.author.id !== '304263386588250112') {
                 return msg.reply(`This command is only available for developers.`)
             }
+            client.countsToday.commands++;
 
             if(msg.channel.type === 'DM') {   
                 if(!command.dm) return msg.reply({embeds: [

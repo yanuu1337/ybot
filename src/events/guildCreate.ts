@@ -4,6 +4,7 @@ import ArosClient from '../extensions/ArosClient';
 import Event from '../lib/structures/Event'
 export default class extends Event {
     async execute(client: ArosClient, guild: Guild) {
+        client.countsToday.guilds++;
         if(!guild.available) return;
         client.handlers.guilds.create({
             discord_id: guild.id,

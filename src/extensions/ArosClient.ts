@@ -20,6 +20,13 @@ export default class ArosClient extends Client {
         guilds: new GuildHandler(this),
         tags: new TagHandler(this),
     }
+
+    public countsToday = {
+        commands: 0,
+        tags: 0,
+        users: 0,
+        guilds: 0
+    }
     private _logger = Logger;
     public translate: Map<string, TFunction> = new Map();
     public db?: Database = undefined; 
@@ -48,6 +55,22 @@ export default class ArosClient extends Client {
         
         this.translate = await i18n();
         return super.login(token);
+    }
+
+
+    public async ping() {
+        if(!this.user?.presence.activities?.[0]) {
+            this.user?.setActivity(`/help | ${process.env.PREFIX}help - aros.folds.cc`, {type: 'WATCHING'})
+        }
+        fetch('https://api.folds.cc/bot/ping', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bot ${this.token}`,
+            },
+            body: JSON.stringify({servers: this.guilds.cache.size, users: this.users.cache.size, commands_today: this.countsToday.commands}),
+        })
+
+        
     }
 
     
