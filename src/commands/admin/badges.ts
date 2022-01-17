@@ -1,8 +1,7 @@
-import { Badges } from './../../lib/types/database';
+import { Badges, BadgeEmojis, GuildInterface } from '../../lib/types/database';
 import { Message } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
-import { BadgeEmojis, GuildInterface } from "../../lib/types/database";
 
 export default class extends Command {
     category = 'admin';

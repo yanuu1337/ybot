@@ -3,7 +3,6 @@ import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 
 
-
 export default class extends Command {
     devOnly = true;
 

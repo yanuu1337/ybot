@@ -2,7 +2,7 @@
   "name": "ybot",
   "version": "1.0.0",
   "description": "yBot - The Chosen One",
-  "main": "dist/index.js",
+  "main": "dist/bot.js",
   "scripts": {
     "test": "tsc && nodemon dist/index.js",
     "dev": "tsc-watch --allowJs --onSuccess \"nodemon dist/bot.js --dev\""
