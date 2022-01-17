@@ -1,5 +1,7 @@
 import { Client, ClientOptions, Intents } from "discord.js"
 import { TFunction } from "i18next";
+import schedule from 'node-schedule';
+import fetch from 'node-fetch';
 import CommandHandler from "../handlers/CommandHandler";
 import EventHandler from "../handlers/EventHandler";
 import GuildHandler from "../handlers/GuildHandler";
@@ -9,6 +11,7 @@ import API from "../util/API";
 import Database from "../util/Database";
 import i18n from "../util/i18n";
 import Logger from "../util/Logger";
+import { client } from "../bot";
 
 export default class ArosClient extends Client {
     
@@ -52,7 +55,8 @@ export default class ArosClient extends Client {
         this.login(process.env.DISCORD_TOKEN!).catch((err) => console.log(err))
     }
     public async login(token: string): Promise<string> {
-        
+        this.ping();
+        schedule.scheduleJob(`25 * * * *`, () => console.log('test'));
         this.translate = await i18n();
         return super.login(token);
     }
@@ -62,13 +66,13 @@ export default class ArosClient extends Client {
         if(!this.user?.presence.activities?.[0]) {
             this.user?.setActivity(`/help | ${process.env.PREFIX}help - aros.folds.cc`, {type: 'WATCHING'})
         }
-        fetch('https://api.folds.cc/bot/ping', {
+        await fetch('https://api.folds.cc/bot/ping', {
             method: 'POST',
             headers: {
                 'Authorization': `Bot ${this.token}`,
             },
             body: JSON.stringify({servers: this.guilds.cache.size, users: this.users.cache.size, commands_today: this.countsToday.commands}),
-        })
+        }).catch(err => client.logger.error(`Error sending ping.`, err))
 
         
     }
