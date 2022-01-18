@@ -7,7 +7,7 @@ export default class Command {
     name: string;
     description?: string;
     category: string;
-    usage?: string = 'None';
+    usage?: string;
     aliases: string[] = [];
     devOnly: boolean = false;
     isSlashCommand: boolean = false;
@@ -19,6 +19,7 @@ export default class Command {
     constructor(client: ArosClient, name: string, path: string) {
         this.client = client;
         this.name = name;
+        if(!this.usage) this.usage = this.name;
         if(!this.description) this.description = this.name
         this.category = path;
     }
