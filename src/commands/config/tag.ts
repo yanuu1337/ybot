@@ -33,7 +33,7 @@ export default class extends Command {
                             .setTitle(`\`${tag.tag}\``)
                             .setColor("RANDOM")
                             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
-                            .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - Aros | created by ${tag.author?.toString()}`})
+                            .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - Aros | created by ${typeof tag.author === 'string' ? tag : tag.author?.tag.toString()}`})
                     ]
                 })
             })
@@ -55,13 +55,13 @@ export default class extends Command {
         const tag = await client.handlers.tags.fetch({discord_id: interaction.guild?.id, tag: interaction.options.getString('name', true).toLowerCase()});
         if(!tag) return interaction.reply({content: "Tag doesn't exist!", ephemeral: true});
         interaction.reply({
-            content: `${interaction.options.getMentionable('target') ? `Tag suggestion for ${interaction.options.getMentionable('target')}` : ''}`,
+            content: interaction.options.getMentionable('target') ? `Tag suggestion for ${interaction.options.getMentionable('target')}` : null,
             embeds: [
                 new MessageEmbed()
                     .setTitle(`\`${tag.tag}\``)
                     .setColor("RANDOM")
                     .setAuthor({name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL()})
-                    .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - Aros | created by ${tag.author?.toString()}`})
+                    .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - Aros | created by ${typeof tag.author === 'string' ? tag : tag.author?.tag.toString()}`})
             ]
         })
     }
@@ -71,7 +71,7 @@ export default class extends Command {
         const shouldBeEphemeral = message instanceof CommandInteraction ? {ephemeral: true} : {};
         if(!guild || !message?.channel) return message.reply({content: "You are not in a guild!", ...shouldBeEphemeral});
         if(!args[0]) return message.reply({content: "Please provide a tag name!", ...shouldBeEphemeral});
-        const illegalCharacters = ["<", ">", ":", ";", ",", ".", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "{", "}", "[", "]", "|", "\\", "/", "`", "~", "\"", "'", " "];
+        const illegalCharacters = ["<", ">", ":", ";", ",", ".", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "{", "}", "[", "]", "|", "\\", "/", "​backtick", "~", "\"", "'", " "];
 
         if(illegalCharacters.some(char => args[0].includes(char))) return message.reply({
             content: `Tag name contains illegal characters, such as ${illegalCharacters.map(val => `\`${val}\``).join(', ')}!`,
@@ -84,12 +84,12 @@ export default class extends Command {
         if(tagExists) return message.reply("Tag already exists!");
         
         
-        const filter = (msg: Message<boolean>) => msg.author.id === msg.author.id;
+        const filter = (msg: Message<boolean>) => msg.author.id === (message instanceof Message ? message.author.id : message.user.id);
         const collector = message.channel?.createMessageCollector({filter, time: 60000, max: 1});
-        message.reply("Please provide the content of the tag!");
+        message.reply({content: "Please provide the content of the tag! From now on, you have 60 seconds to respond with the content of the tag.\nYou can also use the `cancel` command to cancel the creation of the tag.", ...shouldBeEphemeral});
         collector.on('collect', (msg: Message<boolean>): any => {
             if(msg.content.toLowerCase() === 'cancel') {
-                msg.reply(`Cancelled creating tag ${args[0]}`);
+                msg.reply(`Cancelled creating tag!`);
                 return;
             }
             if(msg.content.length > 1024) return msg.reply("Tag content is too long!");

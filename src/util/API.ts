@@ -14,15 +14,23 @@ export default class API {
         this.rest = new REST({version: '9'}).setToken(client.token);
     }
     
-   async putSlashCommands(body?: JSON | Object | Array<Object>) {
-       this.rest.put(Routes.applicationCommands(this.client.application?.id!), {body: body ?? this.client.handlers.commands.filter(cmd => cmd.isSlashCommand == true).map(cmd => cmd.data?.toJSON())})
-       return null;
-   }
+    async putSlashCommands(body?: JSON | Object | Array<Object>) {
+        const commandValues = [
+            ...this.client.handlers.commands.filter(cmd => cmd.isSlashCommand == true).map(cmd => cmd.commandData?.toJSON()),
+            ...this.client.handlers.menus.map(menu => menu.contextMenuData?.toJSON())
+        ]
+        this.rest.put(Routes.applicationCommands(this.client.application?.id!), {body: body ?? commandValues})
+        return null;
+    }
 
-   async putGuildTestSlashCommands(body?: JSON | Object | Array<Object>) {
-       
-    this.rest.put(Routes.applicationGuildCommands(this.client.application?.id!, '856924300215713833'), {body: body ?? this.client.handlers.commands.filter(cmd => cmd.isSlashCommand == true).map(cmd => cmd.commandData?.toJSON())})
-    return null;
-}    
+    async putGuildTestSlashCommands(body?: JSON | Object | Array<Object>) {
+        const commandValues = [
+            ...this.client.handlers.commands.filter(cmd => cmd.isSlashCommand == true).map(cmd => cmd.commandData?.toJSON()),
+            ...this.client.handlers.menus.map(menu => menu.contextMenuData?.toJSON())
+        ]
+        console.log(commandValues)
+        await this.rest.put(Routes.applicationGuildCommands(this.client.application?.id!, '856924300215713833'), {body: body ?? commandValues})
+        return null;
+    }    
 
 }

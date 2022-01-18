@@ -7,6 +7,7 @@ import EventHandler from "../handlers/EventHandler";
 import GuildHandler from "../handlers/GuildHandler";
 import TagHandler from "../handlers/TagHandler";
 import UserHandler from "../handlers/UserHandler";
+import ContextMenuHandler from "../handlers/ContextMenuHandler";
 import API from "../util/API";
 import Database from "../util/Database";
 import i18n from "../util/i18n";
@@ -22,6 +23,7 @@ export default class ArosClient extends Client {
         api: new API(this),
         guilds: new GuildHandler(this),
         tags: new TagHandler(this),
+        menus: new ContextMenuHandler(this),
     }
 
     public countsToday = {

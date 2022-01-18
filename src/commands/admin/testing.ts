@@ -1,3 +1,4 @@
+import { ContextMenuCommandBuilder,  } from '@discordjs/builders';
 import { GuildInterface } from '../../lib/types/database';
 import { Formatters, Message } from 'discord.js';
 import ArosClient from "../../extensions/ArosClient";
@@ -9,5 +10,8 @@ export default class extends Command {
     async execute(client: ArosClient, message: Message, args: string[], guild: GuildInterface) {
         const val = await client.db?.get('guilds', {discord_id: '856924300215713833', id: 2, prefix: '='}, true)
         message.reply(Formatters.codeBlock(`js\n${JSON.stringify(val, null, 2)}`))
+
+        const testVal = new ContextMenuCommandBuilder().setType(3).setDefaultPermission(true).setName("Kick this person").toJSON()
+        console.log(testVal)
     }
 }
