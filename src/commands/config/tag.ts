@@ -19,14 +19,15 @@ export default class extends Command {
     isSlashCommand = true;
     
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
-        if(args[0].toLowerCase() === "create") {
+        if(args[0]?.toLowerCase() === "create") {
             return this.createTag(client, message, args.slice(1), guild);
-        } else if (args[0].toLowerCase() === "delete" || args[0].toLowerCase() === "remove") {
+        } else if (args[0]?.toLowerCase() === "delete" || args[0]?.toLowerCase() === "remove") {
             return this.removeTag(client, message, args.slice(1), guild);
         } else {
-            return client.handlers.tags.fetch({discord_id: message.guild?.id, tag: args[0].toLowerCase()}).then(tag => {
+            if(!args[0]) return message.reply({content: "Tag or option doesn't exist!"});
+
+            return client.handlers.tags.fetch({discord_id: message.guild?.id, tag: args[0]?.toLowerCase()}).then(tag => {
                 if(!tag) return message.channel.send(`Tag \`${args[0]}\` not found.`);
-                console.log(tag);
                 return message.channel.send({
                     embeds: [
                         new MessageEmbed()
@@ -77,6 +78,8 @@ export default class extends Command {
             content: `Tag name contains illegal characters, such as ${illegalCharacters.map(val => `\`${val}\``).join(', ')}!`,
              ...shouldBeEphemeral
         });
+
+        if(args[0].toLowerCase() === "delete" || args[0].toLowerCase() === "remove" || args[0].toLowerCase() === "create") return message.reply({content: "You can't use this name!", ...shouldBeEphemeral});
         
         if(args[0].length > 32) return message.reply({content: "Tag name is too long! Please enter a tag name under 32 characters.", ...shouldBeEphemeral});
         if(args[0].length < 2) return message.reply({content: "Tag name is too short! Please enter a tag name at least 2 characters long.", ...shouldBeEphemeral});
