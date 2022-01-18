@@ -12,7 +12,6 @@ export default class extends Command {
         }
         if(args[0] === "status" || args[0] === "info") {
             const guild = await client.handlers.guilds.fetchOrCreate(args[1])
-            console.log(guild);
             return message.reply(`The guild is ${guild?.blacklisted ? 'blacklisted' : 'not blacklisted'}.`)
         }
         if(args[0] === "list") {

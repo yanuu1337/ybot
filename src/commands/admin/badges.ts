@@ -18,7 +18,7 @@ export default class extends Command {
             return message.reply(`Please specify a user.`);
         }
         const member = message.mentions.members?.first() ?? message.guild?.members.cache.get(args[1].toLowerCase()) ?? null;
-        console.log(member)
+        
         const badge = args[0].toUpperCase() as Badges;
         const user = await client.handlers.users.fetch(member!.id)
         if(!member) {
@@ -35,7 +35,7 @@ export default class extends Command {
         }
         
         
-        console.log(user)
+        
         const userBadges = [...(user.badges ?? []), {name: badge, emoji: BadgeEmojis[badge]}]
         await client.handlers.users.edit(member?.id, {badges: JSON.stringify(userBadges)})
         message.reply(`Successfully granted the user that badge. Current badges: ${userBadges.map(b => b.emoji).join(' ')}`)

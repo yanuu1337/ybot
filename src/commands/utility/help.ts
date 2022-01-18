@@ -107,7 +107,6 @@ export default class extends Command {
                 }
             })
         });
-        console.log(embeds)
         await new MessagePagination(message, {
             embed: embeds[0],
             edit: (index, emb: MessageEmbed, page: any) => emb.setTitle(`Help - ${capitalize(page.title.split('-')[1])}`),

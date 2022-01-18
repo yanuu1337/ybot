@@ -54,11 +54,11 @@ export default class ArosClient extends Client {
                     }
                 ]}
         } as ClientOptions);
-        this.login(process.env.DISCORD_TOKEN!).catch((err) => console.log(err))
+        this.login(process.env.DISCORD_TOKEN!).catch((err) => this.logger.error(`Error while logging in: `, err))
     }
     public async login(token: string): Promise<string> {
         this.ping();
-        schedule.scheduleJob(`25 * * * *`, () => console.log('test'));
+        schedule.scheduleJob(`25 * * * *`, async () => await this.ping());
         this.translate = await i18n();
         return super.login(token);
     }

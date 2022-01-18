@@ -28,7 +28,6 @@ export default class API {
             ...this.client.handlers.commands.filter(cmd => cmd.isSlashCommand == true).map(cmd => cmd.commandData?.toJSON()),
             ...this.client.handlers.menus.map(menu => menu.contextMenuData?.toJSON())
         ]
-        console.log(commandValues)
         await this.rest.put(Routes.applicationGuildCommands(this.client.application?.id!, '856924300215713833'), {body: body ?? commandValues})
         return null;
     }    

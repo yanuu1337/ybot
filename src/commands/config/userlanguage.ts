@@ -26,7 +26,6 @@ export default class extends Command {
         if(!args[0]) {
             return message.reply({embeds: [EmbedFactory.generateErrorEmbed(`Language`, `Please specify a language!`)]})
         }
-        console.log(user)
         const selectedLanguage = availableLanguages.find((lang) => lang.name.toLowerCase() === args[0].toLowerCase() 
             || lang.fullName.toLowerCase() === args[0].toLowerCase() 
             || lang.aliases.map(val => val.toLowerCase()).includes(args[0].toLowerCase()))
