@@ -1,7 +1,8 @@
 {
-    "ROLES_NOT_SETUP": "There are currently no autoroles set up in this guild!",
+    "ROLES_NOT_SETUP": "There are currently no autoroles set up in this guild! Set them using `autoroles <bots/members> <id_or_role>`",
     "RESPONSE": "Current autoroles setup: \nUsers: {{members}} - `{{members_id}}` \nBots: {{bots}} - `{{bots_id}}` \nActive: {{active}}",
     "SUCCESS": "Successfully setup <@&{{toRoleId}}> as a role to add to new {{configured}}!",
     "TOGGLE_SUCCESS": "Successfully toggled autoroles! \nAutomatic role system is now **{{status}}**.",
-    "ROLE_NOT_EXISTS": "Please provide a valid role that exists in this guild!"
+    "ROLE_NOT_EXISTS": "Please provide a valid role that exists in this guild!",
+    "ROLE_TOO_HIGH": "The role you provided is too high for the bot to add to it!"
 }

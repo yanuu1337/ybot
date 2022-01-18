@@ -1,6 +1,7 @@
 {
-    "ROLES_NOT_SETUP": "Na tym serwerze nie ma obecnie ustawionych autoroli!",
+    "ROLES_NOT_SETUP": "Na tym serwerze nie ma obecnie ustawionych autoroli! Ustaw je używając `autoroles <bots/members> <id_or_role>`",
     "SUCCESS": "Pomyślnie ustawiono <@&{{toRoleId}}> jako rolę, ktora zostanie dana `{{configured}}`.",
     "TOGGLE_SUCCESS": "Pomyślnie przełączono autorole! \nSystem automatycznych ról jest teraz **{{status}}**.",
-    "ROLE_NOT_EXISTS": "Podaj prawidłową rolę, która istnieje na tym serwerze!"
+    "ROLE_NOT_EXISTS": "Podaj prawidłową rolę, która istnieje na tym serwerze!",
+    "ROLE_TOO_HIGH" :"Podana rola jest położona wyżej w chierarchii niż najwyższa rola, którą ma bot!"
 }

@@ -1,6 +1,6 @@
 import {  SlashCommandBuilder } from '@discordjs/builders';
 import { GuildInterface } from './../../lib/types/database';
-import { CacheType, CommandInteraction, Message, Role } from 'discord.js';
+import { CacheType, CommandInteraction, Message, PermissionString, Role } from 'discord.js';
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import EmbedFactory from '../../util/EmbedFactory';
@@ -10,6 +10,9 @@ export default class extends Command {
     category = 'config';
     isSlashCommand = true;
     dm = false;
+    usage = 'autoroles [bots|members] [<role>]';
+    botPermissions = ['MANAGE_ROLES'] as PermissionString[]
+    permissions = ['MANAGE_ROLES'] as PermissionString[]
     description = "Configure roles that will be giving to newcoming users or bots"
     data = new SlashCommandBuilder()
         .addSubcommand(sub => 
@@ -61,6 +64,17 @@ export default class extends Command {
                 }) 
             }
             const role = message.mentions.roles.first() || message.guild?.roles.cache.get(args[1]) || await message.guild?.roles.fetch(args[1]).catch(err => null)
+            
+            if(role?.comparePositionTo(message.guild?.me?.roles?.highest ?? message.guild?.roles.everyone!)! > 0) {
+                return message.reply({
+                    embeds: [
+                        EmbedFactory.generateErrorEmbed(
+                            `${Utility.translate(guild?.language, 'common:ERROR')}`,
+                            `${Utility.translate(guild?.language, 'config/autoroles:ROLE_TOO_HIGH')}`
+                        )
+                    ]
+                })
+            }
             if(!role) {
                 return message.reply({
                     embeds: [
@@ -120,6 +134,16 @@ export default class extends Command {
             }
         }
         const role = interaction.options.getRole('role') as Role
+        if(role?.comparePositionTo(interaction.guild?.me?.roles?.highest ?? interaction.guild?.roles.everyone!)! > 0) {
+            return interaction.reply({
+                embeds: [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`,
+                        `${Utility.translate(guild?.language, 'config/autoroles:ROLE_TOO_HIGH')}`
+                    )
+                ]
+            , ephemeral: true})
+        }
         if(subcommand === "bots") {
             await client.handlers.guilds.setAutoRoles(guild?.discord_id!, {...guild?.autoroles, bots: role.id, active: true})
 
