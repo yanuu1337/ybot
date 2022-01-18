@@ -1,0 +1,13 @@
+
+
+{
+    "NO_CHOICE": "Nie wybrałeś ruchu. Dostępne ruchy to: `rock` - kamień, `paper` - papier, `scissors` - nożyczki.",
+    "INVALID_CHOICE": "Nieprawidłowy ruch. Dostępne ruchy to: `rock` - kamień, `paper` - papier, `scissors` - nożyczki.",
+    "DRAW": "**Remis!** \nBot wybrał `{{bot}}`.",
+    "WIN": "**Wygrałeś/aś!** \nBot wybrał `{{bot}}`.",
+    "LOSE": "**Przegrałeś/aś!** \nBot wybrał `{{bot}}`.",
+    "DESCRIPTION": "*Kamień wygrywa z nożyczkiem. Nożyczki wygrywają z papierem. Papier wygrywa z kamieniem.*\n\n",
+    "RESULT": "Rock Paper Scissors - {{user}} vs yBot"
+
+
+}

@@ -1,0 +1,9 @@
+{
+    "NO_CHOICE": "You haven't made a choice. Available choices are: `rock`, `paper`, `scissors`.",
+    "INVALID_CHOICE": "Invalid choice. Available choices are: `rock`, `paper`, `scissors.`",
+    "DRAW": "**It's a draw!** \nThe bot chose `{{bot}}`.",
+    "WIN": "**You win!** \nThe bot chose `{{bot}}`.",
+    "LOSE": "**You lose!** \nThe bot chose `{{bot}}`.",
+    "DESCRIPTION": "*Rock beats scissors. Scissors beats paper. Paper beats rock.*\n\n",
+    "RESULT": "Rock Paper Scissors - {{user}} vs yBot"
+}
