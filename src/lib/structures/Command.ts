@@ -20,7 +20,6 @@ export default class Command {
         this.client = client;
         this.name = name;
         if(!this.usage) this.usage = this.name;
-        if(!this.description) this.description = this.name
         this.category = path;
     }
     
@@ -33,6 +32,7 @@ export default class Command {
     }
 
     get commandData() {
+        if(!this.description) this.description = this.name
         return this.data?.setName(this.name).setDescription(this.description!)
     }
 
