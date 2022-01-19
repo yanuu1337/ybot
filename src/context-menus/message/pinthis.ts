@@ -8,6 +8,6 @@ export default class extends ContextMenu {
     name = 'Pin this message'
     data = new ContextMenuCommandBuilder()
     async execute(client: ArosClient, interaction: ContextMenuInteraction<CacheType> | MessageContextMenuInteraction<CacheType> | UserContextMenuInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
-        interaction.reply('Not available yet.')
+        interaction.reply({content: 'Not available yet.', ephemeral: true})
     }
 }
