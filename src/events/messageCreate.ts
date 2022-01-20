@@ -14,7 +14,7 @@ export default class extends Event {
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
         if(!msg.guild && msg.channel.type !== 'DM') return;
-        const commandGuild = msg.guild ? await this.client.handlers.guilds.fetch(msg.guild!) : null
+        const commandGuild = msg.guild ? await this.client.handlers.guilds.fetchOrCreate(msg.guild!) : null
         
         if(!commandGuild && msg.guild) {
             this.client.handlers.guilds.create({
