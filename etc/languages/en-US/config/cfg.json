@@ -1,19 +1,33 @@
 {
     "INFO": "Here's information about the current config for this guild: ",
+    "CURRENT_VALUE": "The current value for the `{{key}}` setting is: `{{value}}`",
+    "INVALID_ARG": "Invalid settings key `{{key}}`. Currently existing keys: {{keys}}",
+    "INVALID_CHANNEL": "Invalid channel. Please specify a valid channel or enter 'null' (or leave it blank) to disable it.",
+    "INVALID_ROLE": "Invalid role. Please specify a valid role or enter 'null' (or leave it blank) to disable it.",
     "LANGUAGE": "Language",
     "LANGUAGE_DESC": "The language used for this guild",
     "LANGUAGE_CHANGED": "Language set to {{lang}}",
+
     "AUTOROLE": "Auto Role",
     "AUTOROLE_DESC": "The role that will be assigned to users or bots when they join the server",
     "AUTOROLE_SET": "Auto role set to {{role}}",
     "AUTOROLE_NONE": "No auto role",
     "AUTOROLE_NONE_DESC": "No auto role will be assigned to users or bots when they join the server",
+    
     "MODLOG": "Mod Log",
     "MODLOG_DESC": "The channel where mod actions will be logged",
     "MODLOG_SET": "Mod log set to {{channel}}",
     "MODLOG_NONE": "No mod log",
     "MODLOG_NONE_DESC": "No mod log will be created for this server",
-    "CURRENT_VALUE": "The current value for the `{{key}}` setting is: `{{value}}`",
+    
     "PREFIX_CHANGED": "Prefix changed to `{{prefix}}`",
-    "INVALID_ARG": "Invalid settings key `{{key}}`. Currently existing keys: {{keys}}"
+
+    "PIN_CHANNEL": "Pinned messages channel",
+    "PIN_CHANNEL_DESC": "The channel where pinned messages using the 'Pin this' button will be sent",
+    "PIN_CHANNEL_NONE": "No pinned messages channel",
+    "PIN_CHANNEL_SET": "Pinned messages channel set to **{{channel}}**!",
+    
+    "TAG_RESTRICTION": "Tag Restriction role",
+    "TAG_RESTRICTION_DESC": "The role that will be assigned to users that will be restricted from using tags",
+    "TAG_RESTRICTION_SET": "Tag restriction set to {{role}}!"
 }

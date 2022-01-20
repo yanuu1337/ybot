@@ -1,11 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CacheType, Collection, CommandInteraction, Message, MessageEmbed, PermissionString } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageEmbed, PermissionString } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
+import EmbedFactory from '../../util/EmbedFactory';
+import Utility from '../../util/Utility';
 
 export default class extends Command {
-    permissions = ['MANAGE_GUILD'] as PermissionString[];
+    permissions = [] as PermissionString[];
     data = new SlashCommandBuilder().addSubcommand(sub =>
         sub.setName('create').setDescription('Create a tag.').addStringOption(opt => opt.setName('name').setRequired(true).setDescription('The name of the tag.'))
     ).addSubcommand(sub =>
@@ -15,15 +17,75 @@ export default class extends Command {
     )
     dm = false;
     description = 'Manage tags.';
-    usage = 'tag <create|delete|send> <name> [target]';
+    usage = 'tag <create|delete|send|restrict> <name|user-to-restrict> [target]';
     isSlashCommand = true;
     
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         if(args[0]?.toLowerCase() === "create") {
+            if(!message.member?.permissions.has("MANAGE_GUILD")) return message.reply({embeds: 
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`, 
+                        `${Utility.translate(guild?.language, 'common:USER_MISSING_PERMS', {roles: '`MANAGE_GUILD`'})}`
+                    )
+                ]
+            })
             return this.createTag(client, message, args.slice(1), guild);
         } else if (args[0]?.toLowerCase() === "delete" || args[0]?.toLowerCase() === "remove") {
+            if(!message.member?.permissions.has("MANAGE_GUILD")) return message.reply({embeds: 
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`, 
+                        `${Utility.translate(guild?.language, 'common:USER_MISSING_PERMS', {roles: '`MANAGE_GUILD`'})}`
+                    )
+                ]
+            })
             return this.removeTag(client, message, args.slice(1), guild);
+        } else if (args[0]?.toLowerCase() === "restrict") {
+            if(!guild?.config?.tag_restrict || !message.guild?.roles.cache.find(r => r.id === guild?.config?.tag_restrict)) {
+                console.log(guild?.config?.tag_restrict, message.guild?.roles.cache.find(r => r.id === guild?.config?.tag_restrict));
+                return message.reply({
+                    embeds: [
+                        EmbedFactory.generateErrorEmbed(
+                            `${Utility.translate(guild?.language, 'common:ERROR')}`,
+                            `The tag restriction role has not been set up or the role is invalid!`)
+                    ]
+                });
+            }
+            if(!message.member?.permissions.has("MANAGE_GUILD")) return message.reply({embeds: 
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`, 
+                        `${Utility.translate(guild?.language, 'common:USER_MISSING_PERMS', {roles: '`MANAGE_GUILD`'})}`
+                    )
+                ]
+            })
+            const mentionedMember = message?.mentions?.members?.first() || message?.guild?.members.cache.get(args[1]);
+            if(!mentionedMember) return message.reply({embeds:
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`,
+                        `${Utility.translate(guild?.language, 'common:USER_NOT_FOUND')}`
+                    )
+                ]
+            });
+            if(!mentionedMember.roles.cache.has(guild?.config?.tag_restrict)) {
+                await mentionedMember.roles.add(guild?.config?.tag_restrict);
+                return message.reply(`${mentionedMember.user.tag} was given the tag restriction role! They can not use tags now!`);
+            }
+            await mentionedMember.roles.remove(guild?.config?.tag_restrict);
+            return message.reply(`${mentionedMember.user.tag} can now use tags!`);
+
         } else {
+            if(guild?.config?.tag_restrict && message.member?.roles.cache.has(guild?.config?.tag_restrict)) return message.reply({embeds:
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`,
+                        `You are restricted from using tags!`
+                    )
+                ]
+            });
+
             if(!args[0]) return message.reply({content: "Tag or option doesn't exist!"});
 
             return client.handlers.tags.fetch({discord_id: message.guild?.id, tag: args[0]?.toLowerCase()}).then(tag => {
@@ -48,9 +110,26 @@ export default class extends Command {
         
     async executeSlash(client: ArosClient, interaction: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
         const sub = interaction.options.getSubcommand() as 'create' | 'delete' | 'send';
+        const member = interaction.member as GuildMember;
         if(sub === 'create') {
+            if(!member.permissions.has("MANAGE_GUILD")) return interaction.reply({embeds: 
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`, 
+                        `${Utility.translate(guild?.language, 'common:USER_MISSING_PERMS', {roles: '`MANAGE_GUILD`'})}`
+                    )
+                ], ephemeral: true
+            })
             return this.createTag(client, interaction, [interaction.options.getString('name', true)], guild);
         } else if (sub === 'delete') {
+            if(!member.permissions.has("MANAGE_GUILD")) return interaction.reply({embeds: 
+                [
+                    EmbedFactory.generateErrorEmbed(
+                        `${Utility.translate(guild?.language, 'common:ERROR')}`, 
+                        `${Utility.translate(guild?.language, 'common:USER_MISSING_PERMS', {roles: '`MANAGE_GUILD`'})}`
+                    )
+                ], ephemeral: true
+            })
             return this.removeTag(client, interaction, [interaction.options.getString('name', true)], guild);
         }
         const tag = await client.handlers.tags.fetch({discord_id: interaction.guild?.id, tag: interaction.options.getString('name', true).toLowerCase()});

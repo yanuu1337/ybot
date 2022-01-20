@@ -12,5 +12,6 @@
     "NO": "No",
     "TRUE": "True",
     "FALSE": "False",
-    "NONE": "None"
+    "NONE": "None",
+    "USER_NOT_FOUND": "User not found!"
 }

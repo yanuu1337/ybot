@@ -14,8 +14,9 @@ export interface GuildInterface  {
     language?: string,
     joined_at?: string,
     blacklisted?: boolean,
-    autoroles?: Autoroles | null | undefined,
-    mod_log?: string | null | undefined
+    autoroles?: Autoroles | null,
+    mod_log?: string | null,
+    config?: GuildConfig | null,
 } 
 
 export interface Tag {
@@ -31,6 +32,12 @@ export interface Autoroles {
     members?: string | null;
     active?: boolean;
 }
+
+export interface GuildConfig {
+    tag_restrict?: string | null,
+    pin_channel?: string | null,
+}
+
 export type Badges = 'STAFF' | 'FRIEND' | 'PREMIUM' | 'TRUSTED_USER' | 'CAT'
 export const BadgeEmojis = {
     STAFF:`<:staff:927258825659121715>`,

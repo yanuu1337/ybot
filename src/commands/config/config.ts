@@ -18,14 +18,16 @@ export default class extends Command {
         .addSubcommand(sub => sub.setName("prefix").setDescription("Set/view the prefix configuration")
             .addStringOption(opt => opt.setName("prefix").setRequired(false).setDescription("The prefix to set the bot to."))
         )
-
+        .addSubcommand(sub => sub.setName("pinchannel").setDescription("Set/view the pinned messages channel configuration.")
+            .addChannelOption(opt => opt.setName("channel").setRequired(false).setDescription("The channel to send the pinned messages to."))
+        )
     async execute(client: ArosClient, msg: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         //TODO Prefixes, other stuff
         if(!args[0]) {
             const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:INFO")}`)
                 .addFields([
                     {
-                        name: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE")}`,
+                        name: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE")} - \`language\``,
                         value: `${Utility.translate(guild?.language, "config/cfg:LANGUAGE_DESC")} - \`${guild?.language}\``,
                         inline: false
                     },
@@ -35,34 +37,44 @@ export default class extends Command {
                         inline: false
                     },
                     {
-                        name: `${Utility.translate(guild?.language, "config/cfg:MODLOG")}`,
-                        value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - \`${guild?.mod_log}\`` ?? Utility.translate(guild?.language, "common:NONE"),
+                        name: `${Utility.translate(guild?.language, "config/cfg:MODLOG")} - \`modlog\``,
+                        value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - ${guild?.mod_log ? `<#${guild?.mod_log}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
                         inline: false
-                    }  
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL")} - \`pins\``,
+                        value: `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_DESC")} - ${guild?.config?.pin_channel ? `<#${guild?.config?.pin_channel}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION")} - \`tag_restrict\``,
+                        value: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_DESC")} - ${guild?.config?.pin_channel ? `<@&${guild?.config?.tag_restrict}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
+                        inline: false
+                    }    
             ]);
             return msg.reply({embeds: [embed]})
         }
-        const configKeys = ["language", "modlog", "prefix"]
+        const configKeys = ["language", "modlog", "prefix", "pins", "tag_restrict"]
         //check if args[0] is a valid config value
         if(!configKeys.includes(args[0])) {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG", {key: args[0], keys: configKeys.map((val) => `\`${val}\``).join(', ')}));
         }
-        const argument = args[0].replace('modlog', 'mod_log') as keyof GuildInterface;
+        // const argument = args[0].replace('modlog', 'mod_log') as keyof GuildInterface;
 
-        if(args[0] && !args[1]) {
-            return msg.reply({embeds: [
-                EmbedFactory.generateInfoEmbed(
-                    `${Utility.translate(
-                        guild?.language,
-                        "common:SUCCESS"
-                    )}`,
-                    `${Utility.translate(
-                        guild?.language,
-                        "config/cfg:CURRENT_VALUE",
-                        {key: args[0], value: guild?.[argument]}
-                    )}`)
-            ]})
-        }
+        // if(args[0] && !args[1]) {
+        //     return msg.reply({embeds: [
+        //         EmbedFactory.generateInfoEmbed(
+        //             `${Utility.translate(
+        //                 guild?.language,
+        //                 "common:SUCCESS"
+        //             )}`,
+        //             `${Utility.translate(
+        //                 guild?.language,
+        //                 "config/cfg:CURRENT_VALUE",
+        //                 {key: args[0], value: guild?.[argument]}
+        //             )}`)
+        //     ]})
+        // }
 
         if(args[0] === "language") {
             if(!["en", "pl"].includes(args[1])) {
@@ -102,13 +114,43 @@ export default class extends Command {
                         {prefix: args[1]}
                     )}`)
                 ]})
-        } else {
+        } else if (args[0] === "pins") {
+            if(!args[1] || args[1] === "none" || args[1] === "null") {
+                await client.handlers.guilds.editConfig(msg.guild!, {pin_channel: null});
+                return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_SET", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
+            }
+            
+            const channel = msg.mentions.channels.first() || msg.guild?.channels.cache.find(c => c.id === args[1] || c.toString() === args[1]);
+            
+            if(!channel) {
+                return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_CHANNEL"));
+            }
+            
+            await client.handlers.guilds.editConfig(msg.guild!, {pin_channel: channel.id});
+            return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_SET", {channel: channel.toString()})}`)]});
+        
+        } else if (args[0] === "tag_restrict") {
+            if(!args[1] || args[1] === "none" || args[1] === "null") {
+                await client.handlers.guilds.editConfig(msg.guild!, {tag_restrict: null});
+                return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_SET", {role: Utility.translate(guild?.language, "common:NONE")})}`)]});
+            }
+            
+            const role = msg.mentions.roles.first() || msg.guild?.roles.cache.find(c => c.id === args[1] || c.toString() === args[1]);
+            
+            if(!role) {
+                return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ROLE"));
+            }
+            console.log(role);
+            await client.handlers.guilds.editConfig(msg.guild!, {tag_restrict: role.id});
+            return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_SET", {role: role.toString()})}`)]});
+        }
+        else {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG"));
         }
 
     }
     async executeSlash(client: ArosClient, cmd: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
-        const sub = cmd.options.getSubcommand() as "view" | "modlog" | "prefix"
+        const sub = cmd.options.getSubcommand() as "view" | "modlog" | "prefix" | "pinchannel";
         if(sub === "view") {
             const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:INFO")}`)
                 .addFields([
@@ -124,7 +166,17 @@ export default class extends Command {
                     },
                     {
                         name: `${Utility.translate(guild?.language, "config/cfg:MODLOG")}`,
-                        value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - \`${guild?.mod_log}\`` ?? Utility.translate(guild?.language, "common:NONE"),
+                        value: `${Utility.translate(guild?.language, "config/cfg:MODLOG_DESC")} - ${guild?.mod_log ? `<#${guild?.mod_log}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_DESC")} - ${guild?.config?.pin_channel ? `<#${guild?.config?.pin_channel}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_DESC")} - ${guild?.config?.pin_channel ? `<@&${guild?.config?.tag_restrict}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
                         inline: false
                     }  
             ]);
@@ -136,7 +188,6 @@ export default class extends Command {
                 await client.handlers.guilds.edit(cmd.guild!, {mod_log: null});
                 return cmd.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:MODLOG_SET", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
             }
-            
             
             
             if(!channel.isText()) {
@@ -176,6 +227,20 @@ export default class extends Command {
                         {prefix}
                     )}`)
                 ]})
+        } else if (sub === "pinchannel") {
+            const channel = cmd.options.getChannel("channel") as TextChannel | null;
+            if(!channel) {
+                await client.handlers.guilds.editConfig(cmd.guild!, {pin_channel: null});
+                return cmd.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_SET", {channel: Utility.translate(guild?.language, "common:NONE")})}`)]});
+            }
+            
+            if(!channel?.isText()) {
+                return cmd.reply(Utility.translate(guild?.language, "config/cfg:INVALID_CHANNEL"));
+            }
+            
+            await client.handlers.guilds.editConfig(cmd.guild!, {pin_channel: channel.id});
+            return cmd.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_SET", {channel: channel.toString()})}`)]});
+        
         }
         
         

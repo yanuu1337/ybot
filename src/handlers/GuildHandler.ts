@@ -1,4 +1,4 @@
-import { Autoroles } from './../lib/types/database';
+import { Autoroles, GuildConfig } from './../lib/types/database';
 
 import { Collection, Guild } from "discord.js";
 import ArosClient from "../extensions/ArosClient";
@@ -23,6 +23,7 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
             \`language\` VARCHAR(10) NOT NULL DEFAULT 'en-US',
             \`autoroles\` JSON NULL DEFAULT NULL,
             \`mod_log\` VARCHAR(25) NULL DEFAULT NULL,
+            \`config\` JSON NULL DEFAULT NULL,
             PRIMARY KEY(\`id\`)) ENGINE= InnoDB;
             `);
             (await this.client.guilds.fetch()).forEach((key) => {
@@ -40,6 +41,10 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
         if(data) return data
         const val = await this.create({discord_id: query instanceof Guild ? query.id : query})
         return val;
+    }
+
+    async editConfig(id: Guild | string, query: GuildConfig | object) {
+        return this.edit(id, {config: JSON.stringify(query)});
     }
 
     async edit(id: Guild | string, query: GuildInterface | object) {
