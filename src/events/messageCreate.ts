@@ -13,6 +13,7 @@ export default class extends Event {
         
         const guildMe = msg?.guild?.me ?? await msg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = msg.channel as TextChannel | ThreadChannel | NewsChannel
+        const user = await this.client.handlers.users.fetchOrCreate(msg.author)
         if(!msg.guild && msg.channel.type !== 'DM') return;
         const commandGuild = msg.guild ? await this.client.handlers.guilds.fetchOrCreate(msg.guild!) : null
         
@@ -29,6 +30,11 @@ export default class extends Event {
         .split(/\s+/);
 
         try {
+            if(user.blacklisted) {
+                if (Math.random() > 0.5) msg.reply(`Error: You are blacklisted from using this bot.`)
+                return;
+            }
+
             await this.handleMention(msg, commandGuild, cmdArgs)
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
             if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return;
@@ -114,4 +120,6 @@ export default class extends Event {
             //!Handle invites
         }
     }
+
+    
 }

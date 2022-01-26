@@ -25,7 +25,10 @@ export default class extends Event {
            
 
             try {
-                
+                if(user.blacklisted) {
+                    if (Math.random() > 0.5) interaction.reply({ephemeral: true, content: `Error: You are blacklisted from using this bot.`})
+                    return;
+                }
                 if(!menu) throw new Error(`Context menu ${interaction.commandName} was not found!`)
                 if(!menu.permissions) return menu?.execute(client, interaction, guild)
                 if(menu.permissions && (member.permissions?.has(menu.permissions) || channel.permissionsFor(member)?.has(menu.permissions))) {
