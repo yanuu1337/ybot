@@ -12,7 +12,7 @@ export default class Command {
     devOnly: boolean = false;
     isSlashCommand: boolean = false;
     permissions?: PermissionString[] = []
-    botPermissions?: PermissionString[] = ['SEND_MESSAGES', 'VIEW_CHANNEL']
+    botPermissions?: PermissionString[] = [];
     data?: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
     dm: boolean = false;
     
