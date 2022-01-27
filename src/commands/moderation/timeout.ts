@@ -9,8 +9,10 @@ import Utility from "../../util/Utility";
 export default class extends Command {
     permissions = ["MODERATE_MEMBERS"] as PermissionString[];
     botPermissions = ["MODERATE_MEMBERS"] as PermissionString[];
+    usage = 'timeout <user> <time> [reason]';
+    
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
-        //timeout a member
+        
         const member = message.mentions.members?.first() || message.guild?.members.cache.get(args[0]) || await message.guild?.members.fetch(args[0]).catch(err => null);
         if(!args[0] || !member) {
             return message.reply({embeds: [
@@ -18,7 +20,7 @@ export default class extends Command {
                 ]}
             )
         }
-        if(!member.communicationDisabledUntilTimestamp || member?.communicationDisabledUntilTimestamp > Date?.now()) {
+        if(member.communicationDisabledUntilTimestamp || member?.communicationDisabledUntilTimestamp! > Date?.now()) {
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:ALREADY_TIMEOUTED")}`)
                 ]}
@@ -30,7 +32,7 @@ export default class extends Command {
             ]})
         }
         const timeInMs = ms(args[1]);
-        const reason = args.slice(2).join(" ");
+        const reason = args.slice(2).join(" ") ?? Utility.translate(guild?.language, "common:NONE");
 
         const modLogEmbed = EmbedFactory.generateModerationEmbed(message.author, member, "timeout", reason);
         const timeoutEmbed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "mod/timeout:TIMEOUT_SUCCESS", {member: member.user.tag, time: args[1], reason: reason})}`);
