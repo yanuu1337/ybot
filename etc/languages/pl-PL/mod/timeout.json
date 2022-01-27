@@ -3,6 +3,8 @@
     "INVALID_MEMBER": "Nie znaleziono użytkownika o podanej nazwie.",
     "TIMEOUT_ERROR": "Wystąpił nieznany błąd. Spróbuj ponownie później.",
     "TIMEOUT_SUCCESS": "Pomyślnie wyciszono użytkownika **{{member}}** na `{{time}}`! \nPowód: `{{reason}}`",
-    "NOT_MODERATABLE": "Nie można wyciszyć tego użytkownika!",
-    "ALREADY_TIMEOUT": "Użytkownik **{{member}}** jest już wyciszony! \nUżyj komendy `untimeout` aby odciszyć użytkownika."
+    "NOT_MODERATABLE": "Nie można wyciszyć/odciszyć tego użytkownika!",
+    "ALREADY_TIMEOUTED": "Użytkownik **{{member}}** jest już wyciszony! \nUżyj komendy `untimeout` aby odciszyć użytkownika.",
+    "NOT_IN_TIMEOUT": "Użytkownik **{{member}}** nie jest wyciszony!",
+    "UNTIMEOUT_SUCCESS": "Pomyślnie odciszono użytkownika **{{member}}**! \nPowód: `{{reason}}`"
 }
