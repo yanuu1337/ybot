@@ -13,7 +13,6 @@ export default class extends ContextMenu {
     async execute(client: ArosClient, interaction: MessageContextMenuInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
         
         const user = await client.handlers.users.fetchOrCreate(interaction.user)
-        console.log(guild);
         if(!guild?.config?.pin_channel) {
             return interaction.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(
@@ -23,7 +22,6 @@ export default class extends ContextMenu {
             ], ephemeral: true})
         }
         const msg = interaction.targetMessage as Message;
-        console.log(msg.content.length);
         if(msg.content.length > 500) {
             msg.content = msg.content.substring(0, 500).trimEnd() + `...`;
         }

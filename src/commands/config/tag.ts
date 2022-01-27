@@ -43,7 +43,6 @@ export default class extends Command {
             return this.removeTag(client, message, args.slice(1), guild);
         } else if (args[0]?.toLowerCase() === "restrict") {
             if(!guild?.config?.tag_restrict || !message.guild?.roles.cache.find(r => r.id === guild?.config?.tag_restrict)) {
-                console.log(guild?.config?.tag_restrict, message.guild?.roles.cache.find(r => r.id === guild?.config?.tag_restrict));
                 return message.reply({
                     embeds: [
                         EmbedFactory.generateErrorEmbed(

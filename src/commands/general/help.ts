@@ -14,7 +14,6 @@ export default class extends Command {
     usage = 'help [command|category]';
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         const user = await client.handlers.users.fetchOrCreate(message.author);
-        console.log(user)
         const commands = [...client.handlers.commands.values()].filter(cmd => !cmd.devOnly);
         const categories: {
             [key: string]: Command[]

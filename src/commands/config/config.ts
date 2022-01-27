@@ -22,6 +22,8 @@ export default class extends Command {
         )
         .addSubcommand(sub => sub.setName("pinchannel").setDescription("Set/view the pinned messages channel configuration.")
             .addChannelOption(opt => opt.setName("channel").setRequired(false).setDescription("The channel to send the pinned messages to."))
+        ).addSubcommand(sub => sub.setName("level_toggle").setDescription("Toggle the level system.").addBooleanOption(opt =>
+            opt.setName("enable").setRequired(false).setDescription("Whether or not the level system should be enabled."))
         )
     async execute(client: ArosClient, msg: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         //TODO Prefixes, other stuff
@@ -52,11 +54,16 @@ export default class extends Command {
                         name: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION")} - \`tag_restrict\``,
                         value: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_DESC")} - ${guild?.config?.pin_channel ? `<@&${guild?.config?.tag_restrict}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
                         inline: false
-                    }    
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:LEVEL_TOGGLE")} - \`level_toggle\``,
+                        value: `${Utility.translate(guild?.language, "config/cfg:LEVEL_TOGGLE_DESC")} - ${guild?.config?.pin_channel ? `\`${Utility.translate(guild?.language, "common:YES")}\`` : `\`${Utility.translate(guild?.language, "common:NO")}\``}`,
+                        inline: false
+                    }      
             ]);
             return msg.reply({embeds: [embed]})
         }
-        const configKeys = ["language", "modlog", "prefix", "pins", "tag_restrict"]
+        const configKeys = ["language", "modlog", "prefix", "pins", "tag_restrict", "level_toggle"]
         
         if(!configKeys.includes(args[0])) {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG", {key: args[0], keys: configKeys.map((val) => `\`${val}\``).join(', ')}));
@@ -127,17 +134,21 @@ export default class extends Command {
             if(!role) {
                 return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ROLE"));
             }
-            console.log(role);
             await client.handlers.guilds.editConfig(msg.guild!, {tag_restrict: role.id});
             return msg.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_SET", {role: role.toString()})}`)]});
-        }
-        else {
+        
+        } else if (args[0] === "level_toggle") {
+            const toggled = await client.handlers.levels.toggleLeveling(msg.guild!);
+            return msg.reply({embeds: [
+                EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, `config/cfg:LEVELING_TOGGLE_${toggled ? 'ON' : 'OFF'}`)}`)
+            ]})
+        } else {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG"));
         }
 
     }
     async executeSlash(client: ArosClient, cmd: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
-        const sub = cmd.options.getSubcommand() as "view" | "modlog" | "prefix" | "pinchannel";
+        const sub = cmd.options.getSubcommand() as "view" | "modlog" | "prefix" | "pinchannel" | "level_toggle";
         if(sub === "view") {
             const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:INFO")}`)
                 .addFields([
@@ -164,6 +175,11 @@ export default class extends Command {
                     {
                         name: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION")}`,
                         value: `${Utility.translate(guild?.language, "config/cfg:TAG_RESTRICTION_DESC")} - ${guild?.config?.pin_channel ? `<@&${guild?.config?.tag_restrict}>` : `\`${Utility.translate(guild?.language, "common:NONE")}\``}`,
+                        inline: false
+                    },
+                    {
+                        name: `${Utility.translate(guild?.language, "config/cfg:LEVEL_TOGGLE")}`,
+                        value: `${Utility.translate(guild?.language, "config/cfg:LEVEL_TOGGLE_DESC")} - ${guild?.config?.pin_channel ? `\`${Utility.translate(guild?.language, "common:YES")}\`` : `\`${Utility.translate(guild?.language, "common:NO")}\``}`,
                         inline: false
                     }  
             ]);
@@ -228,6 +244,11 @@ export default class extends Command {
             await client.handlers.guilds.editConfig(cmd.guild!, {pin_channel: channel.id});
             return cmd.reply({embeds: [EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, "config/cfg:PIN_CHANNEL_SET", {channel: channel.toString()})}`)]});
         
+        } else if (sub === "level_toggle") {
+            const toggled = (await client.handlers.guilds.editConfig(cmd.guild!, {leveling: cmd.options.getBoolean("enable") ?? false}))?.config?.leveling;
+            return cmd.reply({embeds: [
+                EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, "common:SUCCESS")}`, `${Utility.translate(guild?.language, `config/cfg:LEVELING_TOGGLE_${toggled ? 'ON' : 'OFF'}`)}`)
+            ]})
         }
         
         
