@@ -1,0 +1,22 @@
+{
+    
+    "GENERAL": "Ogólne",
+    "MODERATION": "Moderacja",
+    "CONFIG": "Ustawienia",
+    "UTILITY": "Narzędzia",
+    "FUN": "Zabawa",
+    "NSFW": "NSFW",
+    "QUERY_NOT_FOUND": "Nie znaleziono komendy/kategorii o nazwie `{{query}}`.",
+    "USAGE": "Użycie",
+    "ALIASES": "Aliasy",
+    "REQUIRED_PERMS": "Wymagane uprawnienia",
+    "BOT_REQUIRED_PERMS": "Wymagane uprawnienia bota",
+    "CATEGORY": "Kategoria",
+    "DESCRIPTION": "Opis",
+    "HELP_DESCRIPTION": "**Użyj reakcji pod wiadomością aby nawigować przez menu pomocy!** \nUżyj `{{prefix}}help <komenda|kategoria>` aby zobaczyć szczegółowe informacje o konkretnej komendzie/kategorii. \n\n*[] = opcjonalne parametry, <> = wymagane*\n",
+    "NO_DESCRIPTION": "Brak opisu. Skontaktuj się z developerem!",
+    "NO_USAGE": "Brak sposobu użycia. Skontaktuj się z developerem!"
+    
+
+
+}

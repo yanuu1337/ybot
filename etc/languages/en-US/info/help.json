@@ -1,0 +1,22 @@
+{
+    
+    "GENERAL": "General",
+    "MODERATION": "Moderation",
+    "CONFIG": "Config",
+    "UTILITY": "Utility",
+    "FUN": "Fun",
+    "NSFW": "NSFW",
+    "QUERY_NOT_FOUND": "The category/command called `{{query}}` could not be found.",
+    "USAGE": "Usage",
+    "ALIASES": "Aliases",
+    "REQUIRED_PERMS": "Required Permissions",
+    "BOT_REQUIRED_PERMS": "Bot Required Permissions",
+    "CATEGORY": "Category",
+    "DESCRIPTION": "Description",
+    "HELP_DESCRIPTION": "**Use the reactions below to navigate the help menu!** \nUse `{{prefix}}help <command|category> to get more info on a command or category. \n\n*[] = optional, <> = required*\n",
+    "NO_DESCRIPTION": "No description set. Please contact the developer!",
+    "NO_USAGE": "No usage set. Please contact the developer!"
+    
+
+
+}
