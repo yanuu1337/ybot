@@ -10,6 +10,7 @@ export default class extends Command {
     permissions = ["BAN_MEMBERS"] as PermissionString[];
     botPermissions = ["BAN_MEMBERS"] as PermissionString[];
     description = 'Bans a member from the server';
+    usage = "ban <user|id> [reason]";
     data = new SlashCommandBuilder().addStringOption(opt => opt.setName("member").setRequired(true).setDescription("The member to ban")).addStringOption(opt => opt.setName("reason").setRequired(false).setDescription("The reason for the ban"))
 
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {

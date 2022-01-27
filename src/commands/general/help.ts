@@ -11,7 +11,7 @@ const capitalize = (s: string) => {
 }
 export default class extends Command {
     description = "Display a help message.";
-
+    usage = 'help [command|category]';
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         const user = await client.handlers.users.fetchOrCreate(message.author);
         console.log(user)

@@ -1,4 +1,4 @@
-import { Message, TextChannel } from "discord.js";
+import { Message, PermissionString, TextChannel } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
@@ -7,6 +7,8 @@ import Utility from "../../util/Utility";
 
 export default class extends Command {
     usage = 'untimeout <user> [reason]';
+    permissions = ['MODERATE_MEMBERS'] as PermissionString[]
+    botPermissions = ['MODERATE_MEMBERS'] as PermissionString[]
     description = 'Untimeout a user';
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         

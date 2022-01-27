@@ -13,8 +13,10 @@ export default class extends Command {
     aliases = ['userlang', 'mylang']
     dm = true;
     name = 'userlanguage'
-    description = 'Configure the user language (does not affect guild languages)'
+    description = 'Change your language'
     isSlashCommand = true;
+    usage = 'userlanguage <language>'
+
     data = new SlashCommandBuilder().addStringOption(str => 
         str
         .setName('language').setDescription('Language to choose')

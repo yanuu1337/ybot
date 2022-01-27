@@ -9,7 +9,9 @@ import Utility from "../../util/Utility";
 export default class extends Command {
     permissions = ['MANAGE_GUILD'] as PermissionString[];
     isSlashCommand = true;
+    description = 'Configure the bot for your server.';
     dm = false;
+    usage = 'config [language|modlog|prefix|pins|tag_restrict] <value>';
     data = new SlashCommandBuilder()
         .addSubcommand(sub => sub.setName("view").setDescription("View the current configuration."))
         .addSubcommand(sub => sub.setName("modlog").setDescription("Set/view the modlog configuration.")
@@ -55,26 +57,11 @@ export default class extends Command {
             return msg.reply({embeds: [embed]})
         }
         const configKeys = ["language", "modlog", "prefix", "pins", "tag_restrict"]
-        //check if args[0] is a valid config value
+        
         if(!configKeys.includes(args[0])) {
             return msg.reply(Utility.translate(guild?.language, "config/cfg:INVALID_ARG", {key: args[0], keys: configKeys.map((val) => `\`${val}\``).join(', ')}));
         }
-        // const argument = args[0].replace('modlog', 'mod_log') as keyof GuildInterface;
-
-        // if(args[0] && !args[1]) {
-        //     return msg.reply({embeds: [
-        //         EmbedFactory.generateInfoEmbed(
-        //             `${Utility.translate(
-        //                 guild?.language,
-        //                 "common:SUCCESS"
-        //             )}`,
-        //             `${Utility.translate(
-        //                 guild?.language,
-        //                 "config/cfg:CURRENT_VALUE",
-        //                 {key: args[0], value: guild?.[argument]}
-        //             )}`)
-        //     ]})
-        // }
+        
 
         if(args[0] === "language") {
             if(!["en", "pl"].includes(args[1])) {

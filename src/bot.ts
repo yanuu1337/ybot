@@ -12,6 +12,6 @@ client.once('ready', async () => {
     client.logger.info('BOT: Connected.')
     client.handlers.guilds.create({
         discord_id: '856924300215713833'
-    })   
+    })
 })
 export { client, database }

@@ -10,6 +10,7 @@ export default class extends Command {
     permissions = ["KICK_MEMBERS"] as PermissionString[];
     botPermissions = ["KICK_MEMBERS"] as PermissionString[];
     isSlashCommand = true;
+    usage = "kick <user|id> [reason]";
     description = 'Kick a member from the server';
     data = new SlashCommandBuilder().addStringOption(opt => opt.setName("member").setRequired(true).setDescription("The member to kick")).addStringOption(opt => opt.setName("reason").setRequired(false).setDescription("The reason for the kick"))
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {

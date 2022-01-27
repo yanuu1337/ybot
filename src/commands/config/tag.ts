@@ -16,7 +16,7 @@ export default class extends Command {
         sub.setName('send').setDescription('Send a tag.').addStringOption(opt => opt.setName('name').setRequired(true).setDescription('The name of the tag.')).addMentionableOption(opt => opt.setName('target').setDescription('Optional target of the tag.'))
     )
     dm = false;
-    description = 'Manage tags.';
+    description = 'Manage tags - message snippets.';
     usage = 'tag <create|delete|send|restrict> <name|user-to-restrict> [target]';
     isSlashCommand = true;
     

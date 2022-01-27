@@ -7,6 +7,8 @@ import Utility from "../../util/Utility";
 
 export default class extends Command {
     dm = true;
+    usage = '8ball <question>';
+    description = 'Play the classic 8ball game!';
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         
         if(!args[0]) return message.reply({embeds: [

@@ -9,6 +9,7 @@ import Utility from "../../util/Utility";
 export default class extends Command {
     aliases = ['guildinfo', 'gi', 'serverinfo', 'si'];
     isSlashCommand = true;
+    usage = 'guildinfo [guild_id]';
     description = 'Get information about the server';
     data = new SlashCommandBuilder()
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null) {

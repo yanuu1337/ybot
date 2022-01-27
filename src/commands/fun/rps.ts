@@ -8,7 +8,7 @@ import { GuildInterface } from "../../lib/types/database";
 
 export default class extends Command {
     dm = true;
-    usage = 'rps <rock/paper/scissors>';
+    usage = 'rps <rock|paper|scissors>';
     aliases = ['rockpaperscissors', 'rpsgame']
     description = 'Rock beats scissors. Scissors beats paper. Paper beats rock.';
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {

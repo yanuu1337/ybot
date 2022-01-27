@@ -11,6 +11,8 @@ export default class extends Command {
     dm = false;
     aliases = ['lang', 'language'];
     isSlashCommand = true;
+    usage = 'language <language>';
+    description = 'Change the language of the bot.';
     data = new SlashCommandBuilder().addStringOption(str => 
         str
         .setName('language').setDescription('Language to choose')
