@@ -1,0 +1,6 @@
+{
+    "RESULT_LOST": "You lost the coin flip bet. It's **{{choice}}**.",
+    "RESULT_WON": "You won the coin flip bet! It's **{{choice}}**!",
+    "RESULT": "You flipped a coin. It's **{{choice}}**.",
+    "TENSION": "Building up tension..."
+}

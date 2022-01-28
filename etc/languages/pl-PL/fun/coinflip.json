@@ -1,0 +1,6 @@
+{
+    "RESULT_LOST": "Przegrałeś/aś rzut monetą. Wypadło: **{{choice}}**.",
+    "RESULT_WON": "Wygrałeś/aś rzut monetą! Wypadło: **{{choice}}**!",
+    "RESULT": "Rzuciłeś/aś monetą, wypadło: **{{choice}}**.",
+    "TENSION": "Podbudowywanie napięcia..."
+}
