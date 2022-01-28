@@ -60,7 +60,19 @@ export default class ArosClient extends Client {
     }
     public async login(token: string): Promise<string> {
         this.ping();
-        schedule.scheduleJob(`25 * * * *`, async () => await this.ping());
+        schedule.scheduleJob(`25 * * * *`, async () => {
+            await this.ping()
+
+            //this sets the presence (cos discord sometimes resets it)
+            this.user?.setPresence({
+                activities: [{
+                        name: `/help | ${process.env.PREFIX}help - aros.folds.cc`,
+                        type: 'WATCHING',
+                    }
+                
+                ]
+            })
+        });
         this.translate = await i18n();
         this.on('error', (err) => {this.logger.error(`Client error: `, err)});
         return super.login(token);
