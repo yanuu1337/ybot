@@ -30,6 +30,11 @@
     
     "TAG_RESTRICTION_SET": "Rola ograniczająca używanie tagów została ustawiona na {{role}}!",
     "TAG_RESTRICTION": "Rola ograniczająca używanie tagów",
-    "TAG_RESTRICTION_DESC": "Rola, która będzie nadana użytkownikowi, by nie mógł używać tagów."
+    "TAG_RESTRICTION_DESC": "Rola, która będzie nadana użytkownikowi, by nie mógł używać tagów.",
+
+    "LEVEL_TOGGLE": "Poziomowanie",
+    "LEVEL_TOGGLE_DESC": "Czy system levelingu jest właczony: ",
+    "LEVEL_TOGGLE_ON": "Leveling jest teraz **włączony**!",
+    "LEVEL_TOGGLE_OFF": "Leveling jest teraz **wyłączony**!"
 
 }

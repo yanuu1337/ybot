@@ -44,7 +44,8 @@ export default class GuildHandler extends Collection<string, GuildInterface> {
     }
 
     async editConfig(id: Guild | string, query: GuildConfig | object) {
-        return this.edit(id, {config: JSON.stringify(query)});
+        const fetchedValue = await this.fetch(id, true); 
+        return this.edit(id, {config: JSON.stringify({...fetchedValue?.config, ...query})});
     }
 
     async edit(id: Guild | string, query: GuildInterface | object) {

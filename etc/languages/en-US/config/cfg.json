@@ -29,5 +29,10 @@
     
     "TAG_RESTRICTION": "Tag Restriction role",
     "TAG_RESTRICTION_DESC": "The role that will be assigned to users that will be restricted from using tags",
-    "TAG_RESTRICTION_SET": "Tag restriction set to {{role}}!"
+    "TAG_RESTRICTION_SET": "Tag restriction set to {{role}}!",
+
+    "LEVEL_TOGGLE": "Leveling",
+    "LEVEL_TOGGLE_DESC": "Whether or not to enable leveling for this server",
+    "LEVEL_TOGGLE_ON": "Leveling is now **enabled**!",
+    "LEVEL_TOGGLE_OFF": "Leveling is now **disabled**!"
 }

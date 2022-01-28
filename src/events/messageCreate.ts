@@ -37,7 +37,7 @@ export default class extends Event {
 
             await this.handleMention(msg, commandGuild, cmdArgs)
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
-            if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return;
+            if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return await this.handleLeveling(msg, commandGuild);
 
             if(!command) return;
             if(command.devOnly && msg.author.id !== '304263386588250112') {
@@ -119,6 +119,31 @@ export default class extends Event {
             
             //!Handle invites
         }
+    }
+
+    async handleLeveling(msg: Message, guild?: GuildInterface | null) {
+        if(!msg.member) return;
+        await this.client.handlers.levels.fetchOrCreate(msg.member);
+        
+        if(!guild?.config?.leveling) return;
+        const randomXpAmount = Math.floor(Math.random() * 10) + 1;
+        const xp = (await this.client.handlers.levels.getXp(msg.member!))! + randomXpAmount;
+        const level = await this.client.handlers.levels.getLevel(msg.member!);
+
+        
+        const required = Math.floor(Math.pow(level! + 1, 2) * 10);
+        if(xp >= required) {
+            await this.client.handlers.levels.addLevel(msg.member!, 1);
+            return msg.reply({
+                embeds: [
+                    EmbedFactory.generateInfoEmbed(`Level up!`, `${Utility.translate(guild?.language, `common:LEVEL_UP`, {level: level! + 1})}`)
+                ]
+            })
+        } else {
+            await this.client.handlers.levels.addXp(msg.member!, randomXpAmount);
+        }
+
+        
     }
 
     

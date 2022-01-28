@@ -13,5 +13,6 @@
     "TRUE": "Prawda",
     "FALSE": "Fałsz",
     "NONE": "Brak",
-    "USER_NOT_FOUND": "Nie znaleziono użytkownika!"
+    "USER_NOT_FOUND": "Nie znaleziono użytkownika!",
+    "LEVEL_UP": "Właśnie osiągnąłeś **{{level}}** poziom!"
 }

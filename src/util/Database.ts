@@ -4,7 +4,7 @@ import mysql from 'mysql2/promise'
 import { SQLStatement } from "sql-template-strings";
 import Utility from './Utility'
 
-type TableCollection = 'users' | 'guilds' | 'test' | 'tags'
+type TableCollection = 'users' | 'guilds' | 'levels' | 'tags'
 export default class Database {
     client: ArosClient;
     pool: mysql.Pool | null;

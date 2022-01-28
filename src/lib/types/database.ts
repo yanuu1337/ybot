@@ -6,7 +6,16 @@ export interface User {
     blacklisted?: boolean,
     language?: string,
     badges?: BadgesObject[] | null;
-} 
+}
+
+export interface LevelUser {
+    discord_id: string,
+    guild_id?: string,
+    created_at?: string | number | Date,
+    level?: number,
+    xp?: number
+
+}
 export interface GuildInterface  {
     prefix?: string;
     discord_id: string,
@@ -36,6 +45,7 @@ export interface Autoroles {
 export interface GuildConfig {
     tag_restrict?: string | null,
     pin_channel?: string | null,
+    leveling?: boolean | false,
 }
 
 export type Badges = 'STAFF' | 'FRIEND' | 'PREMIUM' | 'TRUSTED_USER' | 'CAT'
