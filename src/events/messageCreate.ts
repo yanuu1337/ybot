@@ -30,15 +30,15 @@ export default class extends Event {
         .split(/\s+/);
 
         try {
-            if(user.blacklisted) {
-                if (Math.random() > 0.5) msg.reply(`Error: You are blacklisted from using this bot.`)
-                return;
-            }
-
+            
             await this.handleMention(msg, commandGuild, cmdArgs)
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
             if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return await this.handleLeveling(msg, commandGuild);
-
+            
+            if(user.blacklisted) {
+                if (Math.random() > 0.7) msg.reply(`Error: You are blacklisted from using this bot.`)
+                return;
+            }
             if(!command) return;
             if(command.devOnly && msg.author.id !== '304263386588250112') {
                 return msg.reply(`This command is only available for developers.`)
@@ -125,7 +125,7 @@ export default class extends Event {
         if(!msg.member || msg.author.bot) return;
         const fetched = await this.client.handlers.levels.fetchOrCreate(msg.member);
         
-        if(!guild?.config?.leveling) return;
+        if(!guild?.config?.leveling || !guild.blacklisted) return;
         const randomXpAmount = Math.floor(Math.random() * 10) + 1;
         const xp = fetched.xp! + randomXpAmount;
         const level = fetched.level;
