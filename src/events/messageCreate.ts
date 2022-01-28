@@ -125,7 +125,7 @@ export default class extends Event {
         if(!msg.member || msg.author.bot) return;
         const fetched = await this.client.handlers.levels.fetchOrCreate(msg.member);
         
-        if(!guild?.config?.leveling || !guild.blacklisted) return;
+        if(!guild?.config?.leveling || guild.blacklisted) return;
         const randomXpAmount = Math.floor(Math.random() * 10) + 1;
         const xp = fetched.xp! + randomXpAmount;
         const level = fetched.level;
