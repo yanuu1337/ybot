@@ -62,6 +62,7 @@ export default class ArosClient extends Client {
         this.ping();
         schedule.scheduleJob(`25 * * * *`, async () => await this.ping());
         this.translate = await i18n();
+        this.on('error', (err) => {this.logger.error(`Client error: `, err)});
         return super.login(token);
     }
 
