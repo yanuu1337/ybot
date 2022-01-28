@@ -1,3 +1,4 @@
 {
-    "NO_LEVELING": "Leveling is turned off on this server! Contact your server administrators."
+    "NO_LEVELING": "Leveling is turned off on this server! Contact your server administrators.",
+    "USER_NO_LEVEL": "This user does not have a level! Make them chat in the server to level up."
 }
