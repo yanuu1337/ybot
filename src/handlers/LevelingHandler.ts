@@ -49,25 +49,19 @@ export default class LevelingHandler {
     }
 
     async setLevel(member: GuildMember, level: number) {
-        const user = await this.fetch({ member })
-
-        if(!user) return;
         await this.edit({ member }, { level })
-        
         return level;
     }
 
     async setXp(member: GuildMember, xp: number) {
-        const user = await this.fetch({ member })
-        if(!user) return;
         await this.edit({ member }, { xp })
         return xp;
     }
 
     async addXp(member: GuildMember, amount: number) {
         const user = await this.fetch({ member })
-
         if(!user) return;
+        
         const newXp = (user.xp ?? 0) + amount;
         await this.edit({ member }, { xp: newXp })
 
