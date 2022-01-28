@@ -83,7 +83,7 @@ export default class extends Event {
     async handleCommands(client: ArosClient, interaction: CommandInteraction) {
         client.countsToday.commands++;
 
-        const command = client.handlers.commands.filter(cmd => cmd.isSlashCommand).get(interaction.commandName)
+        const command = client.handlers.commands.filter(cmd => cmd.isSlashCommand || cmd.name === 'help').get(interaction.commandName)
         if(!interaction.user.id) await interaction.user.fetch(true)
         const user = await this.client.handlers.users.fetchOrCreate(interaction.user)
 
