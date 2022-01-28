@@ -122,19 +122,20 @@ export default class extends Event {
     }
 
     async handleLeveling(msg: Message, guild?: GuildInterface | null) {
-        if(!msg.member) return;
-        await this.client.handlers.levels.fetchOrCreate(msg.member);
+        if(!msg.member || msg.author.bot) return;
+        const fetched = await this.client.handlers.levels.fetchOrCreate(msg.member);
         
         if(!guild?.config?.leveling) return;
         const randomXpAmount = Math.floor(Math.random() * 10) + 1;
-        const xp = (await this.client.handlers.levels.getXp(msg.member!))! + randomXpAmount;
-        const level = await this.client.handlers.levels.getLevel(msg.member!);
+        const xp = fetched.xp! + randomXpAmount;
+        const level = fetched.level;
 
         
         const required = Math.floor(Math.pow(level! + 1, 2) * 10);
         if(xp >= required) {
             await this.client.handlers.levels.addLevel(msg.member!, 1);
             return msg.reply({
+                content: `GG ${msg.member}! You've leveled up to level ${level! + 1}!`,
                 embeds: [
                     EmbedFactory.generateInfoEmbed(`Level up!`, `${Utility.translate(guild?.language, `common:LEVEL_UP`, {level: level! + 1})}`)
                 ]
