@@ -36,10 +36,10 @@ export default class UserHandler extends Collection<string, UserInterface> {
         return data;
     }
 
-    async fetchOrCreate(query: User | GuildMember) {
+    async fetchOrCreate(query: User | GuildMember | string) {
         const fetchResult = await this.fetch(query, true)
         if(fetchResult) return fetchResult;
-        else return this.create({discord_id: query.id})
+        else return this.create({discord_id: (query instanceof User || query instanceof GuildMember) ? query.id : query})
 
     }
     
