@@ -1,0 +1,7 @@
+{
+    "INVALID_AMOUNT": "Podaj liczbę która jest większa od 0, lecz nie większa niż 100",
+    "NO_AMOUNT": "Podaj ilość wiadomości do usunięcia.",
+    "DELETED": "Pomyśłnie usunięto **{{amount}}** wiadomości z tego kanału!",
+    "NO_MESSAGES": "Na tym kanale nie istnieją wiadomości, które mogą zostać usunięte."
+
+}

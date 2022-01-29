@@ -1,0 +1,7 @@
+{
+    "INVALID_AMOUNT": "Please specify a number of messages that is less than 100, but more than 1.",
+    "NO_AMOUNT": "Please specify a number of messages to delete.",
+    "DELETED": "Successfully deleted **{{amount}}** messages from this channel!",
+    "NO_MESSAGES": "There are no messages to delete in this channel."
+
+}
