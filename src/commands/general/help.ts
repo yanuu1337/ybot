@@ -31,7 +31,6 @@ export default class extends Command {
         for (const command of client.handlers.commands.values()) {
             if (command.category) {
                 if(command.category === 'admin') continue;
-                console.log(command.name, command.category);
                 categories[capitalize(command.category)].push(command);
             } else {
                 categories['General'].push(command);
