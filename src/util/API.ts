@@ -49,9 +49,7 @@ export default class API {
         ).addSubcommand(sub =>
             sub.setName("nsfw").setDescription("NSFW commands")
         ).addSubcommand(sub =>
-            sub.setName("command").setDescription("Get help on a specific command").addStringOption(opt => opt.addChoices(
-                this.getCommandValues()
-            ).setName("command").setDescription("The command to search for").setRequired(true))
+            sub.setName("command").setDescription("Get help on a specific command").addStringOption(opt => opt.setName("command").setDescription("The command to search for").setRequired(true))
         ).setName("help").setDescription("Stop it. Get some help.");
         await this.rest.post(Routes.applicationGuildCommands(this.client.application?.id!, '856924300215713833'), {body: data.toJSON()})
     }
@@ -70,9 +68,7 @@ export default class API {
         ).addSubcommand(sub =>
             sub.setName("nsfw").setDescription("NSFW commands")
         ).addSubcommand(sub =>
-            sub.setName("command").setDescription("Get help on a specific command").addStringOption(opt => opt.addChoices(
-                this.getCommandValues()
-            ).setName("command").setDescription("The command to search for").setRequired(true))
+            sub.setName("command").setDescription("Get help on a specific command").addStringOption(opt => opt.setName("command").setDescription("The command to search for").setRequired(true))
         ).setName("help").setDescription("Stop it. Get some help.");
         await this.rest.post(Routes.applicationCommands(this.client.application?.id!), {body: data.toJSON()})
     }
