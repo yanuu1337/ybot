@@ -13,6 +13,6 @@
     "TRUE": "True",
     "FALSE": "False",
     "NONE": "None",
-    "USER_NOT_FOUND": "User not found!",
-    "LEVEL_UP": "Level up! You just leveld up to **LVL {{level}}**!"
+    "USER_NOT_FOUND": "User not found! Please mention a **valid** user.",
+    "LEVEL_UP": "Level up! You just leveled up to **LVL {{level}}**!"
 }
