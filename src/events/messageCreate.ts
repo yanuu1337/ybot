@@ -93,7 +93,7 @@ export default class extends Event {
     }
 
     async handleMention(msg: Message, guild: GuildInterface | null, args: string[] = []) {
-        if(msg.mentions.users.find(user => user.id === this.client.user?.id)) {
+        if(msg.mentions.users.find(user => user.id === this.client.user?.id) && !msg.mentions.everyone) {
             if(args[0] === 'prefix') {
                 if(!args[1]) return msg.reply(`The current prefix is \`${guild?.prefix ?? '='}\``)
                 if(!msg.member?.permissions?.has('MANAGE_GUILD', true)) return msg.reply(`You don't have the \`MANAGE_GUILD\` to change the prefix.`)
