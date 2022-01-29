@@ -26,7 +26,7 @@ export default class extends ContextMenu {
                 .addField(`${Utility.translate(`en-US`, `util/userinfo:USER_INFO_ID`)}`, `${user.id}`)
                 .addField(`${Utility.translate(`en-US`, `util/userinfo:USER_INFO_CREATED`)}`, `${user.createdAt.toLocaleString()}`)
                 .addField(`${Utility.translate(`en-US`, `util/userinfo:USER_INFO_BADGES`)}`, `${badges.length ? badges.join(' ') : 'NONE'}`)
-                .setFooter({text: `© ${new Date().getFullYear()} - Aros`, iconURL: client.user?.displayAvatarURL() ?? undefined})
+                .setFooter({text: `© ${new Date().getFullYear()} - yBot`, iconURL: client.user?.displayAvatarURL() ?? undefined})
                 //@ts-ignore
                 .setColor(`${user.accentColor?.toString() ?? '#7289DA'}`);
             return interaction.reply({embeds: [embed], ephemeral: true});
@@ -45,7 +45,7 @@ export default class extends ContextMenu {
             .addField(`${Utility.translate(`en-US`, `util/userinfo:USER_INFO_ROLES`)}`, `${roles.length > 0 ? roles.join(', ') : 'None'}`)
             .addField(`${Utility.translate(`en-US`, `util/userinfo:USER_INFO_BADGES`)}`, `${badges.length ? badges.join(' ') : 'None'}`)
             .setColor(member.displayHexColor)
-            .setFooter({text: `© ${new Date().getFullYear()} - Aros`, iconURL: client.user?.displayAvatarURL() ?? undefined});
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot`, iconURL: client.user?.displayAvatarURL() ?? undefined});
         return interaction.reply({embeds: [embed], ephemeral: true});
     }
 }

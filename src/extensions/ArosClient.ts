@@ -51,7 +51,7 @@ export default class ArosClient extends Client {
             ],
             presence: {
                 activities: [{
-                        name: `/help | ${process.env.PREFIX}help - aros.folds.cc`,
+                        name: `/help | ${process.env.PREFIX}help - bot.folds.cc`,
                         type: 'WATCHING'
                     }
                 ]}
@@ -66,7 +66,7 @@ export default class ArosClient extends Client {
             //this sets the presence (cos discord sometimes resets it)
             this.user?.setPresence({
                 activities: [{
-                        name: `/help | ${process.env.PREFIX}help - aros.folds.cc`,
+                        name: `/help | ${process.env.PREFIX}help - bot.folds.cc`,
                         type: 'WATCHING',
                     }
                 
@@ -81,7 +81,7 @@ export default class ArosClient extends Client {
 
     public async ping() {
         if(!this.user?.presence.activities?.[0]) {
-            this.user?.setActivity(`/help | ${process.env.PREFIX}help - aros.folds.cc`, {type: 'WATCHING'})
+            this.user?.setActivity(`/help | ${process.env.PREFIX}help - bot.folds.cc`, {type: 'WATCHING'})
         }
         await fetch('https://api.folds.cc/bot/ping', {
             method: 'POST',

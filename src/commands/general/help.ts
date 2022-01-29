@@ -50,7 +50,7 @@ export default class extends Command {
                 .addField(`${Utility.translate(user?.language, `info/help:CATEGORY`)}`, `\`${capitalize(command.category)}\``)
                 .addField(`${Utility.translate(user?.language, `info/help:IS_SLASH_COMMAND`)}`, `\`${command.isSlashCommand ? Utility.translate(user?.language, `common:YES`) : Utility.translate(user?.language, `common:NO`)}\``)
                 .setColor(0x00AE86)
-                .setFooter(`© ${new Date().getFullYear()} - Aros 🎉`)
+                .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
                 .setTimestamp();
                 
             if(command.aliases.length) embed.addField(`${Utility.translate(user?.language, `info/help:ALIASES`)}`, `${command.aliases.map(val => `\`${val}\``).join(', ')}`)

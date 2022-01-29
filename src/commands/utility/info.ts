@@ -58,7 +58,7 @@ export default class extends Command {
     getInfoDataEmbed(msgGuild: Guild | null, guild: GuildInterface | null, guildMemberCache?: Collection<string, GuildMember>, banCache?: Collection<string, GuildBan>) {
         const embed = new MessageEmbed()
             .setTitle(`${Utility.translate(guild?.language, `util/info:INFO`, { guild: msgGuild?.name ?? 'Unknown' })}`)
-            .setFooter(`${msgGuild?.name} | © ${new Date().getFullYear()} - Aros 🎉`)
+            .setFooter(`${msgGuild?.name} | © ${new Date().getFullYear()} - yBot 🎉`)
             .addField(`${Utility.translate(guild?.language, `util/info:DISCORD_DATA`)}`, `
                 \`•\`🆔: \`${msgGuild?.name}\`
                 \`•\`<:datetimegray:927512745337819176> <t:${Math.round((msgGuild?.createdAt?.getTime?.() ?? Date.now()) / 1000)}:R>

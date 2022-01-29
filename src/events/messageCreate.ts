@@ -102,12 +102,12 @@ export default class extends Event {
             }
             const embed = new MessageEmbed()
                 .setTitle(`Hi there!`)
-                .setFooter("© 2022 - Aros 🎉")
+                .setFooter("© 2022 - yBot 🎉")
                 .setColor(`RANDOM`)
                 .setDescription(`You mentioned me! <:yBBruh:801006604728270848>`)
-                .addField(`About me:`, `I'm your friend, Aros! Not only do I include moderation and meme commands (including slash commands), I also have fully-fledged leveling and currency systems!`)
+                .addField(`About me:`, `I'm your friend, yBot! Not only do I include moderation and meme commands (including slash commands), I also have fully-fledged leveling and currency systems!`)
                 .addField(`My prefix here is: \`${guild?.prefix ?? '='}\``, `Use the \`${guild?.prefix ?? '='}help\` command to see all my commands! You could also use the /help slash command for the same thing.`)
-                .addField(`Customization: `, `You can customize my settings in multiple ways, such as my [website](https://aros.folds.cc) or the \`config\` command!`)
+                .addField(`Customization: `, `You can customize my settings in multiple ways, such as my [website](https://bot.folds.cc) or the \`config\` command!`)
             
             return msg.reply({embeds: [embed]})
         }

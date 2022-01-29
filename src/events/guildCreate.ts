@@ -26,11 +26,11 @@ export default class extends Event {
         else {
             const embed = new MessageEmbed()
                 .setTitle(`Hi there!`)
-                .setFooter("© 2022 - Aros 🎉")
+                .setFooter("© 2022 - yBot 🎉")
                 .setColor(`RANDOM`)
                 .setDescription(`Thanks for adding me to this server! Check out all of my features by using the \`help\` command! By the way, my default prefix is \`${process.env.PREFIX!}\`!`)
-                .addField(`About me:`, `I'm your friend, Aros! Not only do I include moderation and meme commands, I also have fully-fledged leveling and currency systems!`)
-                .addField(`Customization: `, `You can customize my settings in multiple ways, such as my [website](https://aros.folds.cc) or the \`config\` command!`)
+                .addField(`About me:`, `I'm your friend, yBot! Not only do I include moderation and meme commands, I also have fully-fledged leveling and currency systems!`)
+                .addField(`Customization: `, `You can customize my settings in multiple ways, such as my [website](https://bot.folds.cc) or the \`config\` command!`)
             return potentialWelcomeChannel.send({embeds: [embed]})
         }
 

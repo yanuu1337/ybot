@@ -95,7 +95,7 @@ export default class extends Command {
                             .setTitle(`\`${tag.tag}\``)
                             .setColor("RANDOM")
                             .setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL()})
-                            .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - Aros | created by ${typeof tag.author === 'string' ? tag : tag.author?.tag.toString()}`})
+                            .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - yBot | created by ${typeof tag.author === 'string' ? tag : tag.author?.tag.toString()}`})
                     ]
                 })
             })
@@ -140,7 +140,7 @@ export default class extends Command {
                     .setTitle(`\`${tag.tag}\``)
                     .setColor("RANDOM")
                     .setAuthor({name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL()})
-                    .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - Aros | created by ${typeof tag.author === 'string' ? tag : tag.author?.tag.toString()}`})
+                    .setDescription(`${tag.content}`).setFooter({text: `© ${new Date().getFullYear()} - yBot | created by ${typeof tag.author === 'string' ? tag : tag.author?.tag.toString()}`})
             ]
         })
     }
