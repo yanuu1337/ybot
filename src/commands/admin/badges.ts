@@ -12,7 +12,9 @@ export default class extends Command {
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
         
         if(!args[0] || !Object.keys(BadgeEmojis).includes(args[0].toUpperCase())) {
-            return message.reply(`Please specify a valid badge.`);
+            const validMappedObject = Object.keys(BadgeEmojis).map(key => `**${key}** - ${Object(BadgeEmojis)[key]}`).join('\n');
+            
+            return message.reply(`Please specify a valid badge. \nCurrently available badges: \n${validMappedObject}`);
         }
         if(!message.mentions.members?.size && !args[1]) {
             return message.reply(`Please specify a user.`);
