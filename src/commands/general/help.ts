@@ -26,11 +26,16 @@ export default class extends Command {
             "Utility": [],
             "Fun": [],
             "NSFW": [],
+            "Cute": [],
             "Currency": []
         };
         for (const command of client.handlers.commands.values()) {
             if (command.category) {
                 if(command.category === 'admin') continue;
+                if(command.category === 'nsfw') {
+                    categories['NSFW'].push(command);
+                    continue;
+                }
                 categories[capitalize(command.category)].push(command);
             } else {
                 categories['General'].push(command);
@@ -157,6 +162,7 @@ export default class extends Command {
             "Config": [],
             "Utility": [],
             "Fun": [],
+            "Cute": [],
             "NSFW": [],
         };
         for (const command of client.handlers.commands.values()) {
@@ -240,10 +246,10 @@ const row = new MessageActionRow()
                     emoji: "<:gamepad:936672734061166635>"
                 },
                 {
-                    "label": "NSFW",
-                    "value": "nsfw",
-                    description: "NSFW commands",
-                    emoji: "<:nsfw:936673248140230686>"
+                    "label": "Cute",
+                    "value": "cute",
+                    description: "Cute commands",
+                    emoji: "<:heart_on_fire:937471557360562196>"
                 },
                 {
                     "label": "Currency",
