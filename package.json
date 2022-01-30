@@ -39,6 +39,7 @@
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.0",
     "sql-template-strings": "^2.2.2",
+    "tldts": "^5.7.60",
     "winston": "^3.3.3"
   },
   "devDependencies": {

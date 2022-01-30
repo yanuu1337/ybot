@@ -1,3 +1,4 @@
+import { writeFile } from 'fs/promises';
 import { Client, ClientOptions, Intents } from "discord.js"
 import { TFunction } from "i18next";
 import schedule from 'node-schedule';
@@ -34,6 +35,12 @@ export default class ArosClient extends Client {
         users: 0,
         guilds: 0
     }
+    public currencyConfig = {
+        daily: 10000,
+        weekly: 100000,
+        monthly: 1000000
+    }
+
     private _logger = Logger;
     public translate: Map<string, TFunction> = new Map();
     public db?: Database = undefined; 
@@ -72,7 +79,12 @@ export default class ArosClient extends Client {
                 
                 ]
             })
+
+            const madeRequest = await (await fetch(`https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt`)).text();
+            await writeFile('./etc/phishing-domains.txt', madeRequest).catch(err => client.logger.error(`Error writing phishing-domains.txt.`, err))
         });
+        const madeRequest = await (await fetch(`https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt`)).text();
+        await writeFile('./etc/phishing-domains.txt', madeRequest).catch(err => client.logger.error(`Error writing phishing-domains.txt.`, err))
         this.translate = await i18n();
         this.on('error', (err) => {this.logger.error(`Client error: `, err)});
         return super.login(token);
@@ -90,6 +102,7 @@ export default class ArosClient extends Client {
             },
             body: JSON.stringify({servers: this.guilds.cache.size, users: this.users.cache.size, commands_today: this.countsToday.commands}),
         }).catch(err => client.logger.error(`Error sending ping.`, err))
+        
 
         
     }

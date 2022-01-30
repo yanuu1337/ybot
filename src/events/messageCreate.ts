@@ -1,3 +1,4 @@
+import { RowDataPacket } from 'mysql2/promise';
 import { GuildInterface } from './../lib/types/database';
 import { Message, MessageEmbed, NewsChannel, Permissions, TextChannel, ThreadChannel } from "discord.js";
 import ArosClient from "../extensions/ArosClient";
@@ -5,6 +6,9 @@ import Event from '../lib/structures/Event'
 import EmbedFactory from "../util/EmbedFactory";
 import Utility from "../util/Utility";
 import moment from 'moment';
+import { parse } from 'tldts';
+import {readFile} from 'fs/promises'
+const urlRegexp = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?")
 export default class extends Event {
     readonly requiredPermissions = new Permissions(['VIEW_CHANNEL', 'SEND_MESSAGES']).freeze()
     async execute(client: ArosClient, msg: Message) {
@@ -33,6 +37,9 @@ export default class extends Event {
             
             await this.handleMention(msg, commandGuild, cmdArgs)
             const command = this.client.handlers.commands.fetch(cmdName.toLowerCase());
+            if(urlRegexp.test(msg.content)) {
+                this.handlePhishingLinks(msg, commandGuild);
+            }
             if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return await this.handleLeveling(msg, commandGuild);
             
             if(user.blacklisted) {
@@ -145,6 +152,53 @@ export default class extends Event {
         }
 
         
+    }
+
+
+    async handlePhishingLinks(msg: Message, guild: GuildInterface | null) {
+        const allDatabaseLinks = (await this.client.db?.query(`SELECT * FROM phishing_data`))?.[0] as RowDataPacket[];
+        if(!allDatabaseLinks) return;
+        if(msg.channel.type === "DM") return;
+        const links = allDatabaseLinks.filter(link => !link.legit).map(link => link.domain);
+        const msgArgs = msg.content.split(" ");
+        const legitLinks = allDatabaseLinks.filter(link => link.legit).map(link => parse(link.domain).domain);
+        const link = msgArgs.find(arg => urlRegexp.test(arg));
+        
+        const madeRequest = await readFile(`./etc/phishing-domains.txt`, 'utf8');
+        const newUrl = parse(link!);
+        
+        if(newUrl.domain && ((madeRequest.includes(newUrl.domain) && !legitLinks.includes(newUrl.domain)) || links.includes(newUrl.domain))) {
+            if(msg.deletable) await msg.delete();
+            
+            const modLogChannel = guild?.mod_log ? await this.client.channels.fetch(guild?.mod_log!) : 
+                msg.guild?.channels.cache.find(channel => channel.name.includes('mod-log')) ?? 
+                msg.guild?.channels.cache.find(channel => channel.name.includes('admin')) ?? 
+                msg.guild?.channels.cache.find(channel => channel.name.includes("logs"))
+            if(modLogChannel?.type === "DM") return;
+
+            if(modLogChannel?.isText() && modLogChannel.permissionsFor(msg.guild?.me!, true).has("SEND_MESSAGES")) modLogChannel.send({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor("RED")
+                        .setAuthor({name: `${msg.author.tag} (${msg.author.id})`, iconURL: msg.author.displayAvatarURL()})
+                        .setTitle(`Phishing link detected!`)
+                        .setDescription(`**A phishing link has been detected in a message sent by \`${msg.author.tag}\`. The message has been removed.**
+                        \`\`\`yBot stores, detects, and reports phishing links with the help of yBot's Staff Team. If you believe this is a mistake, please contact the Staff Team (for example by using the bugreport command). You could help us remove more phishing links and keep servers clean by reporting them using the suggest or bugreport command. Thank you!
+                         \`\`\`
+                         User: **${msg.author.tag}**
+                         ID: **${msg.author.id}**
+                         Message sent in: ${msg.channel}
+                         Message content: 
+                         **Warning! This message contains a malicious link! Please do not click it unless you are sure it is legit!**
+                         ||${msg.content}||
+                         `)
+                        .setFooter("© 2022 - yBot 🎉")
+                ]
+            })                    
+        }
+        
+
+
     }
 
     
