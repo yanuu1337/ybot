@@ -1,4 +1,5 @@
-import { Message,MessageEmbed,User } from "discord.js";
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { CacheType, CommandInteraction, Message,MessageEmbed,User } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
@@ -6,8 +7,17 @@ import { GuildInterface } from "../../lib/types/database";
 export default class extends Command {
     description = 'Get information about this bot!';
     usage = 'about';
-
+    isSlashCommand = true;
+    data = new SlashCommandBuilder();
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
+        return this.about(client, message, guild);
+    }
+
+    async executeSlash(client: ArosClient, interaction: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
+        return this.about(client, interaction, guild);
+    }
+
+    async about(client: ArosClient, message: Message<boolean> | CommandInteraction<CacheType>, guild: GuildInterface | null): Promise<any> {
         if(!client.application?.owner) await client.application?.fetch();
         const owner = client.application?.owner as User;
         const embed = new MessageEmbed()
@@ -37,4 +47,5 @@ export default class extends Command {
                 
         message.reply({embeds: [embed]});
     }
+    
 }
