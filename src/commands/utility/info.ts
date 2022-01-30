@@ -11,7 +11,7 @@ export default class extends Command {
     isSlashCommand = true;
     usage = 'guildinfo [guild_id]';
     description = 'Get information about the server';
-    data = new SlashCommandBuilder()
+    data = new SlashCommandBuilder().addStringOption(g => g.setName("guild_id").setRequired(false).setDescription("The guild id to get info about"));
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null) {
         
         
@@ -37,20 +37,34 @@ export default class extends Command {
         }
 
         const guildMemberCache = message.guild?.members.cache.filter(member => !member.user.bot);
-        const banCache = !message.guild?.bans.cache.size ? await message.guild?.bans.fetch() : message.guild.bans.cache;
+        const banCache = await message.guild?.bans.fetch();
         
             
         return message.reply({embeds: [this.getInfoDataEmbed(message.guild, guild, guildMemberCache, banCache)]});
     }
 
     async executeSlash(client: ArosClient, cmd: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
+        if(cmd.options.getString("guild_id")) {
+            const fetchedGuild = client.guilds.cache.get(cmd.options.getString("guild_id", true)) || await client.guilds.fetch(cmd.options.getString("guild_id", true)).catch(err => null);
+            if(!fetchedGuild) {
+                return cmd.reply({embeds: [
+                    EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(`en-US`, `util/info:NO_GUILD_ERROR`)}`)
+                ], ephemeral: true});
+            }
+            const guildMemberCache = fetchedGuild.members.cache.filter(member => !member.user.bot);
+            const banCache = await fetchedGuild?.bans.fetch();
+            const dbGuild = await client.handlers.guilds.fetchOrCreate(fetchedGuild);
+            return cmd.reply({embeds: [this.getInfoDataEmbed(fetchedGuild, dbGuild, guildMemberCache, banCache)]});
+
+        }
+        
         if(!cmd.inGuild() || !cmd.guild) {
             return cmd.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`Error`, `${Utility.translate(`en-US`, `util/info:NO_GUILD_ERROR`)}`)
             ], ephemeral: true});
         }
         const guildMemberCache = cmd.guild?.members.cache.filter(member => !member.user.bot);
-        const banCache = !cmd.guild?.bans.cache.size ? await cmd.guild?.bans.fetch() : cmd.guild.bans.cache;
+        const banCache = await cmd.guild?.bans.fetch();
         return cmd.reply({embeds: [this.getInfoDataEmbed(cmd?.guild, guild, guildMemberCache, banCache)]});
 
     }
