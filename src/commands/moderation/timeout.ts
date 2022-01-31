@@ -26,7 +26,7 @@ export default class extends Command {
                 ]}
             )
         }
-        if(member.communicationDisabledUntilTimestamp || member?.communicationDisabledUntilTimestamp! > Date?.now()) {
+        if((member?.communicationDisabledUntilTimestamp! ?? -1) > Date?.now()) {
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:ALREADY_TIMEOUTED")}`)
                 ]}
