@@ -19,7 +19,7 @@ export default class Database {
                 port: 3306,
                 user: process.env.MYSQL_USERNAME || 'aros',
                 password: process.env.MYSQL_PASSWORD,
-                database: 'aros'
+                database: 'ybot'
     
             })
             
