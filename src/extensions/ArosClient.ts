@@ -58,7 +58,7 @@ export default class ArosClient extends Client {
             ],
             presence: {
                 activities: [{
-                        name: `/help | ${process.env.PREFIX}help - bot.folds.cc`,
+                        name: `/help | ${process.env.PREFIX}help - support.folds.cc`,
                         type: 'WATCHING'
                     }
                 ]}
@@ -73,7 +73,7 @@ export default class ArosClient extends Client {
             //this sets the presence (cos discord sometimes resets it)
             this.user?.setPresence({
                 activities: [{
-                        name: `/help | ${process.env.PREFIX}help - bot.folds.cc`,
+                        name: `/help | ${process.env.PREFIX}help - support.folds.cc`,
                         type: 'WATCHING',
                     }
                 
