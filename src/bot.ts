@@ -5,7 +5,7 @@ config();
 const client = new ArosClient()
 const database = new Database(client)
 client.once('ready', async () => {
-    await client.handlers.api.putGuildTestSlashCommands()
+    await client.handlers.api.putSlashCommands()
     if(!database.loggedIn) {
         client.logger.error(`DB: Not connected!`)
     } else client.logger.info(`DB: Connected.`)

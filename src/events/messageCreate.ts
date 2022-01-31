@@ -29,7 +29,7 @@ export default class extends Event {
             })
         }
         const [cmdName, ...cmdArgs] = msg.content
-        .slice((commandGuild?.prefix ?? '=').length)
+        .slice((commandGuild?.prefix ?? '.').length)
         .trim()
         .split(/\s+/);
 
@@ -40,7 +40,7 @@ export default class extends Event {
             if(urlRegexp.test(msg.content)) {
                 this.handlePhishingLinks(msg, commandGuild);
             }
-            if(!msg.content.startsWith((commandGuild?.prefix ?? '='))) return await this.handleLeveling(msg, commandGuild);
+            if(!msg.content.startsWith((commandGuild?.prefix ?? '.'))) return await this.handleLeveling(msg, commandGuild);
             
             if(user.blacklisted) {
                 if (Math.random() > 0.7) msg.reply(`Error: You are blacklisted from using this bot.`)
@@ -102,7 +102,7 @@ export default class extends Event {
     async handleMention(msg: Message, guild: GuildInterface | null, args: string[] = []) {
         if(msg.mentions.users.find(user => user.id === this.client.user?.id) && !msg.mentions.everyone && !msg.reference) {
             if(args[0] === 'prefix') {
-                if(!args[1]) return msg.reply(`The current prefix is \`${guild?.prefix ?? '='}\``)
+                if(!args[1]) return msg.reply(`The current prefix is \`${guild?.prefix ?? '.'}\``)
                 if(!msg.member?.permissions?.has('MANAGE_GUILD', true)) return msg.reply(`You don't have the \`MANAGE_GUILD\` to change the prefix.`)
                 await this.client.handlers.guilds.edit(msg.guild!, {prefix: args[1]})
                 return msg.reply(`The prefix has been changed to \`${args[1]}\`.`)
@@ -113,7 +113,7 @@ export default class extends Event {
                 .setColor(`RANDOM`)
                 .setDescription(`You mentioned me! <:yBBruh:801006604728270848>`)
                 .addField(`About me:`, `I'm your friend, yBot! Not only do I include moderation and meme commands (including slash commands), I also have fully-fledged leveling and currency systems!`)
-                .addField(`My prefix here is: \`${guild?.prefix ?? '='}\``, `Use the \`${guild?.prefix ?? '='}help\` command to see all my commands! You could also use the /help slash command for the same thing.`)
+                .addField(`My prefix here is: \`${guild?.prefix ?? '.'}\``, `Use the \`${guild?.prefix ?? '.'}help\` command to see all my commands! You could also use the /help slash command for the same thing.`)
                 .addField(`Customization: `, `You can customize my settings in multiple ways, such as my [website](https://bot.folds.cc) or the \`config\` command!`)
             
             return msg.reply({embeds: [embed]})
