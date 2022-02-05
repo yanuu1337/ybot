@@ -10,7 +10,7 @@ export default class extends Event {
 
     async execute(client: ArosClient, oldMsg: Message, newMsg: Message) {
         
-        if(newMsg.author.bot || newMsg.webhookId || newMsg.partial) return;
+        if(newMsg?.author?.bot || newMsg?.webhookId || newMsg?.partial) return;
 
         const guildMe = newMsg?.guild?.me ?? await newMsg.guild?.members.fetch(`${this.client.user?.id}`)!
         const channel = newMsg.channel as TextChannel | ThreadChannel | NewsChannel
