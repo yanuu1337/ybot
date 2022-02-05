@@ -33,12 +33,12 @@ export default class extends Command {
             if (command.category) {
                 if(command.category === 'admin') continue;
                 if(command.category === 'nsfw') {
-                    categories['NSFW'].push(command);
+                    categories['NSFW']?.push(command);
                     continue;
                 }
-                categories[capitalize(command.category)].push(command);
+                categories[capitalize(command.category)]?.push(command);
             } else {
-                categories['General'].push(command);
+                categories['General']?.push(command);
             }
         }
         if(args[0]) {
@@ -169,12 +169,12 @@ export default class extends Command {
             if (command.category) {
                 if(command.category === 'admin') continue;
                 if(command.category === 'nsfw') {
-                    categories['NSFW'].push(command);
+                    categories['NSFW']?.push(command);
                     continue;
                 }
-                categories[capitalize(command.category)].push(command);
+                categories[capitalize(command.category)]?.push(command);
             } else {
-                categories['General'].push(command);
+                categories['General']?.push(command);
             }
         }
         const commands = sub === "nsfw" ? categories['NSFW'] : categories[capitalize(sub)];
