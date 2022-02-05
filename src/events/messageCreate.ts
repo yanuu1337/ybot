@@ -167,7 +167,7 @@ export default class extends Event {
         const madeRequest = await readFile(`./etc/phishing-domains.txt`, 'utf8');
         const newUrl = parse(link!);
         
-        if(newUrl.domain && ((madeRequest.includes(newUrl.domain) && !legitLinks.includes(newUrl.domain)) || links.includes(newUrl.domain))) {
+        if(newUrl.domain && ((madeRequest.split("\n").includes(newUrl.domain) && !legitLinks.includes(newUrl.domain)) || links.includes(newUrl.domain) && !legitLinks.includes(newUrl.domain))) {
             if(msg.deletable) await msg.delete();
             
             const modLogChannel = guild?.mod_log ? await this.client.channels.fetch(guild?.mod_log!) : 
