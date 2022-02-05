@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageEmbed, PermissionString } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageEmbed, PermissionString, Role } from "discord.js";
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
@@ -14,10 +14,12 @@ export default class extends Command {
         sub.setName('delete').setDescription('Delete a tag.').addStringOption(opt => opt.setName('name').setRequired(true).setDescription('The name of the tag.'))
     ).addSubcommand(sub =>
         sub.setName('send').setDescription('Send a tag.').addStringOption(opt => opt.setName('name').setRequired(true).setDescription('The name of the tag.')).addMentionableOption(opt => opt.setName('target').setDescription('Optional target of the tag.'))
+    ).addSubcommand(sub =>
+        sub.setName("list").setDescription('List all tags.')
     )
     dm = false;
     description = 'Manage tags - message snippets.';
-    usage = 'tag <create|delete|send|restrict> <name|user-to-restrict> [target]';
+    usage = 'tag <create|delete|send|restrict|list> <name|user-to-restrict> [target]';
     isSlashCommand = true;
     
     async execute(client: ArosClient, message: Message<boolean>, args: string[], guild: GuildInterface | null): Promise<any> {
@@ -75,6 +77,14 @@ export default class extends Command {
             await mentionedMember.roles.remove(guild?.config?.tag_restrict);
             return message.reply(`${mentionedMember.user.tag} can now use tags!`);
 
+        } else if (args[0]?.toLowerCase() === "list") {
+            const tags = await client.handlers.tags.getTags(message?.guild!);
+            const embed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(`Tag list for ${message?.guild?.name}`)
+            .setDescription(`${tags!.map(t => `\`${t.tag}\``).join(', ')}`);
+            return message.reply({embeds: [embed]});
+
         } else {
             if(guild?.config?.tag_restrict && message.member?.roles.cache.has(guild?.config?.tag_restrict)) return message.reply({embeds:
                 [
@@ -108,7 +118,7 @@ export default class extends Command {
 
         
     async executeSlash(client: ArosClient, interaction: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
-        const sub = interaction.options.getSubcommand() as 'create' | 'delete' | 'send';
+        const sub = interaction.options.getSubcommand() as 'create' | 'delete' | 'send' | 'list';
         const member = interaction.member as GuildMember;
         if(sub === 'create') {
             if(!member.permissions.has("MANAGE_GUILD")) return interaction.reply({embeds: 
@@ -130,6 +140,16 @@ export default class extends Command {
                 ], ephemeral: true
             })
             return this.removeTag(client, interaction, [interaction.options.getString('name', true)], guild);
+        } else if (sub === 'list') {
+            const tags = await client.handlers.tags.getTags(interaction?.guild!);
+            const embed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(`Tag list for ${interaction?.guild?.name}`)
+            .setDescription(`${tags!.map(t => `\`${t.tag}\``).join(', ')}`);
+            return interaction.reply({embeds: [embed]});
+        }
+        if(interaction.options.getMentionable('target') instanceof Role) {
+            return interaction.reply({content: `You can't use a role as a target!`, ephemeral: true});
         }
         const tag = await client.handlers.tags.fetch({discord_id: interaction.guild?.id, tag: interaction.options.getString('name', true).toLowerCase()});
         if(!tag) return interaction.reply({content: "Tag doesn't exist!", ephemeral: true});
@@ -152,7 +172,7 @@ export default class extends Command {
         if(!args[0]) return message.reply({content: "Please provide a tag name!", ...shouldBeEphemeral});
         const illegalCharacters = ["<", ">", ":", ";", ",", ".", "?", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "{", "}", "[", "]", "|", "\\", "/", "​backtick", "~", "\"", "'", " "];
 
-        if(illegalCharacters.some(char => args[0].includes(char))) return message.reply({
+        if(illegalCharacters.some(char => args[0].includes(char)) || args[0].includes(`\``)) return message.reply({
             content: `Tag name contains illegal characters, such as ${illegalCharacters.map(val => `\`${val}\``).join(', ')}!`,
              ...shouldBeEphemeral
         });
