@@ -16,7 +16,7 @@ export default class ContextMenu {
         this.client = client;
         this.name = name;
         if(!this.data) this.data = this.contextMenuData;
-        this.type = path.toUpperCase() as 'MESSAGE' | 'USER';
+        this.type = path.replace("../context-menus/", "").toUpperCase() as 'MESSAGE' | 'USER';
         if(!this.description) this.description = this.name;
     }
     
