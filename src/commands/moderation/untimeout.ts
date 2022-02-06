@@ -63,7 +63,7 @@ export default class extends Command {
         
         if(!member.communicationDisabledUntilTimestamp || member?.communicationDisabledUntilTimestamp < Date?.now()) {
             return interaction.reply({embeds: [
-                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:NOT_IN_TIMEOUT")}`)
+                EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:NOT_IN_TIMEOUT", {member: member.user.tag})}`)
                 ]}
             )
         }

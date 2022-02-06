@@ -5,6 +5,6 @@
     "TIMEOUT_SUCCESS": "Successfully timeouted **{{member}}** for `{{time}}`! \nReason: `{{reason}}`",
     "NOT_MODERATABLE": "You (or I) can't moderate this member!",
     "ALREADY_TIMEOUTED": "This member is already timeouted! \nUse the `untimeout` command to remove the timeout!", 
-    "NOT_IN_TIMEOUT": "**{{member}} is not timeouted!",
+    "NOT_IN_TIMEOUT": "**{{member}}** is not timeouted!",
     "UNTIMEOUT_SUCCESS": "Successfully removed the timeout from **{{member}}**! \nReason: `{{reason}}`"
 }
