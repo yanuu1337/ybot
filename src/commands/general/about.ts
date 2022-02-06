@@ -3,6 +3,7 @@ import { CacheType, CommandInteraction, Message,MessageEmbed,User } from "discor
 import ArosClient from "../../extensions/ArosClient";
 import Command from "../../lib/structures/Command";
 import { GuildInterface } from "../../lib/types/database";
+import Utility from '../../util/Utility';
 
 export default class extends Command {
     description = 'Get information about this bot!';
@@ -24,8 +25,7 @@ export default class extends Command {
                 .setTitle(`Hi there!`)
                 .setFooter("© 2022 - yBot 🎉")
                 .setColor(`RANDOM`)
-                .setDescription(`You want to more about me! <:yBBruh:801006604728270848>`)
-                .addField(`About me:`, `I'm your friend, yBot! Not only do I include moderation and meme commands (including slash commands), I also have fully-fledged leveling and currency systems!`)
+                .setDescription(`You want to know more about me! <:yBBruh:801006604728270848>`)
                 .addField(`My prefix here is: \`${guild?.prefix ?? '='}\``, `Use the \`${guild?.prefix ?? '='}help\` command to see all my commands! You could also use the /help slash command for the same thing.`)
                 .addField(`Customization: `, `You can customize my settings in multiple ways, such as ~~my [website](https://bot.folds.cc) or~~ the \`config\` command!`)
                 .addField(`Support: `, `If you need help, you can join the support server [here](http://support.folds.cc/)!`)
@@ -37,15 +37,23 @@ export default class extends Command {
                 ${client.countsToday.tags} Tags
                 ${client.countsToday.users} Users
                 ${client.countsToday.guilds} Guilds
-                `)
+                `.replace('\t', ''))
                 .addField(`Versions:`, `
                 **Node**: \`${process.version}\`
                 **Discord.js**: \`${require('discord.js').version}\`
                 **Bot**: \`${require('../../../package.json').version}\`
 
-                `)
+                `.replace('\t', ''))
+                .addField(`Bot info:`, `
+                **Uptime**: **${Utility.secondsToDhms((client.uptime ?? 0) / 1000)}**
+                **Memory Usage**: \`${Utility.bytesToSize(process.memoryUsage().heapUsed)}\`
+                **Guilds**: ${client.guilds.cache.size} guilds 
+                **Users**: ${client.users.cache.size} users
+                **Channels**: ${client.channels.cache.size} channels
+                **Commands**: ${client.handlers.commands.size} commands
+                `.replace('\t', ''));
                 
-        message.reply({embeds: [embed]});
+        message.reply({embeds: [embed]}).catch(err => null);
     }
     
 }

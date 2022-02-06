@@ -26,7 +26,8 @@ export default class extends Command {
                 ]}
             )
         }
-        if((member?.communicationDisabledUntilTimestamp! ?? -1) > Date?.now()) {
+        
+        if((member?.communicationDisabledUntilTimestamp! ?? 1) > Date?.now()) {
             return message.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:ALREADY_TIMEOUTED")}`)
                 ]}
@@ -66,7 +67,7 @@ export default class extends Command {
     async executeSlash(client: ArosClient, interaction: CommandInteraction<CacheType>, guild: GuildInterface | null, isInDms?: boolean): Promise<any> {
         const member = interaction.options.getMember("user", true) as GuildMember;
         const timeInMs = ms(interaction.options.getString("time", true));
-        if(member.communicationDisabledUntilTimestamp || member?.communicationDisabledUntilTimestamp! > Date?.now()) {
+        if((member?.communicationDisabledUntilTimestamp! ?? 1) > Date?.now()) {
             return interaction.reply({embeds: [
                 EmbedFactory.generateErrorEmbed(`${Utility.translate(guild?.language, "common:ERROR")}`, `${Utility.translate(guild?.language, "mod/timeout:ALREADY_TIMEOUTED")}`)
                 ]}

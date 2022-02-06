@@ -46,7 +46,7 @@ export default class extends Command {
         const json = await res.json()
         const member = interaction.options.getMember("member", true) as GuildMember;
         const author = interaction.member as GuildMember;
-        const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, 'fun/actions:POKE')}`, `${author?.displayName} ${Utility.translate(guild?.language, 'fun/actions:POKE')} ${member?.displayName}!`).setImage(json.url);
+        const embed = EmbedFactory.generateInfoEmbed(`${Utility.translate(guild?.language, 'fun/actions:POKE')}`, `${author?.displayName} ${Utility.translate(guild?.language, 'fun/actions:POKED')} ${member?.displayName}!`).setImage(json.url);
         return interaction.reply({ embeds: [embed] });
     }
 }
