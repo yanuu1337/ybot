@@ -11,7 +11,7 @@ export default class EmbedFactory {
             .setTitle(`⛔ - ${title}`)
             .setDescription(error)
             .setColor('#992D22')
-            .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot 🎉`})
             .setTimestamp()
     }
 
@@ -20,7 +20,7 @@ export default class EmbedFactory {
             .setTitle(`⚠️ - ${title}`)
             .setDescription(warning)
             .setColor('#eed202')
-            .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot 🎉`})
             .setTimestamp()
 
     }
@@ -31,7 +31,7 @@ export default class EmbedFactory {
             .setDescription(description)
             .setTimestamp()
             .setColor('#cbdbfe')
-            .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot 🎉`})
     }
 
     static generateRandomColorEmbed(title: string, description: string): MessageEmbed {
@@ -39,7 +39,7 @@ export default class EmbedFactory {
             .setTitle(`💥 - ${title}`)
             .setDescription(description)
             .setTimestamp()
-            .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot 🎉`})
             .setColor('RANDOM')
     }
 
@@ -47,7 +47,7 @@ export default class EmbedFactory {
         return new MessageEmbed()
             .setTitle(`${isLoaded ? title : `Loading - ${title}`}`)
             .setDescription(description)
-            .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot 🎉`})
             .setTimestamp()
             .setColor(isLoaded ? '#03254C' : '#187bcd')
 
@@ -57,7 +57,7 @@ export default class EmbedFactory {
         return new MessageEmbed()
             .setTitle(`📝 - ${type}`)
             .setDescription(`${author} ${type}'d ${member} for \`${reason}\``)
-            .setFooter(`© ${new Date().getFullYear()} - yBot 🎉`)
+            .setFooter({text: `© ${new Date().getFullYear()} - yBot 🎉`})
             .setTimestamp()
             .setColor('#03254C')
     }
