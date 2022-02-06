@@ -33,6 +33,6 @@
 
     "LEVEL_TOGGLE": "Leveling",
     "LEVEL_TOGGLE_DESC": "Whether or not to enable leveling for this server",
-    "LEVEL_TOGGLE_ON": "Leveling is now **enabled**!",
-    "LEVEL_TOGGLE_OFF": "Leveling is now **disabled**!"
+    "LEVELING_TOGGLE_ON": "Leveling is now **enabled**!",
+    "LEVELING_TOGGLE_OFF": "Leveling is now **disabled**!"
 }

@@ -34,7 +34,7 @@
 
     "LEVEL_TOGGLE": "Poziomowanie",
     "LEVEL_TOGGLE_DESC": "Czy system levelingu jest właczony: ",
-    "LEVEL_TOGGLE_ON": "Leveling jest teraz **włączony**!",
-    "LEVEL_TOGGLE_OFF": "Leveling jest teraz **wyłączony**!"
+    "LEVELING_TOGGLE_ON": "Leveling jest teraz **włączony**!",
+    "LEVELING_TOGGLE_OFF": "Leveling jest teraz **wyłączony**!"
 
 }
