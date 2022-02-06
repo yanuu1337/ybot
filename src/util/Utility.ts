@@ -2,9 +2,19 @@
 import { client } from "../bot";
 
 export default class Utility extends null {
+    
     constructor() {
         
     }
+
+    static bytesToSize(bytes: number, precision: number = 2) {
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        if (bytes == 0) return '0 Bytes';
+        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString(), 10);
+        if (i == 0) return `${bytes} ${sizes[i]}`;
+        return `${(bytes / (1024 ** i)).toFixed(precision)} ${sizes[i]}`;
+    }
+        
 
     static isString(val: any) {
         return Object.prototype.toString.call(val) === '[object String]';
